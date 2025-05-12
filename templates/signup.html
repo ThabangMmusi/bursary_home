@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Bursary Home - Sign Up{% endblock %}
+{% block body_class %}login-page{% endblock %}
+{% block page_container_class %}login-page{% endblock %}
+
+{% block content %}
+    <div class="books-decoration"></div>
+    <div class="login-content">
+        {% include 'logo_component.html' %}
+        <img src="{% static 'images/students.png' %}" alt="Students" class="students-image">
+    </div>
+    <div class="login-form">
+        <h1>Create Account</h1>
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {# Display General Messages (Success/Error from view) #}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags|default:'info' }}">
+                         {# Optional: Add icons based on tags #}
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {# Display Form-level errors (e.g., "Passwords don't match") #}
+            {% if form.non_field_errors %}
+                <div class="alert alert-error">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# Loop through form fields #}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }} {# Renders the input widget #}
+                {% if field.help_text %}
+                  <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+                {# Display field-specific errors #}
+                {% for error in field.errors %}
+                  <div class="alert alert-error field-error">{{ error }}</div> {# Style .field-error appropriately #}
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <button type="submit">Sign Up</button>
+        </form>
+        <div class="form-links">
+            <a href="{% url 'login' %}" class="signup-link">Already have an account? Sign In</a>
+            {# <a href="#" class="forgot-password">Forgot password?</a> #}
+        </div>
+        {# Social login removed for brevity, add back if needed #}
+    </div>
+{% endblock %}

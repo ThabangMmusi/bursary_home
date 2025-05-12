@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% block page_title_auth %}Authentication{% endblock %}{% endblock %}
+{# body_class will be set by child templates: login-page or profile-page #}
+
+{% block content %}
+    {# Page-specific decorations if any, controlled by body_class #}
+    {% block page_decorations %}{% endblock %}
+
+    <div class="two-column-layout-container">
+        <div class="left-column">
+            {% block left_column_content %}
+                {# Default content or placeholder #}
+                {% include 'logo_component.html' %}
+                <img src="{% static 'images/default_auth_image.png' %}" alt="Illustration" class="decorative-image">
+            {% endblock left_column_content %}
+        </div>
+
+        <div class="right-column {% block right_column_classes %}{% endblock %}">
+            <div class="form-wrapper {% block form_wrapper_classes %}{% endblock %}">
+                {% block form_area %}
+                    {# Form title and content will go here #}
+                    <h1 class="auth-form-title">{% block form_title %}Form Title{% endblock %}</h1>
+                    {% block form_content_auth %}
+                        <p>Form fields go here.</p>
+                    {% endblock form_content_auth %}
+                {% endblock form_area %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

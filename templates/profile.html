@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Bursary Home - Complete Profile{% endblock %}
+
+{% block body_class %}login-page{% endblock %} {# Uses same body class as login for consistent layout #}
+
+{% block page_container_class %}login-page{% endblock %} {# Uses same container class as login #}
+
+{% block content %}
+<div class="books-decoration"></div>
+
+{# Left Content Area - Now includes Logo #}
+<div class="login-content">
+    {% include 'logo_component.html' %} {# Added logo component HERE #}
+    <img src="{% static 'images/students.png' %}" alt="Students" class="students-image"> {# Keeps the image #}
+</div>
+
+{# Right Content Area - The Form #}
+<div class="login-form"> {# Using login-form class as the container for the profile form #}
+    <h1>Complete Profile</h1>
+    <form method="post" enctype="multipart/form-data"> {# Added enctype for file uploads #}
+        {% csrf_token %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'success' %}fa-check-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %}"></i> {# Added icons to alerts #}
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="form-section">
+            <h3><i class="fas fa-id-card"></i> Academic Documents</h3>
+            {# Academic Records Upload - UPDATED STRUCTURE #}
+            <div class="file-upload required-upload">
+                <label for="academic_records">
+                    <i class="fas fa-file-invoice original-icon"></i> {# Added class #}
+                    <span class="original-text">Academic Records</span> {# Wrapped text #}
+                    <span class="required-badge">Required</span>
+                    <span class="file-hint">(PDF, max 5MB)</span>
+                    {# Added hidden status span #}
+                    <span class="selected-status">
+                        <i class="fas fa-check"></i> File Selected
+                    </span>
+                </label>
+                <input type="file" id="academic_records" name="academic_records" accept=".pdf" required class="file-input-field"> {# Added class for JS targeting #}
+            </div>
+
+            {# Proof of Registration Upload - UPDATED STRUCTURE #}
+            <div class="file-upload required-upload">
+                <label for="proof_of_registration">
+                    <i class="fas fa-university original-icon"></i> {# Added class #}
+                    <span class="original-text">Proof of Registration</span> {# Wrapped text #}
+                    <span class="required-badge">Required</span>
+                    <span class="file-hint">(PDF, max 5MB)</span>
+                    {# Added hidden status span #}
+                    <span class="selected-status">
+                        <i class="fas fa-check"></i> File Selected
+                    </span>
+                </label>
+                <input type="file" id="proof_of_registration" name="proof_of_registration" accept=".pdf" required class="file-input-field"> {# Added class for JS targeting #}
+            </div>
+        </div>
+
+        <div class="upload-info">
+            <i class="fas fa-info-circle"></i>
+            <span>Our AI will analyze your documents to extract relevant information. You'll be able to review and
+                adjust it before finalizing your profile.</span>
+        </div>
+
+        {# Added hidden progress spinner container - needed by previous CSS/JS #}
+        <div class="upload-progress hidden">
+            <div class="progress-indicator">
+                <div class="spinner"></div>
+                <span>Processing...</span>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-button">
+            <i class="fas fa-robot"></i> Upload & Extract Profile Information
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // --- File Upload State Handling ---
+    const fileInputs = document.querySelectorAll('.file-input-field'); // Target inputs by class
+
+    fileInputs.forEach(input => {
+        input.addEventListener('change', function(event) {
+            const label = event.target.previousElementSibling; // Get the label associated with this input
+            if (label && label.tagName === 'LABEL') {
+                if (event.target.files.length > 0) {
+                    label.classList.add('file-selected');
+                    // Optional: Display filename if needed
+                    // const fileName = event.target.files[0].name;
+                    // const selectedStatusSpan = label.querySelector('.selected-status');
+                    // if (selectedStatusSpan) {
+                    //    selectedStatusSpan.innerHTML = `<i class="fas fa-check"></i> ${fileName}`; // Show filename
+                    // }
+                } else {
+                    label.classList.remove('file-selected');
+                     // Optional: Reset status text if filename was shown
+                    // const selectedStatusSpan = label.querySelector('.selected-status');
+                    // if (selectedStatusSpan) {
+                    //     selectedStatusSpan.innerHTML = `<i class="fas fa-check"></i> File Selected`; // Reset to generic
+                    // }
+                }
+            }
+        });
+
+        // --- Initialize state on page load in case of back/forward navigation ---
+        if (input.files.length > 0) {
+             const label = input.previousElementSibling;
+             if (label && label.tagName === 'LABEL') {
+                 label.classList.add('file-selected');
+             }
+        }
+        // --- End Initialize state ---
+    });
+
+    // --- Form Submission Handling (from previous script) ---
+    const form = document.querySelector('form'); // Target the form directly
+    const progress = document.querySelector('.upload-progress');
+    const submitButton = form.querySelector('button[type="submit"]');
+
+    // Style for highlighting input errors (add this to your CSS if you keep the highlight feature)
+    /*
+    .input-error-highlight {
+        border-color: var(--error-color) !important;
+        background-color: #fee2e2 !important;
+    }
+    */
+
+    if (form && progress && submitButton) {
+        form.addEventListener('submit', function (e) {
+
+            // Basic client-side validation
+            const proofOfRegistrationInput = document.getElementById('proof_of_registration');
+            const academicRecordsInput = document.getElementById('academic_records');
+            const proofLabel = proofOfRegistrationInput.previousElementSibling;
+            const academicLabel = academicRecordsInput.previousElementSibling;
+            let validationPassed = true;
+            let alertMessage = "Please upload all required documents:\n";
+
+            // Clear previous highlights
+            proofLabel?.classList.remove('input-error-highlight');
+            academicLabel?.classList.remove('input-error-highlight');
+
+            if (proofOfRegistrationInput.files.length === 0) {
+                 alertMessage += "- Proof of Registration\n";
+                 validationPassed = false;
+                 proofLabel?.classList.add('input-error-highlight'); // Highlight the label
+            }
+
+            if (academicRecordsInput.files.length === 0) {
+                 alertMessage += "- Academic Records\n";
+                 validationPassed = false;
+                 academicLabel?.classList.add('input-error-highlight'); // Highlight the label
+            }
+
+
+            if (!validationPassed) {
+                e.preventDefault(); // Stop submission if validation fails
+                alert(alertMessage.trim());
+                return;
+            }
+
+            // If validation passes, show loading indicator
+            progress.classList.remove('hidden');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+            // --- IMPORTANT DECISION ---
+            // Choose ONE of the following options:
+
+            // // Option 1: Simulate delay & redirect (DOES NOT SUBMIT FILES)
+            // e.preventDefault(); // Prevent the actual submission for the redirect simulation
+            // setTimeout(function() {
+            //     window.location.href = "{% url 'dashboard' %}"; // Replace with actual success URL
+            // }, 1500);
+
+            // Option 2: Allow normal form submission (SUBMITS FILES TO BACKEND)
+            // No e.preventDefault() here. Backend needs to handle the POST request with files.
+            // The spinner shows briefly until the backend responds and redirects.
+            // Remove Option 1 code if using this.
+
+            // // Option 3: AJAX Submission (Complex, best UX, SUBMITS FILES VIA JS)
+            // e.preventDefault();
+            // const formData = new FormData(form);
+            // fetch(form.action, { // Or specify your upload URL
+            //     method: 'POST',
+            //     body: formData,
+            //     headers: {
+            //         'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+            //         // Add other headers if needed, but usually not for FormData
+            //     }
+            // })
+            // .then(response => response.json()) // Or handle based on backend response type
+            // .then(data => {
+            //     console.log('Success:', data);
+            //     // Hide progress, enable button, show success message, THEN redirect
+            //     progress.classList.add('hidden');
+            //     submitButton.disabled = false;
+            //     submitButton.innerHTML = '<i class="fas fa-robot"></i> Upload & Extract Profile Information';
+            //     // alert('Upload successful!'); // Or use a nicer notification
+            //     window.location.href = "{% url 'dashboard' %}"; // Redirect on success
+            // })
+            // .catch((error) => {
+            //     console.error('Error:', error);
+            //     // Hide progress, enable button, show error message
+            //     progress.classList.add('hidden');
+            //     submitButton.disabled = false;
+            //     submitButton.innerHTML = '<i class="fas fa-robot"></i> Upload & Extract Profile Information';
+            //     alert('An error occurred during upload.');
+            // });
+
+            // By default, this template will now allow normal form submission (Option 2)
+            // unless you uncomment Option 1 or Option 3.
+
+        });
+    } else {
+        console.error("Form, progress indicator, or submit button not found.");
+    }
+});
+</script>
+{% endblock %}

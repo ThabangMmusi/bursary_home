@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Bursary Home - Dashboard{% endblock %}
+
+{% block body_class %}dashboard-page{% endblock %}
+
+{% block page_container_class %}dashboard{% endblock %}
+
+{% block content %}
+    {# books-decoration is hidden by CSS for .dashboard anyway #}
+    {# <div class="books-decoration"></div> #}
+
+    <aside class="sidebar">
+        {# Replaced H2 with the logo component #}
+        {% include 'logo_component.html' %}
+
+        <div class="sidebar-menu">
+            <ul>
+                <li class="active"><i class="fas fa-chart-line"></i> Dashboard</li>
+                <li><i class="fas fa-file-alt"></i> Applications</li>
+                <li><i class="fas fa-user"></i> Profile</li>
+                <li><i class="fas fa-cog"></i> Settings</li>
+                <li><a href="{% url 'logout' %}" style="color: inherit; text-decoration: none;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </aside>
+    <main class="content">
+        <header class="top-header">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search bursaries, applications...">
+            </div>
+            <div class="profile-section">
+                <span>Welcome, {{ user.username }}!</span>
+                {# Consider making this dynamic or a placeholder if user details are available #}
+                <img src="{% static 'images/boy white.png' %}" alt="User Profile">
+            </div>
+        </header>
+
+        <section class="header">
+            <div class="header-content">
+                <div class="header-top">
+                    <span class="date">{{ current_date|date:"F j, Y" }}</span>
+                    {% if user_status == "Verified" %}
+                        <span class="status-label verified"><i class="fas fa-check-circle"></i> Verified</span>
+                    {% elif user_status == "Pending" %}
+                        <span class="status-label pending"><i class="fas fa-exclamation-circle"></i> Pending Verification</span>
+                    {% else %}
+                        <span class="status-label unverified"><i class="fas fa-times-circle"></i> Profile Incomplete</span>
+                    {% endif %}
+                </div>
+                <div class="header-text">
+                        <h2>Welcome back,<br>{{ user.username }}!</h2>
+                        {# This count should ideally come from the view context #}
+                        <p>You have 8 available bursaries matching your profile</p>
+                </div>
+            </div>
+            <div class="header-image">
+                 {# Make sure this image path is correct #}
+                <img src="{% static 'images/boy white.png' %}" alt="Student illustration">
+            </div>
+        </section>
+
+      <section class="bursaries">
+                <div class="bursaries-header">
+                    <h2>Available Bursaries</h2>
+                    <a href="#">See all</a>
+                </div>
+                {# Check if bursaries exist before looping #}
+                {% if bursaries %}
+                <div class="bursaries-grid">
+                    {% for bursary in bursaries %}
+                    {# Added example data attributes for modal - replace with actual data #}
+                    <div class="bursary-card"
+                         data-bursary-id="{{ bursary.id }}"
+                         data-title="{{ bursary.name }}"
+                         data-provider="Example Provider Inc." {# Replace with actual data #}
+                         data-field="{{ bursary.field_of_study }}"
+                         data-gpa="3.5+" {# Replace with actual data #}
+                         data-deadline="{{ bursary.deadline|date:"d M Y" }}">
+                        <h3>{{ bursary.name }}</h3>
+                        <p class="available">Provider: Example Provider Inc.</p> {# Example provider #}
+                        <p class="deadline">Deadline: {{ bursary.deadline|date:"d M Y" }}</p>
+                        <div class="progress-bar">
+                             {# Example static progress - make dynamic in view/JS #}
+                            <div class="progress-bar-fill" style="width: 95%;"></div>
+                        </div>
+                        <p class="match">Match: 95%</p> {# Example match % - make dynamic #}
+                        <span class="tag">{{ bursary.field_of_study }}</span>
+                        <button class="apply-btn">Apply Now</button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                    <p>No bursaries available at the moment.</p> {# Message when no bursaries #}
+                {% endif %}
+            </section>
+
+        <!-- Modal for Bursary Application -->
+        <div class="modal-overlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 id="modal-title">Bursary Application</h2>
+                    <button class="modal-close" aria-label="Close modal"><i class="fas fa-times"></i></button> {# Added aria-label #}
+                </div>
+                <div class="modal-content">
+                    <div class="detail-row">
+                        <strong>Provider:</strong>
+                        <span id="modal-provider"></span>
+                    </div>
+                    <div class="detail-row">
+                        <strong>Field of Study:</strong>
+                        <span id="modal-field"></span>
+                    </div>
+                    <div class="detail-row">
+                        <strong>GPA Requirement:</strong>
+                        <span id="modal-gpa"></span>
+                    </div>
+                    <div class="detail-row">
+                        <strong>Deadline:</strong>
+                        <span id="modal-deadline"></span>
+                    </div>
+                     {# Add more details here if needed #}
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="cancel">Cancel</button> {# Use type="button" #}
+                    <button type="button" class="confirm">Confirm Application</button> {# Use type="button" #}
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Dialog -->
+        <div class="success-dialog-overlay">
+            <div class="success-dialog">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Success!</h3>
+                <p>Application submitted successfully!</p>
+                 {# Optional: Add a close button to the success dialog #}
+                 <button type="button" class="success-dialog-close">OK</button>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalOverlay = document.querySelector('.modal-overlay');
+        const modal = document.querySelector('.modal');
+        const closeBtn = document.querySelector('.modal-close');
+        const cancelBtn = document.querySelector('.modal-actions .cancel');
+        const confirmBtn = document.querySelector('.modal-actions .confirm');
+        const applyButtons = document.querySelectorAll('.apply-btn');
+        const successDialogOverlay = document.querySelector('.success-dialog-overlay');
+        const successDialogCloseBtn = document.querySelector('.success-dialog-close'); // Added close button selector
+
+        // --- Modal Functions ---
+        function showModal(bursaryData) {
+            // ... (keep existing showModal code) ...
+             if (!modalOverlay || !modal) return; // Ensure elements exist
+
+            document.getElementById('modal-title').textContent = bursaryData.title || 'Bursary Application';
+            document.getElementById('modal-provider').textContent = bursaryData.provider || 'N/A';
+            document.getElementById('modal-field').textContent = bursaryData.field_of_study || 'N/A';
+            document.getElementById('modal-gpa').textContent = bursaryData.gpa_requirement || 'N/A';
+            document.getElementById('modal-deadline').textContent = bursaryData.deadline || 'N/A';
+            modalOverlay.classList.add('active');
+            modal.querySelector('button, a, input, select, textarea')?.focus(); // Focus first focusable element in modal
+        }
+
+        function hideModal() {
+            // ... (keep existing hideModal code) ...
+             if (!modalOverlay) return;
+            modalOverlay.classList.remove('active');
+        }
+
+        // --- Success Dialog Functions ---
+        function showSuccessDialog() {
+            if (successDialogOverlay) {
+                successDialogOverlay.classList.add('active');
+                 // **Re-enabled auto-hide after 3 seconds**
+                setTimeout(() => {
+                    hideSuccessDialog();
+                }, 3000); // Hide after 3 seconds
+            }
+        }
+
+         function hideSuccessDialog() {
+            if (successDialogOverlay) {
+                successDialogOverlay.classList.remove('active');
+            }
+        }
+
+        // --- Event Listeners ---
+        applyButtons.forEach(button => {
+             // ... (keep existing applyButtons listener code) ...
+             button.addEventListener('click', function() {
+                const card = this.closest('.bursary-card');
+                if (!card) return;
+
+                // Get data from data attributes
+                const bursaryData = {
+                    title: card.dataset.title || card.querySelector('h3').textContent, // Fallback to h3
+                    provider: card.dataset.provider || 'N/A',
+                    field_of_study: card.dataset.field || card.querySelector('.tag').textContent, // Fallback to tag
+                    gpa_requirement: card.dataset.gpa || 'Varies',
+                    deadline: card.dataset.deadline || card.querySelector('.deadline').textContent.replace('Deadline: ','') // Fallback
+                };
+                showModal(bursaryData);
+            });
+        });
+
+        // Modal close listeners
+        if (closeBtn) closeBtn.addEventListener('click', hideModal);
+        if (cancelBtn) cancelBtn.addEventListener('click', hideModal);
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    hideModal();
+                }
+            });
+        }
+
+        // Modal confirm listener
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', function() {
+                console.log('Application confirmed (simulation)');
+                hideModal();
+                setTimeout(() => {
+                    showSuccessDialog();
+                }, 150);
+            });
+        }
+
+        // Success dialog close button listener
+        if (successDialogCloseBtn) {
+            successDialogCloseBtn.addEventListener('click', hideSuccessDialog); // OK button closes immediately
+        }
+
+        // Keyboard accessibility listener
+        document.addEventListener('keydown', function(e) {
+             // ... (keep existing keyboard listener code) ...
+             if (e.key === 'Escape') {
+                if (modalOverlay?.classList.contains('active')) {
+                    hideModal();
+                }
+                if (successDialogOverlay?.classList.contains('active')) {
+                    hideSuccessDialog();
+                }
+            }
+        });
+
+    });
+</script>
+{% endblock %}

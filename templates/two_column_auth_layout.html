@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{# This block can be used by child templates to set a specific class on the body or a main wrapper #}
+{% block body_class_specific %}{% endblock %}
+
+{# This block defines the main container for the two-column layout #}
+{% block page_container_class %}two-column-layout-container {% block page_specific_class %}{% endblock %}{% endblock %}
+
+{% block content %}
+    {# Optional: Decorative elements like the floating books, can be overridden or removed by child #}
+    {% block page_decoration %}
+        <div class="books-decoration"></div>
+    {% endblock %}
+
+    {# Left Column: Typically for branding and a decorative image #}
+    <div class="left-column">
+        {% include 'logo_component.html' %}
+        {% block left_column_image %}
+            {# Default image, child templates can override this entire block #}
+            <img src="{% static 'images/students.png' %}" alt="Students Illustration" class="decorative-image">
+        {% endblock %}
+    </div>
+
+    {# Right Column: Typically for forms or main interactive content #}
+    <div class="right-column {% block right_column_extra_class %}{% endblock %}">
+        {% block right_column_content %}
+            {# Child templates will fill this block with their specific content (login form, profile form, etc.) #}
+        {% endblock %}
+    </div>
+{% endblock %}
