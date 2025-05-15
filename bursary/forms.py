@@ -35,6 +35,6 @@ class CustomAuthenticationForm(AuthenticationForm):
     """
     username = forms.CharField(widget=forms.TextInput(
         attrs={'autofocus': True,
-               'placeholder':'Username',
+               'placeholder':'thabangmmusi',
                'help_text':"Required. A valid email address is needed.",}))
-    password = forms.CharField(strip=False, widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'autocomplete': 'current-password'}))
+    password = forms.CharField(strip=False, widget=forms.PasswordInput(attrs={'placeholder': '••••••••••••', 'autocomplete': 'current-password'}))

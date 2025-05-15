@@ -315,7 +315,7 @@ def profile_view(request):
         # Then, populate the student model with the extracted_data.
 
         # Simulate data extraction (replace with actual AI call)
-        if student.id_document and student.academic_records:
+        if student.proof_of_registration and student.academic_records:
             student.extracted_full_name = f"{request.user.first_name} {request.user.last_name}" if request.user.first_name else request.user.username
             student.extracted_id_number = "ID123456789" # Placeholder
             student.extracted_date_of_birth = student.date_of_birth if student.date_of_birth else timezone.now().date() - timezone.timedelta(days=365*20) # Placeholder
