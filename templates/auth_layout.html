@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'auth_base.html' %}
 {% load static %}
 
 {% block title %}{% block page_title_auth %}Authentication{% endblock %}{% endblock %}
@@ -12,7 +12,7 @@
         <div class="left-column">
             {% block left_column_content %}
                 {# Default content or placeholder #}
-                {% include 'logo_component.html' %}
+                {% include 'components/logo_component.html' %}
                 <img src="{% static 'images/default_auth_image.png' %}" alt="Illustration" class="decorative-image">
             {% endblock left_column_content %}
         </div>

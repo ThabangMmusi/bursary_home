@@ -195,109 +195,72 @@ def dashboard(request):
     return render(request, 'dashboard.html', {
         'bursaries': bursaries, 
         'user_status': user_status,
-        'current_date': current_date
+        'current_date': current_date,
+        'current_page': 'dashboard'
     })
 
-# def login_view(request):
-#     # if request.user.is_authenticated:
-#     #     return redirect('dashboard')
-
-#     if request.method == 'POST':
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-        
-#         if username and password:
-#             user = authenticate(request, username=username, password=password)
-#             if user is not None:
-#                 if user.is_active:
-#                     login(request, user)
-#                     # Check if profile exists
-#                     try:
-#                         student = Student.objects.get(user=user)
-#                         # Check if profile is complete before redirecting to dashboard or next_url
-#                         if not student.is_profile_complete():
-#                             messages.info(request, "Please complete your profile before proceeding.")
-#                             return redirect('profile') 
-                        
-#                         next_url = request.GET.get('next', 'dashboard')
-#                         return redirect(next_url)
-#                     except Student.DoesNotExist:
-#                         # If student profile doesn't exist, create one and redirect to profile page
-#                         Student.objects.create(user=user) # Create a basic student profile
-#                         messages.info(request, "Welcome! Please complete your profile.")
-#                         return redirect('profile')
-#                 else:
-#                     messages.error(request, 'Your account is not active.')
-#             else:
-#                 messages.error(request, 'Invalid username or password.')
-#         else:
-#             messages.error(request, 'Please fill in both username and password.')
-    
-#     return render(request, 'login.html', {'next': request.GET.get('next', '')})
-
 @login_required
-def profile_completion(request):
-    try:
-        student = Student.objects.get(user=request.user)
-        is_update = True
-    except Student.DoesNotExist:
-        student = None
-        is_update = False
-
-    if request.method == 'POST':
-        # Get form data
-        student_data = {
-            'student_number': request.POST.get('studentNumber'),
-            'date_of_birth': request.POST.get('dateOfBirth'),
-            'current_institution': request.POST.get('currentInstitution'),
-            'study_program': request.POST.get('studyProgram'),
-            'academic_year': request.POST.get('academicYear'),
-            'average_grade': request.POST.get('averageGrade'),
-            'contact_number': request.POST.get('contactNumber'),
-        }
-
-        # Update user information
-        request.user.first_name = request.POST.get('firstName')
-        request.user.last_name = request.POST.get('lastName')
-        request.user.save()
-
-        if student:
-            # Update existing student
-            for key, value in student_data.items():
-                setattr(student, key, value)
-        else:
-            # Create new student
-            student = Student(user=request.user, **student_data)
-
-        # Handle file uploads
-        if 'academicRecords' in request.FILES:
-            student.academic_records = request.FILES['academicRecords']
-        if 'financialDocuments' in request.FILES:
-            student.financial_documents = request.FILES['financialDocuments']
-
-        student.save()
-        messages.success(request, 'Profile updated successfully!')
-        return redirect('dashboard')
-
-    context = {
-        'student': student,
-        'is_update': is_update
-    }
-    return render(request, 'profile.html', context)
+def applications_view(request):
+    # Dummy application data with statuses
+    applications = [
+        {
+            'id': 1,
+            'name': 'Engineering Excellence Scholarship',
+            'provider': 'Tech Solutions Inc.',
+            'field_of_study': 'Engineering',
+            'gpa_requirement': '3.5+',
+            'deadline': timezone.now().date() + timezone.timedelta(days=10),
+            'status': 'Pending',
+            'progress': 70,
+        },
+        {
+            'id': 2,
+            'name': 'Computer Science Future Leaders',
+            'provider': 'Global Innovations',
+            'field_of_study': 'Computer Science',
+            'gpa_requirement': '3.0+',
+            'deadline': timezone.now().date() + timezone.timedelta(days=5),
+            'status': 'Approved',
+            'progress': 100,
+        },
+        {
+            'id': 3,
+            'name': 'Business Innovation Grant',
+            'provider': 'Enterprise Fund',
+            'field_of_study': 'Business',
+            'gpa_requirement': '3.2+',
+            'deadline': timezone.now().date() - timezone.timedelta(days=2),
+            'status': 'Rejected',
+            'progress': 40,
+        },
+        {
+            'id': 4,
+            'name': 'Medical Sciences Excellence',
+            'provider': 'Health Foundation',
+            'field_of_study': 'Medical Sciences',
+            'gpa_requirement': '3.8+',
+            'deadline': timezone.now().date() + timezone.timedelta(days=20),
+            'status': 'Pending',
+            'progress': 85,
+        },
+    ]
+    return render(request, 'applications.html', {'current_page': 'applications', 'applications': applications})
 
 @login_required
 def profile_view(request):
+    return render(request, 'profile.html', {'current_page': 'profile'})
+
+@login_required
+@profile_complete_required
+def complete_profile_view(request):
     try:
         student = request.user.student
     except Student.DoesNotExist:
-        # If for some reason a student object wasn't created at login/signup
         student = Student.objects.create(user=request.user)
 
     if request.method == 'POST':
-        # Simulate AI processing delay
-        time.sleep(2) 
+        time.sleep(2)
 
-        # Handle file uploads
         if request.FILES.get('id_document'):
             student.id_document = request.FILES['id_document']
         if request.FILES.get('academic_records'):
@@ -307,23 +270,16 @@ def profile_view(request):
         if request.FILES.get('financial_documents'):
             student.financial_documents = request.FILES['financial_documents']
         
-        student.save() # Save files first
+        student.save()
 
-        # --- Placeholder for "gimin" AI processing --- 
-        # In a real application, you would send the file paths or content to an AI service here.
-        # For example: extracted_data = call_gimin_ai_service(student.id_document.path, student.academic_records.path)
-        # Then, populate the student model with the extracted_data.
-
-        # Simulate data extraction (replace with actual AI call)
         if student.proof_of_registration and student.academic_records:
             student.extracted_full_name = f"{request.user.first_name} {request.user.last_name}" if request.user.first_name else request.user.username
-            student.extracted_id_number = "ID123456789" # Placeholder
-            student.extracted_date_of_birth = student.date_of_birth if student.date_of_birth else timezone.now().date() - timezone.timedelta(days=365*20) # Placeholder
-            student.extracted_previous_institution = "Sample University" # Placeholder
-            student.extracted_grades_summary = "Achieved good grades in Math and Science." # Placeholder
-            student.profile_status = "Pending AI" # Or "Pending Verification" if AI is synchronous and successful
+            student.extracted_id_number = "ID123456789"
+            student.extracted_date_of_birth = student.date_of_birth if student.date_of_birth else timezone.now().date() - timezone.timedelta(days=365*20)
+            student.extracted_previous_institution = "Sample University"
+            student.extracted_grades_summary = "Achieved good grades in Math and Science."
+            student.profile_status = "Pending AI"
             
-            # For demonstration, let's assume some basic fields are also set via a form or AI
             student.student_number = student.student_number or "SN00001"
             student.date_of_birth = student.date_of_birth or (timezone.now().date() - timezone.timedelta(days=365*20))
             student.current_institution = student.current_institution or "Current University"
@@ -334,18 +290,67 @@ def profile_view(request):
             
             student.save()
             messages.success(request, "Documents uploaded! Our AI is processing them. You will be redirected to review.")
-            # In a real scenario, you might redirect to a specific review page or the dashboard if is_profile_complete() is now true.
             if student.is_profile_complete():
-                return redirect('dashboard') # Or a review page first
+                return redirect('dashboard')
             else:
-                # If still not complete (e.g. AI needs more info or manual review)
                 messages.info(request, "Profile updated, but some information might still be pending AI processing or requires review.")
         else:
             messages.error(request, "Please upload the required ID and Academic documents.")
         
-        return redirect('profile') # Stay on profile page to show messages or if not yet complete
+        return redirect('complete-profile')
 
-    return render(request, 'profile.html', {'student': student})
+    return render(request, 'complete_profile.html', {'student': student})
+
+@login_required
+@profile_complete_required
+def complete_profile_view(request):
+    try:
+        student = request.user.student
+    except Student.DoesNotExist:
+        student = Student.objects.create(user=request.user)
+
+    if request.method == 'POST':
+        time.sleep(2)
+
+        if request.FILES.get('id_document'):
+            student.id_document = request.FILES['id_document']
+        if request.FILES.get('academic_records'):
+            student.academic_records = request.FILES['academic_records']
+        if request.FILES.get('proof_of_registration'):
+            student.proof_of_registration = request.FILES['proof_of_registration']
+        if request.FILES.get('financial_documents'):
+            student.financial_documents = request.FILES['financial_documents']
+        
+        student.save()
+
+        if student.proof_of_registration and student.academic_records:
+            student.extracted_full_name = f"{request.user.first_name} {request.user.last_name}" if request.user.first_name else request.user.username
+            student.extracted_id_number = "ID123456789"
+            student.extracted_date_of_birth = student.date_of_birth if student.date_of_birth else timezone.now().date() - timezone.timedelta(days=365*20)
+            student.extracted_previous_institution = "Sample University"
+            student.extracted_grades_summary = "Achieved good grades in Math and Science."
+            student.profile_status = "Pending AI"
+            
+            student.student_number = student.student_number or "SN00001"
+            student.date_of_birth = student.date_of_birth or (timezone.now().date() - timezone.timedelta(days=365*20))
+            student.current_institution = student.current_institution or "Current University"
+            student.study_program = student.study_program or "Computer Science"
+            student.academic_year = student.academic_year or 1
+            student.average_grade = student.average_grade or 75.0
+            student.contact_number = student.contact_number or "0123456789"
+            
+            student.save()
+            messages.success(request, "Documents uploaded! Our AI is processing them. You will be redirected to review.")
+            if student.is_profile_complete():
+                return redirect('dashboard')
+            else:
+                messages.info(request, "Profile updated, but some information might still be pending AI processing or requires review.")
+        else:
+            messages.error(request, "Please upload the required ID and Academic documents.")
+        
+        return redirect('complete-profile')
+
+    return render(request, 'complete_profile.html', {'student': student})
 
 def logout_view(request):
     logout(request)

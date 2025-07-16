@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'auth_base.html' %}
 {% load static %}
 {% block title %}Bursary Home - Login{% endblock %}
 {% block body_class %}login-page{% endblock %}
@@ -7,10 +7,10 @@
 {% block content %}
 <div class="books-decoration"></div>
 <div class="login-content">
-    {% include 'logo_component.html' %}
+    {% include 'components/logo_component.html' %}
     <img src="{% static 'images/students.png' %}" alt="Students" class="students-image">
 </div>
-<div class="login-form">
+<div class="base-form auth-form">
     <h1>Welcome back</h1>
     <form method="post" novalidate>
         {% csrf_token %}
@@ -66,11 +66,11 @@
     </div>
     <div class="social-login">
         <button class="social-login-btn google">
-            <i class="fab fa-google"></i>
+            <ion-icon name="logo-google"></ion-icon>
             Google
         </button>
         <button class="social-login-btn microsoft">
-            <i class="fab fa-microsoft"></i>
+            <ion-icon name="logo-microsoft"></ion-icon>
             Microsoft
         </button>
     </div>

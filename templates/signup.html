@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'auth_base.html' %}
 {% load static %}
 {% block title %}Bursary Home - Sign Up{% endblock %}
 {% block body_class %}login-page{% endblock %}
@@ -10,7 +10,7 @@
         {% include 'logo_component.html' %}
         <img src="{% static 'images/students.png' %}" alt="Students" class="students-image">
     </div>
-    <div class="login-form">
+    <div class="base-form auth-form">
         <h1>Create Account</h1>
         <form method="post" novalidate>
             {% csrf_token %}
@@ -53,8 +53,19 @@
         </form>
         <div class="form-links">
             <a href="{% url 'login' %}" class="signup-link">Already have an account? Sign In</a>
-            {# <a href="#" class="forgot-password">Forgot password?</a> #}
         </div>
-        {# Social login removed for brevity, add back if needed #}
+        <div class="social-login-divider">
+            <span>Or continue with</span>
+        </div>
+        <div class="social-login">
+            <button class="social-login-btn google">
+                <ion-icon name="logo-google"></ion-icon>
+                Google
+            </button>
+            <button class="social-login-btn microsoft">
+                <ion-icon name="logo-microsoft"></ion-icon>
+                Microsoft
+            </button>
+        </div>
     </div>
 {% endblock %}

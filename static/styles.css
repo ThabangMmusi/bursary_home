@@ -140,16 +140,24 @@ body::after {
     margin: 0 auto;
     margin-top: 5rem;
 }
-
+.form-title {
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
 /* Login Form Specific Styles (also used as container in profile.html) */
-/* Used by div.login-form in login.html and profile.html */
-.login-form {
-    width: 420px;
+/* Base form style (no max-width) */
+.base-form {
     background: var(--white);
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin: auto 10%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -157,13 +165,26 @@ body::after {
     z-index: 20;
 }
 
-/* Used by h1 inside div.login-form in login.html and profile.html */
-.login-form h1 {
+/* Specific authentication form style (inherits from base-form and adds max-width) */
+.auth-form {
+    width: 420px;
+    padding: 1rem 2rem 1rem 2rem;
+    margin: auto 10%;
+}
+
+.profile-form {
+    width: 520px;
+    padding: 1rem 2rem 1rem 2rem;
+    margin: auto 10% auto 0;
+}
+
+/* Used by h1 inside div.base-form in login.html and profile.html */
+/* .base-form h1 {
     font-size: 1.5rem;
     color: var(--text-dark);
     margin-bottom: 1.5rem;
     text-align: center;
-}
+} */
 
 /* Form Group (Used by Login) */
 /* Used by div.form-group in login.html */
@@ -190,7 +211,7 @@ body::after {
 
 /* Login Form Specific Button */
 /* Used by button[type="submit"] in login.html's form */
-.login-form button[type="submit"] {
+.base-form button[type="submit"] {
     width: 100%;
     padding: 8px 12px;
     background-color: var(--primary-color);
@@ -203,7 +224,7 @@ body::after {
     transition: background-color 0.3s ease;
 }
 
-.login-form button[type="submit"]:hover {
+.base-form button[type="submit"]:hover {
     background-color: #005446;
 }
 
@@ -339,7 +360,7 @@ body::after {
     margin: 0;
 }
 
-.sidebar-menu li { /* Targets li inside sidebar menu */
+.sidebar-menu li {
     margin-bottom: 0.3rem;
     padding: 0.5rem 0.8rem;
     border-radius: 8px;
@@ -350,31 +371,34 @@ body::after {
     gap: 10px;
 }
 
-.sidebar-menu li:last-child { /* Targets last li (Logout) */
+.sidebar-menu li:not(.active) {
+    background-color: transparent;
+    color: var(--text-dark);
+}
+
+.sidebar-menu li:not(.active) a {
+    color: var(--text-dark);
+}
+
+.sidebar-menu li:not(.active) i {
+    color: var(--primary-color);
+}
+
+.sidebar-menu li:last-child {
     margin-bottom: 0;
 }
 
-.sidebar-menu li i { /* Targets i icons inside sidebar menu items */
-    width: 20px;
-    text-align: center;
-    color: var(--primary-color);
-    font-size: 1.1rem;
-    transition: color 0.3s ease;
-}
-
-.sidebar-menu li:hover { /* Hover effect for menu items */
+.sidebar-menu li:hover {
     background-color: rgba(0, 109, 91, 0.1);
 }
 
-/* Style active/first item like active by default */
-.sidebar-menu li.active,
-.sidebar-menu li:first-child {
+/* Style active item */
+.sidebar-menu li.active {
     background-color: var(--primary-color);
     color: var(--white);
 }
 
-.sidebar-menu li.active i,
-.sidebar-menu li:first-child i {
+.sidebar-menu li.active i {
     color: var(--white);
 }
 
@@ -429,7 +453,37 @@ body::after {
     gap: 1rem;
 }
 
-.profile-section img { /* Targets user image in profile section */
+.notification-wrapper {
+    background-color: var(--primary-color);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-bell {
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.profile-name {
+    font-weight: bold;
+}
+
+.profile-role {
+    color: #666;
+    font-size: 0.7rem;
+}
+
+.profile-image {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -446,7 +500,7 @@ body::after {
     position: relative;
     overflow: visible;
     min-height: 160px;
-    margin: 2rem 0 3rem 0;
+    margin: 1rem 0 3rem 0; /* Adjusted margin-top to 1rem */
     z-index: 1;
 }
 
@@ -472,20 +526,30 @@ body::after {
 /* Used by span.status-label in dashboard.html */
 .status-label {
     display: inline-block;
-    background-color: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(4px);
-    color: var(--white);
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
     font-size: 0.85rem;
     margin: 0;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid transparent; /* Default border */
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.75); /* Inner border, 1px thick and more opaque */
 }
 
 /* Specific status styles used in dashboard.html */
-.status-label.verified { /* Applied via template logic */ }
-.status-label.pending { /* Applied via template logic */ }
-.status-label.unverified { /* Applied via template logic */ }
+.status-label.verified {
+    background-color: var(--success-color);
+    color: var(--white);
+    border-color: transparent;
+}
+.status-label.pending {
+    background-color: #ffc107;
+    color: black;
+    border-color: transparent;
+}
+.status-label.unverified {
+    background-color: var(--error-color);
+    color: var(--white);
+    border-color: transparent;
+}
 
 /* Used by div.header-content in dashboard.html */
 .header-content {
@@ -505,16 +569,16 @@ body::after {
 .header-text p {
     font-size: 1rem;
     opacity: 0.9;
-    margin: 0.5rem 0 1.2rem 0;
+    margin: 0.5rem 0 0 0;
 }
 
 /* Used by div.header-image in dashboard.html */
 .header-image {
     position: absolute;
-    right: -1rem;
-    top: -5rem;
-    width: 45%;
-    height: calc(100% + 5rem);
+    right: 0;
+    top: 0; /* Align to the top of the header section */
+    width: 35%; /* Make it a bit narrower */
+    height: 100%; /* Confine it to the header section's height */
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
@@ -525,7 +589,7 @@ body::after {
 .header-image img { /* Targets img inside header image container */
     width: auto;
     height: 100%;
-    max-height: 300px;
+    max-height: 200px; /* Reduce the maximum height of the image */
     object-fit: contain;
     filter: contrast(1.1) brightness(1.05);
 }
@@ -576,8 +640,8 @@ body::after {
     transform: scale(0.98);
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    height: fit-content;
+    justify-content: space-between; /* This will push the button to the bottom */
+    height: 250px; /* Adjust this value as needed */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -647,25 +711,46 @@ body::after {
 /* Corrected selector based on HTML */
 .apply-btn {
     padding: 0.6rem 1rem;
-    background-color: var(--primary-color);
+    background-color: #023a31;
     color: var(--white);
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 0.9rem;
-    opacity: 0;
-    height: 0;
-    margin: 0;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
     width: 100%;
-    pointer-events: none;
     margin-top: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.apply-btn:hover {
+    background-color: #012a23;
+}
+
+.cancel-btn {
+    background-color: #dc3545; /* Red for cancel */
+}
+
+.cancel-btn:hover {
+    background-color: #c82333;
+}
+
+.approved-btn {
+    background-color: var(--success-color); /* Green for approved */
+}
+
+.approved-btn:hover {
+    background-color: #138a3f;
+}
+
+.rejected-btn {
+    background-color: #6c757d; /* Gray for rejected */
+}
+
+.rejected-btn:hover {
+    background-color: #5a6268;
 }
 
 .bursary-card:hover .apply-btn { /* Show button on card hover */
-    opacity: 1;
-    height: 40px;
     transform: translateY(0);
     pointer-events: auto;
 }
@@ -710,6 +795,65 @@ body::after {
     border-radius: 20px;
     font-size: 0.8rem;
     margin-top: 1rem;
+}
+
+/* Confirmation Modal for Applications */
+.confirmation-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.confirmation-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.confirmation-modal {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px; /* Smaller width for confirmation */
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.confirmation-modal-overlay.active .confirmation-modal {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* Reusing existing modal styles for header, content, actions */
+.confirmation-modal .modal-header h2 {
+    font-size: 1.2rem;
+}
+
+.confirmation-modal .modal-content p {
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.confirmation-modal .modal-actions {
+    justify-content: center;
+}
+
+.confirmation-modal .modal-actions button {
+    min-width: 120px;
 }
 
 /* Modal styles (Dashboard) */
@@ -987,17 +1131,17 @@ body::after {
 }
 
 /* --- File upload styling for profile form --- */
-/* Applied within the .login-form container used by profile.html */
+/* Applied within the .base-form container used by profile.html */
 
 /* Used by div.file-upload in profile.html */
-.login-form .file-upload {
+.base-form .file-upload {
     background-color: var(--white);
     position: relative;
     margin-bottom: 1.5rem; /* Space below each upload block */
 }
 
 /* Base style for the visible label part (from user input) */
-.login-form .file-upload label {
+.base-form .file-upload label {
     display: flex;
     align-items: center;
     padding: 0.75rem;
@@ -1012,13 +1156,13 @@ body::after {
     overflow: hidden; /* Hide overflow */
 }
 
-.login-form .file-upload label:hover {
+.base-form .file-upload label:hover {
     border-color: var(--primary-color);
     background: rgba(3, 82, 70, 0.05);
 }
 
 /* Original Icon (e.g., fa-university) */
-.login-form .file-upload .original-icon {
+.base-form .file-upload .original-icon {
     color: var(--primary-color);
     margin-right: 0.5rem; /* Space after icon */
     flex-shrink: 0;
@@ -1026,13 +1170,13 @@ body::after {
 }
 
 /* Original Text (e.g., "Proof of Registration") */
-.login-form .file-upload .original-text {
+.base-form .file-upload .original-text {
     flex-grow: 1; /* Allow text to take available space */
     transition: opacity 0.2s ease;
 }
 
 /* File Hint (e.g., "(PDF, max 5MB)") */
-.login-form .file-hint {
+.base-form .file-hint {
     margin-left: auto; /* Push hint to the right */
     color: #666;
     font-size: 0.8rem;
@@ -1060,7 +1204,7 @@ body::after {
 }
 
 /* Hidden Status Text (e.g., "File Selected") */
-.login-form .file-upload .selected-status {
+.base-form .file-upload .selected-status {
     display: flex; /* Use flex to align icon and text */
     align-items: center;
     position: absolute; /* Position over the original content */
@@ -1077,52 +1221,44 @@ body::after {
     font-weight: 500;
 }
 
-.login-form .file-upload .selected-status i.fa-check {
+.base-form .file-upload .selected-status i.fa-check {
     color: var(--success-color); /* Green checkmark */
     margin-right: 0.5rem; /* Space after checkmark */
     font-size: 1rem; /* Adjust checkmark size if needed */
 }
 
 /* Styles when a file IS selected (JS adds .file-selected to label) */
-.login-form .file-upload label.file-selected {
+.base-form .file-upload label.file-selected {
     border-color: var(--success-color); /* Green border */
     border-style: solid; /* Solid border */
     background-color: rgba(22, 163, 74, 0.05); /* Optional light green background */
 }
 
-.login-form .file-upload label.file-selected .original-icon,
-.login-form .file-upload label.file-selected .original-text,
-.login-form .file-upload label.file-selected .file-hint,
-.login-form .file-upload label.file-selected .required-badge {
-    opacity: 0; /* Hide original elements */
-    pointer-events: none;
-}
-
-.login-form .file-upload label.file-selected .selected-status {
-    opacity: 1; /* Show selected status */
-    pointer-events: auto;
+.base-form .file-upload label.file-selected .original-text {
+    color: var(--success-color);
+    font-weight: bold;
 }
 
 /* Style required uploads differently (base state) */
-.login-form .required-upload label {
+.base-form .required-upload label {
     /* If not file-selected, apply these */
     border-color: var(--primary-color);
     border-style: solid;
     background: rgba(3, 82, 70, 0.05);
 }
-.login-form .required-upload label:hover {
+.base-form .required-upload label:hover {
      /* If not file-selected, apply these */
      background: rgba(3, 82, 70, 0.1);
 }
 /* If required AND selected, the .file-selected styles will override border color */
-.login-form .required-upload label.file-selected {
+.base-form .required-upload label.file-selected {
     border-color: var(--success-color); /* Ensure selected success border wins */
     background-color: rgba(22, 163, 74, 0.05); /* Ensure selected success bg wins */
 }
 
 
 /* Hide the actual file input element (remains the same) */
-.login-form .file-upload input[type="file"] {
+.base-form .file-upload input[type="file"] {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -1145,11 +1281,12 @@ body::after {
     margin-bottom: 1.5rem; /* Space below info box */
 }
 
-.upload-info i { /* Icon inside upload info */
+.upload-info ion-icon { /* Icon inside upload info */
     color: var(--primary-color);
-    font-size: 1.2rem;
+    font-size: 1.5rem; /* Increased size for Ionicons */
     margin-top: 0.1rem; /* Align icon slightly */
     flex-shrink: 0;
+    vertical-align: middle;
 }
 
 .upload-info span { /* Text inside upload info */
@@ -1201,8 +1338,8 @@ body::after {
 .alert-info i { color: #2563eb; }
 
 /* Upload Progress Spinner (Used by profile.html JS) */
-/* This applies when the spinner is active inside .login-form */
-.login-form .upload-progress {
+/* This applies when the spinner is active inside .base-form */
+.base-form .upload-progress {
     position: absolute;
     inset: 0; /* Cover the parent form */
     background: rgba(255, 255, 255, 0.92); /* Semi-transparent white overlay */
@@ -1215,24 +1352,25 @@ body::after {
 }
 
 /* Class added by JS to hide spinner */
-.login-form .upload-progress.hidden {
+.base-form .upload-progress.hidden {
     display: none;
 }
 
 /* Used by div inside upload-progress */
-.login-form .progress-indicator {
+.base-form .progress-indicator {
     text-align: center;
     color: var(--primary-color);
+    display: flex; /* Use flexbox for centering content */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Take full height of parent */
 }
 
-/* Used by div.spinner inside progress-indicator */
-.login-form .spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid rgba(3, 82, 70, 0.15); /* Light border */
-    border-top: 4px solid var(--primary-color); /* Primary color top border */
-    border-radius: 50%;
-    margin: 0 auto 1rem; /* Center spinner and space below */
+/* Used by ion-icon.spinner inside progress-indicator */
+.base-form .progress-indicator ion-icon.spinner {
+    font-size: 3rem; /* Make spinner icon larger */
+    margin-bottom: 1rem; /* Space below spinner */
     animation: spin 0.8s linear infinite; /* Apply spin animation */
 }
 
@@ -1273,7 +1411,7 @@ body::after {
         transform: none; /* Reset transform */
     }
 
-    .login-form { /* Login form container & Profile container */
+    .base-form { /* Login form container & Profile container */
         order: 2; /* Show form second */
         width: auto; /* Full width */
         max-width: 500px; /* Max width centered */
@@ -1315,7 +1453,7 @@ body::after {
      .login-content > .logo h2{ font-size: 1rem; }
      .students-image { max-width: 50%; max-height: 20vh; }
 
-    .login-form { /* Login/Profile form container on mobile */
+    .base-form { /* Login/Profile form container on mobile */
         width: auto; margin: 1rem; padding: 1.5rem;
     }
 
@@ -1324,13 +1462,13 @@ body::after {
     }
 
     /* Profile File Upload Mobile */
-    .login-form .file-upload label {
+    .base-form .file-upload label {
         padding: 0.75rem; /* Smaller padding */
         gap: 0.5rem; /* Less gap */
         flex-wrap: wrap; /* Allow wrapping */
         font-size: 0.85rem; /* Slightly smaller font on mobile */
     }
-    .login-form .file-hint {
+    .base-form .file-hint {
         font-size: 0.75rem; /* Smaller hint */
         margin-left: 0; /* Remove auto margin */
         flex-basis: 100%; /* Take full width below original text */
@@ -1346,16 +1484,16 @@ body::after {
         order: 2; /* Place badge after main text */
         margin-left: 0.5rem; /* Reset left margin if needed */
     }
-    .login-form .file-upload .original-text {
+    .base-form .file-upload .original-text {
         order: 1; /* Ensure text is first */
         flex-grow: 0; /* Don't let it grow excessively */
     }
-    .login-form .file-upload .original-icon {
+    .base-form .file-upload .original-icon {
         order: 0; /* Ensure icon is first */
     }
 
      /* Selected state on mobile */
-    .login-form .file-upload label.file-selected .selected-status {
+    .base-form .file-upload label.file-selected .selected-status {
          padding: 0.75rem; /* Match label padding */
          justify-content: flex-start; /* Align check/text left */
     }

@@ -1,90 +1,67 @@
-{% extends 'dashboard_base.html' %}
-{% block title %}Profile{% endblock %}
-{% block main_content %}
-    <h3 class="form-title">Student Profile</h3>
-    <div class="base-form">
+{% extends 'auth_base.html' %}
+{% load static %}
+{% block title %}Bursary Home - Complete Profile{% endblock %}
+{% block body_class %}login-page{% endblock %}
+{% block page_container_class %}login-page{% endblock %}
+{% block content %}
+<div class="books-decoration"></div>
+
+<div class="login-content">
+    {% include 'components/logo_component.html' %}
+    <img src="{% static 'images/students.png' %}" alt="Students" class="students-image">
+</div>
+
+<div class="base-form profile-form">
+    <h2 class="form-title">Complete Profile</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {% comment %} {% if messages %}
+        {% if messages %}
             {% for message in messages %}
             <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
                 <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'success' %}fa-check-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %}"></i>
                 {{ message }}
             </div>
             {% endfor %}
-        {% endif %} {% endcomment %}
+        {% endif %}
 
         <div class="form-section">
-            <h3><i class="fas fa-id-card"></i> Academic Documents</h3>
+            <h3><ion-icon name="id-card-outline"></ion-icon> Academic Documents</h3>
             <div class="file-upload required-upload">
                 <label for="academic_records">
-                    <i class="fas fa-file-invoice original-icon"></i>
+                    {% comment %} <ion-icon name="document-text-outline"></ion-icon> {% endcomment %}
                     <span class="original-text">Academic Records</span>
                     <span class="required-badge">Required</span>
                     <span class="file-hint">(PDF, max 5MB)</span>
-                    <span class="selected-status">
-                        <i class="fas fa-check"></i> File Selected
-                    </span>
                 </label>
                 <input type="file" id="academic_records" name="academic_records" accept=".pdf" required class="file-input-field">
             </div>
 
             <div class="file-upload required-upload">
                 <label for="proof_of_registration">
-                    <i class="fas fa-university original-icon"></i>
+                    {% comment %} <ion-icon name="school-outline"></ion-icon> {% endcomment %}
                     <span class="original-text">Proof of Registration</span>
                     <span class="required-badge">Required</span>
                     <span class="file-hint">(PDF, max 5MB)</span>
-                    <span class="selected-status">
-                        <i class="fas fa-check"></i> File Selected
-                    </span>
-                </label>
-                <input type="file" id="proof_of_registration" name="proof_of_registration" accept=".pdf" required class="file-input-field">
-            </div>
-        </div>
-        
-        <div class="form-section">
-            <h3><i class="fas fa-id-card"></i> Additional Documents</h3>
-            <div class="file-upload required-upload">
-                <label for="academic_records">
-                    <i class="fas fa-file-invoice original-icon"></i>
-                    <span class="original-text">ID Document</span>
-                    <span class="file-hint">(PDF, max 5MB)</span>
-                    <span class="selected-status">
-                        <i class="fas fa-check"></i> File Selected
-                    </span>
-                </label>
-                <input type="file" id="academic_records" name="academic_records" accept=".pdf" required class="file-input-field">
-            </div>
-
-            <div class="file-upload required-upload">
-                <label for="proof_of_registration">
-                    <i class="fas fa-university original-icon"></i>
-                    <span class="original-text">Proof of Income</span>
-                    <span class="file-hint">(PDF, max 5MB)</span>
-                    <span class="selected-status">
-                        <i class="fas fa-check"></i> File Selected
-                    </span>
                 </label>
                 <input type="file" id="proof_of_registration" name="proof_of_registration" accept=".pdf" required class="file-input-field">
             </div>
         </div>
 
         <div class="upload-info">
-            <i class="fas fa-info-circle"></i>
+            <ion-icon name="information-circle-outline"></ion-icon>
             <span>Our AI will analyze your documents to extract relevant information. You'll be able to review and
                 adjust it before finalizing your profile.</span>
         </div>
 
         <div class="upload-progress hidden">
             <div class="progress-indicator">
-                <div class="spinner"></div>
+                <ion-icon name="sync-outline" class="spinner"></ion-icon>
                 <span>Processing...</span>
             </div>
         </div>
 
         <button type="submit" class="submit-button">
-            <i class="fas fa-robot"></i> Upload & Extract Profile Information
+            <ion-icon name="cloud-upload-outline"></ion-icon> Upload & Extract Profile Information
         </button>
     </form>
 </div>

@@ -1,0 +1,227 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+
+{% block title %}My Applications{% endblock %}
+
+{% block main_content %}
+            <h3 class="form-title">My Applications</h3>
+    <section class="bursaries">
+        {% comment %} <div class="bursaries-header">
+        </div> {% endcomment %}
+        {% if applications %}
+            <div class="bursaries-grid">
+                {% for application in applications %}
+                    <div class="bursary-card"
+                         data-app-id="{{ application.id }}"
+                         data-title="{{ application.name }}"
+                         data-provider="{{ application.provider }}"
+                         data-field="{{ application.field_of_study }}"
+                         data-gpa="{{ application.gpa_requirement }}"
+                         data-deadline="{{ application.deadline|date:"d M Y" }}"
+                         data-status="{{ application.status }}"
+                         data-progress="{{ application.progress }}">
+                        <h3>{{ application.name }}</h3>
+                        <p class="available">Provider: {{ application.provider }}</p>
+                        <p class="deadline">Deadline: {{ application.deadline|date:"d M Y" }}</p>
+                        <p class="match">Status: {{ application.status }}</p>
+                        <span class="tag">{{ application.field_of_study }}</span>
+                        {% if application.status == 'Pending' %}
+                            <button class="apply-btn cancel-btn">Cancel Application</button>
+                        {% elif application.status == 'Approved' %}
+                            <button class="apply-btn view-details-btn">View Details</button>
+                        {% else %}
+                            <button class="apply-btn rejected-btn">View Feedback</button>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>You have no applications yet.</p>
+        {% endif %}
+    </section>
+
+<!-- Confirmation Modal for Applications -->
+<div class="modal-overlay confirmation-modal-overlay">
+    <div class="modal confirmation-modal">
+        <div class="modal-header">
+            <h2 id="confirmation-modal-title">Confirm Cancellation</h2>
+            <button class="modal-close confirmation-modal-close" aria-label="Close modal"><ion-icon name="close-outline"></ion-icon></button>
+        </div>
+        <div class="modal-content">
+            <p>Are you sure you want to cancel your application for <strong id="confirmation-app-name"></strong>?</p>
+            <p>This action cannot be undone.</p>
+        </div>
+        <div class="modal-actions confirmation-modal-actions">
+            <button type="button" class="cancel">No, Keep It</button>
+            <button type="button" class="confirm">Yes, Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Success Dialog -->
+<div class="success-dialog-overlay">
+    <div class="success-dialog">
+        <div class="success-icon">
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </div>
+        <h3>Success!</h3>
+        <p>Application cancelled successfully!</p>
+        <button type="button" class="success-dialog-close">OK</button>
+    </div>
+</div>
+
+{% include 'components/modal_details.html' %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    console.log('applications.html script loaded');
+    try {
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded fired');
+
+            const { showModal: showDetailsModal, confirmBtn: detailsConfirmBtn } = setupModal(
+                'details-modal',
+                'details-modal-overlay',
+                'details-modal-close-btn',
+                'details-modal-cancel-btn',
+                'details-modal-confirm-btn',
+                {
+                    title: 'details-modal-title',
+                    provider: 'details-modal-provider',
+                    field_of_study: 'details-modal-field',
+                    gpa_requirement: 'details-modal-gpa',
+                    deadline: 'details-modal-deadline',
+                    status: 'details-modal-status',
+                    progress: 'details-modal-progress'
+                }
+            );
+            console.log('Details Modal setup:', { showDetailsModal, detailsConfirmBtn });
+
+            const { showSuccessDialog, hideSuccessDialog } = setupSuccessDialog(
+                '.success-dialog-overlay',
+                '.success-dialog-close'
+            );
+            console.log('Success Dialog setup:', { showSuccessDialog, hideSuccessDialog });
+
+            const cancelButtons = document.querySelectorAll('.cancel-btn');
+            console.log('Cancel Buttons found:', cancelButtons.length, cancelButtons);
+            const viewDetailsButtons = document.querySelectorAll('.view-details-btn, .rejected-btn');
+            console.log('View Details Buttons found:', viewDetailsButtons.length, viewDetailsButtons);
+
+            const confirmationModalOverlay = document.querySelector('.confirmation-modal-overlay');
+            const confirmationModal = document.querySelector('.confirmation-modal');
+            const confirmationModalCloseBtn = document.querySelector('.confirmation-modal-close');
+            const confirmationModalCancelBtn = document.querySelector('.confirmation-modal-actions .cancel');
+            const confirmationModalConfirmBtn = document.querySelector('.confirmation-modal-actions .confirm');
+            console.log('Confirmation Modal elements:', { confirmationModalOverlay, confirmationModal, confirmationModalCloseBtn, confirmationModalCancelBtn, confirmationModalConfirmBtn });
+
+            let currentApplicationId = null;
+            let currentApplicationName = null;
+
+            function showConfirmationModal(appId, appName) {
+                console.log('showConfirmationModal called for:', appName, appId);
+                currentApplicationId = appId;
+                currentApplicationName = appName;
+                document.getElementById('confirmation-app-name').textContent = appName;
+                if (confirmationModalOverlay) {
+                    confirmationModalOverlay.classList.add('active');
+                    console.log('active class added to confirmation overlay. ClassList:', confirmationModalOverlay.classList);
+                } else {
+                    console.error('confirmationModalOverlay is null, cannot show confirmation modal.');
+                }
+                if (confirmationModal) {
+                    confirmationModal.querySelector('button, a, input, select, textarea')?.focus();
+                }
+            }
+
+            function hideConfirmationModal() {
+                console.log('hideConfirmationModal called');
+                if (confirmationModalOverlay) {
+                    confirmationModalOverlay.classList.remove('active');
+                    console.log('active class removed from confirmation overlay. ClassList:', confirmationModalOverlay.classList);
+                }
+                currentApplicationId = null;
+                currentApplicationName = null;
+            }
+
+            cancelButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    console.log('Cancel button clicked');
+                    const card = this.closest('.bursary-card');
+                    const appId = card.dataset.appId;
+                    const appName = card.querySelector('h3').textContent;
+                    showConfirmationModal(appId, appName);
+                });
+            });
+
+            viewDetailsButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    console.log('View Details button clicked');
+                    const card = this.closest('.bursary-card');
+                    if (!card) return;
+
+                    const applicationData = {
+                        title: card.dataset.title || card.querySelector('h3').textContent,
+                        provider: card.dataset.provider || 'N/A',
+                        field_of_study: card.dataset.field || card.querySelector('.tag').textContent,
+                        gpa_requirement: card.dataset.gpa || 'Varies',
+                        deadline: card.dataset.deadline || card.querySelector('.deadline').textContent.replace('Deadline: ',''),
+                        status: card.dataset.status || 'N/A',
+                        progress: card.dataset.progress || 'N/A'
+                    };
+                    showDetailsModal(applicationData);
+                    console.log('showDetailsModal called. ClassList:', document.getElementById('details-modal-overlay')?.classList);
+                });
+            });
+
+            if (confirmationModalCloseBtn) confirmationModalCloseBtn.addEventListener('click', hideConfirmationModal);
+            if (confirmationModalCancelBtn) confirmationModalCancelBtn.addEventListener('click', hideConfirmationModal);
+            if (confirmationModalOverlay) {
+                confirmationModalOverlay.addEventListener('click', function(e) {
+                    if (e.target === confirmationModalOverlay) {
+                        hideConfirmationModal();
+                    }
+                });
+            }
+
+            if (confirmationModalConfirmBtn) {
+                confirmationModalConfirmBtn.addEventListener('click', function() {
+                    console.log(`Cancelling application ${currentApplicationName} (ID: ${currentApplicationId})`);
+                    // Here you would typically send an AJAX request to your backend to cancel the application
+                    hideConfirmationModal();
+                    console.log('Calling showSuccessDialog...');
+                    showSuccessDialog();
+                    // Optionally, refresh the page or remove the cancelled card from the DOM
+                    // window.location.reload(); // Re-enable if you want to refresh after success
+                });
+            }
+
+            if (detailsConfirmBtn) {
+                detailsConfirmBtn.addEventListener('click', function() {
+                    console.log('Details modal confirm button clicked');
+                    // This button's action depends on the context (e.g., apply, view feedback)
+                    // For now, just hide the modal
+                    showDetailsModal.hideModal(); // Assuming hideModal is accessible
+                });
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (confirmationModalOverlay?.classList.contains('active')) {
+                        hideConfirmationModal();
+                    }
+                    if (document.getElementById('details-modal-overlay')?.classList.contains('active')) {
+                        showDetailsModal.hideModal();
+                    }
+                    if (document.querySelector('.success-dialog-overlay')?.classList.contains('active')) {
+                        hideSuccessDialog();
+                    }
+                }
+            });
+        });
+    } catch (e) {
+        console.error('Error in applications.html script:', e);
+    }
+</script>
+{% endblock %}
