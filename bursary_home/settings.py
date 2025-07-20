@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'livereload',
-    'bursary',
+    'student_app',
+    'provider_app',
 ]
 
 MIDDLEWARE = [
@@ -50,7 +50,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'livereload.middleware.LiveReloadScript',
 ]
 
 ROOT_URLCONF = 'bursary_home.urls'
@@ -58,7 +57,7 @@ ROOT_URLCONF = 'bursary_home.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Add this line
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,6 +129,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # File upload settings
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB max-size
 
+# Email Backend for Passwordless Auth (for development, prints to console)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # Authentication Settings
 LOGIN_URL = '/'  # Redirect to home/login page for login_required
 LOGIN_REDIRECT_URL = 'dashboard'  # Redirect to dashboard after successful login
@@ -139,3 +141,8 @@ LOGOUT_REDIRECT_URL = '/'  # Redirect to home/login page after logout
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom User Model Settings for email as username
+# AUTH_USER_MODEL = 'bursary.CustomUser' # Uncomment if you create a custom user model
+USERNAME_FIELD = 'email'
+REQUIRED_FIELDS = []

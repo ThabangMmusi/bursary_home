@@ -18,17 +18,12 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from bursary import views
+from django.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.login_view, name='login'),
-    path('signup/', views.signup_view, name='signup'),
-    path('dashboard/', views.dashboard, name='dashboard'),
-    path('complete-profile/', views.complete_profile_view, name='complete-profile'),
-    path('applications/', views.applications_view, name='applications'),
-    path('profile/', views.profile_view, name='profile'),
-    path('logout/', views.logout_view, name='logout'),
+    path('provider/', include('provider_app.urls')),
+    path('', include(('student_app.urls', 'student_app'), namespace='student_app')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

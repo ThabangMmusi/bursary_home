@@ -167,9 +167,10 @@ body::after {
 
 /* Specific authentication form style (inherits from base-form and adds max-width) */
 .auth-form {
-    width: 420px;
+    width: 350px;
     padding: 1rem 2rem 1rem 2rem;
-    margin: auto 10%;
+    margin: auto 15% auto 10%;
+    text-align: center; /* Ensure all content within the form is centered */
 }
 
 .profile-form {
@@ -178,13 +179,22 @@ body::after {
     margin: auto 10% auto 0;
 }
 
-/* Used by h1 inside div.base-form in login.html and profile.html */
-/* .base-form h1 {
-    font-size: 1.5rem;
+
+
+.auth-form h1 {
+    font-size: 1.8rem; /* Increased by 20% */
     color: var(--text-dark);
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.25rem;
     text-align: center;
-} */
+    line-height: 1.1; /* Reduced line height for closer lines */
+}
+
+.auth-form .subtext {
+    text-align: center;
+    margin-top: 0; /* No space above subtext */
+    margin-bottom: 1.5rem; /* Keep some space below subtext */
+    color: #666;
+}
 
 /* Form Group (Used by Login) */
 /* Used by div.form-group in login.html */
@@ -207,6 +217,25 @@ body::after {
     border-radius: 6px;
     font-size: 0.9rem;
     box-sizing: border-box;
+}
+
+/* Styling for input with icon */
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon ion-icon {
+    position: absolute;
+    left: 10px;
+    color: #aaa;
+    font-size: 1.2rem;
+    z-index: 1;
+}
+
+.input-with-icon input {
+    padding-left: 40px; /* Make space for the icon */
 }
 
 /* Login Form Specific Button */
@@ -1505,3 +1534,5 @@ body::after {
     .modal-actions { flex-direction: column; gap: 0.5rem; }
      .modal-actions button { width: 100%; }
 }
+
+

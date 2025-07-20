@@ -1,0 +1,46 @@
+{% extends 'student_app/auth_base.html' %}
+{% load static %}
+
+{% block title %}Provider Login - Bursary Home{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'provider_app/provider.css' %}">
+{% endblock %}
+
+{% block body_class %}login-page-center{% endblock %}
+
+{% block content %}
+<div class="center-form-container">
+    <div class="base-form auth-form">
+        {% include 'student_app/components/logo_component.html' %}
+        <h1 class="">Welcome Back!</h1>
+        <p class="subtext">Sign in to manage your bursaries.</p>
+        
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-error">
+                {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% for field in form %}
+            <div class="form-group">
+                <div class="input-with-icon">
+                    <ion-icon name="mail-outline"></ion-icon>
+                    {{ field }}
+                </div>
+                {% for error in field.errors %}
+                <div class="alert alert-error field-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
