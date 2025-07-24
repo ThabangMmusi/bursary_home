@@ -112,9 +112,9 @@ Each Django template will be translated into a dedicated Flutter screen.
 *   **Images**: All static images from the `static/images/` directory (e.g., `Bursary_Logo.svg`, `students.png`, `boy white.png`, `books.png`) will be added to the Flutter project's `pubspec.yaml` and accessed using `AssetImage` or `SvgPicture.asset` (for SVG).
 *   **Icons**: `ionicons` and `Font Awesome` icons will be replaced with Flutter's built-in `Icons` class where possible, or by using a custom icon font package if specific icons are not available.
 
-## 5. BLoC State Management Integration Points
+## 5. BLoC State Management Integration Points (Located in `student_app/lib/features/<feature_name>/bloc/`)
 
-Each major functional area will have a corresponding BLoC (Business Logic Component) to manage its state.
+Each major functional area within the `student_app` will have a corresponding BLoC (Business Logic Component) to manage its state.
 
 *   **`AuthBloc`**:
     *   **Responsibilities**: Manages user authentication state (login, logout, registration, password reset).
@@ -133,5 +133,4 @@ Each major functional area will have a corresponding BLoC (Business Logic Compon
     *   **Interacts with**: Firestore (likely a subcollection under `students` or a separate `applications` collection).
 
 *   **`ModalCubit` (or similar simple state management for UI)**:
-    *   **Responsibilities**: Manages the visibility and content of various modals and dialogs (e.g., `CustomModal`, `SuccessDialog`).
-    *   **Interacts with**: UI components directly.
+    *   **Responsibilities**: Manages the visibility and content of various modals and dialogs (e.g., `CustomModal`, `SuccessDialog`) by interacting with UI components directly.

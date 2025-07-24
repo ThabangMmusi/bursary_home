@@ -1,18 +1,14 @@
-{% extends 'student_app/auth_base.html' %}
+{% extends 'provider_app/auth_base.html' %}
 {% load static %}
 
 {% block title %}Provider Login - Bursary Home{% endblock %}
-
-{% block extra_head %}
-    <link rel="stylesheet" href="{% static 'provider_app/provider.css' %}">
-{% endblock %}
 
 {% block body_class %}login-page-center{% endblock %}
 
 {% block content %}
 <div class="center-form-container">
     <div class="base-form auth-form">
-        {% include 'student_app/components/logo_component.html' %}
+        {% include 'components/logo_component.html' with direction='vertical' %}
         <h1 class="">Welcome Back!</h1>
         <p class="subtext">Sign in to manage your bursaries.</p>
         

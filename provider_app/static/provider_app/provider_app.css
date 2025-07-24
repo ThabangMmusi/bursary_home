@@ -1,0 +1,28 @@
+@import url("../../../static/base.css");
+
+:root {
+    --primary-color: #4CAF50; /* Example: a different green for provider */
+    --background-color: #E8F5E9;
+    --background-color2: #A5D6A7;
+}
+
+/* Centered Login Page Styles */
+.login-page-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+    background-color: var(--background-color);
+}
+
+.center-form-container {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+}
+
+.center-form-container .auth-form {
+    width: 100%;
+    margin: 0;
+}

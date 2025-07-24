@@ -21,42 +21,42 @@ Before starting, ensure you have the following installed and configured:
     cd bursary_home_app
     ```
 
-## 3. Firebase Integration
+## 3. Firebase Integration (for `student_app`)
 
-This section covers connecting your Flutter project to a Firebase project.
+This section covers connecting your `student_app` Flutter project to a Firebase project.
 
-1.  **Login to Firebase**: In your terminal, run:
+1.  **Login to Firebase**: In your terminal (from the monorepo root), run:
     ```bash
     firebase login
     ```
-    Follow the prompts to log in with your Google account.
 
 2.  **Install FlutterFire CLI**: If you haven't already, install the FlutterFire CLI globally:
     ```bash
     dart pub global activate flutterfire_cli
     ```
 
-3.  **Configure Firebase for your Flutter project**: From your `bursary_home_app` project root, run:
+3.  **Configure Firebase for `student_app`**: From your `student_app` project root (`bursary_home/student_app`), run:
     ```bash
     flutterfire configure
     ```
     *   Select an existing Firebase project or create a new one.
-    *   Choose the platforms you want to support (e.g., `android`, `ios`, `web`).
-    *   This command will generate `lib/firebase_options.dart` and add necessary Firebase dependencies to `pubspec.yaml`.
+    *   Choose `web` as the target platform.
+    *   This command will generate `student_app/lib/firebase_options.dart` and add necessary Firebase dependencies to `student_app/pubspec.yaml`.
 
-4.  **Add Firebase Core and Firestore dependencies**: Ensure `firebase_core` and `cloud_firestore` are in your `pubspec.yaml` under `dependencies`:
+4.  **Add Firebase Core and Firestore dependencies to `student_app/pubspec.yaml`**: Ensure `firebase_core`, `cloud_firestore`, and `firebase_auth` are in `student_app/pubspec.yaml` under `dependencies`. Also, add the local path dependency for `bursary_home_ui`:
     ```yaml
     dependencies:
       flutter:
         sdk: flutter
       firebase_core: ^latest_version
       cloud_firestore: ^latest_version
-      # Add other Firebase services as needed, e.g., firebase_auth
       firebase_auth: ^latest_version
+      bursary_home_ui:
+        path: ../bursary_home_ui # Relative path to the shared UI package
     ```
-    Run `flutter pub get` after modifying `pubspec.yaml`.
+    Run `flutter pub get` from the `student_app` directory after modifying `pubspec.yaml`.
 
-5.  **Initialize Firebase in `main.dart`**: Modify your `lib/main.dart` to initialize Firebase:
+5.  **Initialize Firebase in `student_app/lib/main.dart`**: Modify `student_app/lib/main.dart` to initialize Firebase:
     ```dart
     import 'package:firebase_core/firebase_core.dart';
     import 'package:flutter/material.dart';
@@ -112,54 +112,47 @@ To use IonIcons in your Flutter project, you can use a package like `flutter_ico
 
 ## 5. Asset Management (Images)
 
-All static images from your Django project (`static/images/`) will be included as assets in Flutter.
+All static images from your Django project (`C:/devs/django/bursary_home/static/images/`) will be included as assets in the `student_app`.
 
-1.  **Create assets directory**: Create a folder named `assets/images` in your Flutter project root:
+1.  **Create assets directory**: Create a folder named `assets/images` in your `student_app` project root:
     ```
-    bursary_home_app/
-    ├── lib/
-    ├── assets/
-    │   └── images/
-    │       ├── bell.png
-    │       ├── books.png
-    │       ├── boy white.png
-    │       ├── Bursary_Logo.svg
-    │       ├── logo.png
-    │       ├── school_desk.png
-    │       ├── school_student.png
-    │       └── students.png
-    └── pubspec.yaml
+    bursary_home/
+    ├── student_app/
+    │   ├── lib/
+    │   ├── assets/
+    │   │   └── images/
+    │   │       ├── bell.png
+    │   │       ├── books.png
+    │   │       ├── boy white.png
+    │   │       ├── Bursary_Logo.svg
+    │   │       ├── logo.png
+    │   │       ├── school_desk.png
+    │   │       ├── school_student.png
+    │   │       └── students.png
+    │   └── pubspec.yaml
+    └── bursary_home_ui/
     ```
-    Copy all image files from `C:/devs/django/bursary_home/static/images/` into `bursary_home_app/assets/images/`.
+    Copy all image files from `C:/devs/django/bursary_home/static/images/` into `student_app/assets/images/`.
 
-2.  **Declare assets in `pubspec.yaml`**: Add the `assets` section to your `pubspec.yaml`:
+2.  **Declare assets in `student_app/pubspec.yaml`**: Add the `assets` section to `student_app/pubspec.yaml`:
     ```yaml
     flutter:
       uses-material-design: true
       assets:
         - assets/images/
     ```
-    Run `flutter pub get`.
+    Run `flutter pub get` from the `student_app` directory.
 
-3.  **Usage in Flutter**: 
+3.  **Usage in Flutter**:
     *   For `.png`, `.jpg`, etc.:
         ```dart
         Image.asset('assets/images/boy white.png')
         ```
-    *   For `.svg` files, you'll need the `flutter_svg` package:
-        ```yaml
-        dependencies:
-          flutter:
-            sdk: flutter
-          flutter_svg: ^latest_version
-        ```
-        Run `flutter pub get`.
-
-        Then use:
+    *   For `.svg` files, ensure `flutter_svg` is added to `student_app/pubspec.yaml` (as per section 3.4) and use:
         ```dart
         import 'package:flutter_svg/flutter_svg.dart';
 
         SvgPicture.asset('assets/images/Bursary_Logo.svg')
         ```
 
-This setup provides the foundation for building your Flutter application with Firebase integration and proper asset management.
+This setup provides the foundation for building your Flutter application with Firebase integration and proper asset management within the monorepo structure.

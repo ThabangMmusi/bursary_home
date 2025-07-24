@@ -6,7 +6,7 @@
 
 {% block content %}
     <aside class="sidebar">
-        {% include 'student_app/components/logo_component.html' %}
+        {% include 'components/logo_component.html' with direction='horizontal' %}
         <div class="sidebar-menu">
             <ul>
                 <li class="{% if current_page == 'dashboard' %}active{% endif %}"><a href="{% url 'student_app:dashboard' %}" style="color: inherit; text-decoration: none;"><ion-icon name="analytics-outline"></ion-icon> Dashboard</a></li>

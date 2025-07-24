@@ -1,0 +1,40 @@
+{% extends 'provider_app/auth_base.html' %}
+{% load static %}
+
+{% block body_class %}dashboard-page{% endblock %}
+{% block page_container_class %}dashboard{% endblock %}
+
+{% block content %}
+    <aside class="sidebar">
+        {% include 'components/logo_component.html' with direction='horizontal' %}
+        <div class="sidebar-menu">
+            <ul>
+                <li class="{% if current_page == 'dashboard' %}active{% endif %}"><a href="{% url 'provider_app:dashboard' %}" style="color: inherit; text-decoration: none;"><ion-icon name="analytics-outline"></ion-icon> Dashboard</a></li>
+                <li class="{% if current_page == 'applications' %}active{% endif %}"><a href="{% url 'provider_app:applications' %}" style="color: inherit; text-decoration: none;"><ion-icon name="folder-open-outline"></ion-icon> Applications</a></li>
+                <li class="{% if current_page == 'profile' %}active{% endif %}"><a href="{% url 'provider_app:profile' %}" style="color: inherit; text-decoration: none;"><ion-icon name="person-outline"></ion-icon> Profile</a></li>
+                <li><a href="{% url 'provider_app:logout' %}" style="color: inherit; text-decoration: none;"><ion-icon name="log-out-outline"></ion-icon> Logout</a></li>
+            </ul>
+            <!-- Debug: current_page is {{ current_page }} -->
+        </div>
+    </aside>
+    <main class="content">
+        <header class="top-header">
+            <div class="search-bar">
+                <ion-icon name="search-outline"></ion-icon>
+                <input type="text" placeholder="Search bursaries, applications...">
+            </div>
+            <div class="profile-section">
+                <div class="notification-wrapper">
+                    <ion-icon name="notifications-outline" class="notification-bell"></ion-icon>
+                </div>
+                <div class="profile-details">
+                    <span class="profile-name">{{ user.username }}</span>
+                    <span class="profile-role">Student</span>
+                </div>
+                <img src="{% static 'images/boy white.png' %}" alt="User Profile" class="profile-image">
+            </div>
+        </header>
+        {% block main_content %}
+        {% endblock %}
+    </main>
+{% endblock %}

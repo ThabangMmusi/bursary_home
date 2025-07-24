@@ -1,0 +1,1565 @@
+/* Base Variables and Reset */
+:root {
+    --primary-color: #035246;
+    --error-color: #bb1414; /* Used by required-badge, alert-error */
+    --success-color: #16a34a; /* Added for success state */
+    --background-color: #C3FFF3;
+    --background-color2: #69BCAB;
+    --white: #FFFFFF;
+    --text-dark: #333333;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Wave Background */
+/* Applied globally to body */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: -10%;
+    right: -10%;
+    height: 100vh;
+    background-color: var(--background-color);
+    opacity: 0.5;
+    clip-path: ellipse(40% 85% at 90% 80%);
+    z-index: -1;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: -10%;
+    right: -10%;
+    height: 100vh;
+    background-color: var(--background-color2);
+    opacity: 0.1;
+    clip-path: ellipse(60% 100% at 0% 20%);
+    z-index: -1;
+}
+
+/* Login page specific wave styling */
+/* Used by body.login-page in login.html and profile.html */
+.login-page::before {
+    display: none;
+}
+
+.login-page::after {
+    opacity: 0.3;
+    clip-path: ellipse(60% 80% at 20% 0%);
+    display: block;
+}
+
+/* Book decorations (Login/Profile page specific) */
+/* Used by div.books-decoration within div.login-page in login.html and profile.html */
+.login-page .books-decoration {
+    position: fixed;
+    bottom: -100px;
+    right: -100px;
+    width: 350px;
+    height: 350px;
+    background-image: url('../static/images/books.png');
+    /* Ensure this path is correct */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Hide books decoration on dashboard */
+/* Used by div.books-decoration within div.dashboard in dashboard.html */
+.dashboard .books-decoration {
+    display: none;
+}
+
+/* Login/Profile Page Common Styles */
+/* Used by div.login-page container in login.html and profile.html */
+.login-page {
+    display: flex;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+/* Used by div.login-content in login.html and profile.html */
+.login-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 5%;
+    position: relative;
+}
+
+.logo {
+    /* General logo container style used in logo_component.html */
+    z-index: 4;
+}
+
+.logo-horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+}
+
+.logo-horizontal img {
+    width: 70px;
+    height: 70px;
+    margin-right: 1rem;
+    margin-bottom: 0;
+}
+
+.logo-horizontal h2 {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+/* Used by img.students-image in login.html and profile.html */
+.students-image {
+    max-width: 80%;
+    height: auto;
+    margin: 0 auto;
+    margin-top: 5rem;
+}
+.form-title {
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+/* Login Form Specific Styles (also used as container in profile.html) */
+/* Base form style (no max-width) */
+.base-form {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 20;
+}
+
+/* Specific authentication form style (inherits from base-form and adds max-width) */
+.auth-form {
+    width: 350px;
+    padding: 1rem 2rem 1rem 2rem;
+    margin: auto 15% auto 10%;
+    text-align: center; /* Ensure all content within the form is centered */
+}
+
+.profile-form {
+    width: 520px;
+    padding: 1rem 2rem 1rem 2rem;
+    margin: auto 10% auto 0;
+}
+
+
+
+.auth-form h1 {
+    font-size: 1.8rem; /* Increased by 20% */
+    color: var(--text-dark);
+    margin-bottom: 0.25rem;
+    text-align: center;
+    line-height: 1.1; /* Reduced line height for closer lines */
+}
+
+.auth-form .subtext {
+    text-align: center;
+    margin-top: 0; /* No space above subtext */
+    margin-bottom: 1.5rem; /* Keep some space below subtext */
+    color: #666;
+}
+
+/* Form Group (Used by Login) */
+/* Used by div.form-group in login.html */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+}
+
+/* General input, used in login.html */
+.form-group input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+/* Styling for input with icon */
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon ion-icon {
+    position: absolute;
+    left: 10px;
+    color: #aaa;
+    font-size: 1.2rem;
+    z-index: 1;
+}
+
+.input-with-icon input {
+    padding-left: 40px; /* Make space for the icon */
+}
+
+/* Login Form Specific Button */
+/* Used by button[type="submit"] in login.html's form */
+.base-form button[type="submit"] {
+    width: 100%;
+    padding: 8px 12px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin: 1rem 0;
+    transition: background-color 0.3s ease;
+}
+
+.base-form button[type="submit"]:hover {
+    background-color: #005446;
+}
+
+/* Login Form Links */
+/* Used by div.form-links in login.html */
+.form-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.75rem;
+}
+
+.form-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.form-links a:hover {
+    text-decoration: underline;
+}
+
+/* Social Login Styles (Login Page) */
+/* Used by div.social-login in login.html */
+.social-login {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+/* Used by button.social-login-btn in login.html */
+.social-login-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: var(--white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    min-width: 110px;
+}
+
+.social-login-btn i { /* Targets i inside social login buttons */
+    font-size: 1rem;
+}
+
+.social-login-btn:hover {
+    background-color: #f8f8f8;
+    border-color: #ccc;
+}
+
+/* Used by div.social-login-divider in login.html */
+.social-login-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.social-login-divider::before,
+.social-login-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+}
+
+.social-login-divider span { /* Targets span inside divider */
+    padding: 0 10px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Profile Form Submit Button */
+/* Used by button.submit-button in profile.html */
+.submit-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1.5rem;
+}
+
+.submit-button i { /* Targets i inside profile submit button */
+    font-size: 1.1rem;
+}
+
+.submit-button:hover {
+    background: #004a3f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(3, 82, 70, 0.2);
+}
+
+/* Main Dashboard Layout */
+/* Used by div.dashboard container in dashboard.html */
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Navigation and Sidebar (Dashboard) */
+/* Used by aside.sidebar in dashboard.html */
+.sidebar {
+    width: 340px;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+/* Used by div.sidebar-menu in dashboard.html */
+.sidebar-menu {
+    /* margin-top: 3rem; */
+    margin-top: .8rem;
+    background-color: var(--white);
+    padding: 0.8rem;
+    border-radius: 20px;
+}
+
+.sidebar-menu ul { /* Targets ul inside sidebar menu */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu li {
+    margin-bottom: 0.3rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-menu li:not(.active) {
+    background-color: transparent;
+    color: var(--text-dark);
+}
+
+.sidebar-menu li:not(.active) a {
+    color: var(--text-dark);
+}
+
+.sidebar-menu li:not(.active) i {
+    color: var(--primary-color);
+}
+
+.sidebar-menu li:last-child {
+    margin-bottom: 0;
+}
+
+.sidebar-menu li:hover {
+    background-color: rgba(0, 109, 91, 0.1);
+}
+
+/* Style active item */
+.sidebar-menu li.active {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.sidebar-menu li.active i {
+    color: var(--white);
+}
+
+/* Content area styles (Dashboard) */
+/* Used by main.content in dashboard.html */
+.content {
+    flex: 1;
+    padding: 2rem;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Top header with search and profile (Dashboard) */
+/* Used by header.top-header in dashboard.html */
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+/* Used by div.search-bar in dashboard.html */
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    padding: 8px 16px;
+    border-radius: 25px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-bar input { /* Targets input inside search bar */
+    border: none;
+    background: none;
+    padding: 8px;
+    width: 100%;
+    font-size: 1rem;
+    outline: none;
+}
+
+.search-bar i { /* Targets icon inside search bar */
+    color: #aaa;
+    font-size: 1rem;
+}
+
+/* Used by div.profile-section in dashboard.html */
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.notification-wrapper {
+    background-color: var(--primary-color);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-bell {
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.profile-name {
+    font-weight: bold;
+}
+
+.profile-role {
+    color: #666;
+    font-size: 0.7rem;
+}
+
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Header section styles (Dashboard Header) */
+/* Used by section.header in dashboard.html */
+.header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 1.5rem;
+    border-radius: 16px;
+    position: relative;
+    overflow: visible;
+    min-height: 160px;
+    margin: 1rem 0 3rem 0; /* Adjusted margin-top to 1rem */
+    z-index: 1;
+}
+
+/* Used by div.header-top in dashboard.html */
+.header-top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Used by span.date in dashboard.html */
+.date {
+    display: inline-block;
+    background: var(--white);
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+/* Used by span.status-label in dashboard.html */
+.status-label {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin: 0;
+    border: 1px solid transparent; /* Default border */
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.75); /* Inner border, 1px thick and more opaque */
+}
+
+/* Specific status styles used in dashboard.html */
+.status-label.verified {
+    background-color: var(--success-color);
+    color: var(--white);
+    border-color: transparent;
+}
+.status-label.pending {
+    background-color: #ffc107;
+    color: black;
+    border-color: transparent;
+}
+.status-label.unverified {
+    background-color: var(--error-color);
+    color: var(--white);
+    border-color: transparent;
+}
+
+/* Used by div.header-content in dashboard.html */
+.header-content {
+    position: relative;
+    z-index: 2;
+    max-width: 55%;
+}
+
+/* Used by h2 inside div.header-text in dashboard.html */
+.header-text h2 {
+    font-size: 2.2rem;
+    margin: 0 0 0.8rem 0;
+    line-height: 1.2;
+}
+
+/* Used by p inside div.header-text in dashboard.html */
+.header-text p {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin: 0.5rem 0 0 0;
+}
+
+/* Used by div.header-image in dashboard.html */
+.header-image {
+    position: absolute;
+    right: 0;
+    top: 0; /* Align to the top of the header section */
+    width: 35%; /* Make it a bit narrower */
+    height: 100%; /* Confine it to the header section's height */
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.header-image img { /* Targets img inside header image container */
+    width: auto;
+    height: 100%;
+    max-height: 200px; /* Reduce the maximum height of the image */
+    object-fit: contain;
+    filter: contrast(1.1) brightness(1.05);
+}
+
+/* Bursaries section (Dashboard) */
+/* Used by section.bursaries in dashboard.html */
+.bursaries {
+    margin-top: 2rem;
+}
+
+/* Used by div.bursaries-header in dashboard.html */
+.bursaries-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.bursaries-header h2 { /* Targets h2 inside bursaries header */
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.bursaries-header a { /* Targets 'See all' link */
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.bursaries-header a:hover {
+    text-decoration: underline;
+}
+
+/* Used by div.bursaries-grid in dashboard.html */
+.bursaries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+/* Used by div.bursary-card in dashboard.html */
+.bursary-card {
+    background-color: var(--white);
+    transition: all 0.3s ease;
+    padding: 1rem;
+    border-radius: 16px;
+    transform: scale(0.98);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* This will push the button to the bottom */
+    height: 250px; /* Adjust this value as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.bursary-card:hover {
+    transform: scale(1.02) translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+}
+
+.bursary-card h3 { /* Targets h3 inside bursary card */
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: font-size 0.3s ease;
+}
+
+.bursary-card:hover h3 {
+    font-size: 1.2rem;
+}
+
+/* Targets p.available and p.match inside bursary card */
+.bursary-card .available,
+.bursary-card .match {
+    color: #666;
+    font-size: 0.85rem;
+    margin: 0;
+    transition: font-size 0.3s ease;
+}
+
+.bursary-card:hover .available,
+.bursary-card:hover .match {
+    font-size: 0.9rem;
+}
+
+/* Targets p.deadline inside bursary card */
+.bursary-card .deadline {
+    color: #444;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0;
+    transition: font-size 0.3s ease;
+}
+
+.bursary-card:hover .deadline {
+    font-size: 1rem;
+}
+
+/* Targets span.tag inside bursary card */
+.bursary-card .tag {
+    display: inline-block;
+    background-color: rgba(3, 82, 70, 0.1);
+    color: var(--primary-color);
+    padding: 0.25rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    align-self: flex-start;
+    transition: all 0.3s ease;
+}
+
+.bursary-card:hover .tag {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.85rem;
+}
+
+/* Style for Apply button inside bursary card */
+/* Corrected selector based on HTML */
+.apply-btn {
+    padding: 0.6rem 1rem;
+    background-color: #023a31;
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    width: 100%;
+    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.apply-btn:hover {
+    background-color: #012a23;
+}
+
+.cancel-btn {
+    background-color: #dc3545; /* Red for cancel */
+}
+
+.cancel-btn:hover {
+    background-color: #c82333;
+}
+
+.approved-btn {
+    background-color: var(--success-color); /* Green for approved */
+}
+
+.approved-btn:hover {
+    background-color: #138a3f;
+}
+
+.rejected-btn {
+    background-color: #6c757d; /* Gray for rejected */
+}
+
+.rejected-btn:hover {
+    background-color: #5a6268;
+}
+
+.bursary-card:hover .apply-btn { /* Show button on card hover */
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Used by div.progress-bar inside bursary card */
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background-color: #E0E0E0;
+    border-radius: 2px;
+    margin: 8px 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.bursary-card:hover .progress-bar {
+    height: 6px;
+    border-radius: 3px;
+}
+
+/* Used by div.progress-bar-fill inside progress bar */
+.progress-bar-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: inherit;
+    /* width: is set dynamically via inline style */
+    transition: all 0.3s ease;
+    opacity: 0.8;
+}
+
+.bursary-card:hover .progress-bar-fill {
+    opacity: 1;
+}
+
+/* General tag style (if used outside cards, also matches card tags) */
+/* Used by span.tag in dashboard.html */
+.tag {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    background-color: rgba(0, 109, 91, 0.1);
+    color: var(--primary-color);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+}
+
+/* Confirmation Modal for Applications */
+.confirmation-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.confirmation-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.confirmation-modal {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px; /* Smaller width for confirmation */
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.confirmation-modal-overlay.active .confirmation-modal {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* Reusing existing modal styles for header, content, actions */
+.confirmation-modal .modal-header h2 {
+    font-size: 1.2rem;
+}
+
+.confirmation-modal .modal-content p {
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.confirmation-modal .modal-actions {
+    justify-content: center;
+}
+
+.confirmation-modal .modal-actions button {
+    min-width: 120px;
+}
+
+/* Modal styles (Dashboard) */
+/* Used by div.modal-overlay in dashboard.html */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Class added by JS to show modal */
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Used by div.modal in dashboard.html */
+.modal {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animate modal in when overlay is active */
+.modal-overlay.active .modal {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* Used by div.modal-header in dashboard.html */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h2 { /* Targets h2 inside modal header */
+    color: var(--text-dark);
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+/* Used by button.modal-close in dashboard.html */
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s ease;
+    padding: 0.5rem;
+    line-height: 1;
+    margin: -0.5rem;
+}
+
+.modal-close:hover {
+    color: var(--text-dark);
+}
+
+/* Used by div.modal-content in dashboard.html */
+.modal-content {
+    margin-bottom: 2rem;
+}
+
+/* Used by div.detail-row in dashboard.html */
+.modal-content .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-content .detail-row:last-child {
+    border-bottom: none;
+}
+
+.modal-content .detail-row strong { /* Targets strong tag inside detail row */
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+/* Used by div.modal-actions in dashboard.html */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.modal-actions button { /* Targets buttons inside modal actions */
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+/* Used by button.cancel in dashboard.html */
+.modal-actions .cancel {
+    background: none;
+    border: 1px solid #ddd;
+    color: var(--text-dark);
+}
+
+.modal-actions .cancel:hover {
+    background: #f5f5f5;
+    border-color: #ccc;
+}
+
+/* Used by button.confirm in dashboard.html */
+.modal-actions .confirm {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+}
+
+.modal-actions .confirm:hover {
+    background-color: #024238;
+}
+
+/* Success Dialog (Dashboard) */
+/* Used by div.success-dialog-overlay in dashboard.html */
+.success-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+/* Class added by JS to show success dialog */
+.success-dialog-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Used by div.success-dialog in dashboard.html */
+.success-dialog {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+/* Animate dialog in when overlay is active */
+.success-dialog-overlay.active .success-dialog {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* Used by div.success-icon in dashboard.html */
+.success-dialog .success-icon {
+    color: var(--success-color); /* Use success color */
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: successPop 0.5s ease-out;
+}
+
+.success-dialog h3 { /* Targets h3 inside success dialog */
+    color: var(--primary-color);
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    animation: fadeInUp 0.5s ease 0.1s both;
+}
+
+.success-dialog p { /* Targets p inside success dialog */
+    color: #666;
+    margin: 0 0 1.5rem 0;
+    font-size: 1rem;
+    line-height: 1.4;
+    animation: fadeInUp 0.5s ease 0.2s both;
+}
+
+/* Optional: Style using primary color instead */
+
+
+.success-dialog .success-dialog-close {
+    display: inline-block;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 1rem;
+    min-width: 100px;
+    text-align: center;
+}
+
+.success-dialog .success-dialog-close:hover {
+    background-color: #024238;
+    transform: translateY(-1px); 
+}
+
+
+/* Animation for success icon */
+@keyframes successPop {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Animation for success text */
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(15px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+
+/* --- Styles specific to profile.html --- */
+
+/* Used by div.form-section in profile.html */
+.form-section {
+    background: rgba(3, 82, 70, 0.05);
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Targets last form section */
+.form-section:last-of-type {
+    margin-bottom: 0;
+}
+
+.form-section h3 { /* Targets h3 inside form section */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(3, 82, 70, 0.1);
+}
+
+.form-section h3 i { /* Targets icon inside h3 */
+    font-size: 1.1em;
+}
+
+/* --- File upload styling for profile form --- */
+/* Applied within the .base-form container used by profile.html */
+
+/* Used by div.file-upload in profile.html */
+.base-form .file-upload {
+    background-color: var(--white);
+    position: relative;
+    margin-bottom: 1.5rem; /* Space below each upload block */
+}
+
+/* Base style for the visible label part (from user input) */
+.base-form .file-upload label {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    background: var(--white);
+    border: 2px dashed rgba(3, 82, 70, 0.2);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    color: var(--text-dark); /* Added default text color */
+    position: relative; /* Needed for positioning children */
+    overflow: hidden; /* Hide overflow */
+}
+
+.base-form .file-upload label:hover {
+    border-color: var(--primary-color);
+    background: rgba(3, 82, 70, 0.05);
+}
+
+/* Original Icon (e.g., fa-university) */
+.base-form .file-upload .original-icon {
+    color: var(--primary-color);
+    margin-right: 0.5rem; /* Space after icon */
+    flex-shrink: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Original Text (e.g., "Proof of Registration") */
+.base-form .file-upload .original-text {
+    flex-grow: 1; /* Allow text to take available space */
+    transition: opacity 0.2s ease;
+}
+
+/* File Hint (e.g., "(PDF, max 5MB)") */
+.base-form .file-hint {
+    margin-left: auto; /* Push hint to the right */
+    color: #666;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-left: 0.5rem; /* Add some space before hint */
+    transition: opacity 0.2s ease;
+}
+
+/* Required Badge */
+/* Applied to span.required-badge inside label */
+.required-badge {
+    background: var(--error-color); /* Red background */
+    color: white;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    margin-left: 0.5rem; /* Space from the main text */
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 1;
+    vertical-align: middle;
+    flex-shrink: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Hidden Status Text (e.g., "File Selected") */
+.base-form .file-upload .selected-status {
+    display: flex; /* Use flex to align icon and text */
+    align-items: center;
+    position: absolute; /* Position over the original content */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0.75rem; /* Match label padding */
+    box-sizing: border-box; /* Include padding in width/height */
+    opacity: 0; /* Hidden by default */
+    pointer-events: none; /* Not interactive when hidden */
+    transition: opacity 0.2s ease;
+    color: var(--success-color); /* Green text for success */
+    font-weight: 500;
+}
+
+.base-form .file-upload .selected-status i.fa-check {
+    color: var(--success-color); /* Green checkmark */
+    margin-right: 0.5rem; /* Space after checkmark */
+    font-size: 1rem; /* Adjust checkmark size if needed */
+}
+
+/* Styles when a file IS selected (JS adds .file-selected to label) */
+.base-form .file-upload label.file-selected {
+    border-color: var(--success-color); /* Green border */
+    border-style: solid; /* Solid border */
+    background-color: rgba(22, 163, 74, 0.05); /* Optional light green background */
+}
+
+.base-form .file-upload label.file-selected .original-text {
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+/* Style required uploads differently (base state) */
+.base-form .required-upload label {
+    /* If not file-selected, apply these */
+    border-color: var(--primary-color);
+    border-style: solid;
+    background: rgba(3, 82, 70, 0.05);
+}
+.base-form .required-upload label:hover {
+     /* If not file-selected, apply these */
+     background: rgba(3, 82, 70, 0.1);
+}
+/* If required AND selected, the .file-selected styles will override border color */
+.base-form .required-upload label.file-selected {
+    border-color: var(--success-color); /* Ensure selected success border wins */
+    background-color: rgba(22, 163, 74, 0.05); /* Ensure selected success bg wins */
+}
+
+
+/* Hide the actual file input element (remains the same) */
+.base-form .file-upload input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Used by div.upload-info in profile.html */
+.upload-info {
+    display: flex;
+    align-items: flex-start; /* Align icon to top */
+    gap: 1rem; /* Space between icon and text */
+    padding: 1rem;
+    background: rgba(3, 82, 70, 0.05); /* Light background */
+    border-radius: 8px;
+    margin-top: 1.5rem; /* Space above info box */
+    margin-bottom: 1.5rem; /* Space below info box */
+}
+
+.upload-info ion-icon { /* Icon inside upload info */
+    color: var(--primary-color);
+    font-size: 1.5rem; /* Increased size for Ionicons */
+    margin-top: 0.1rem; /* Align icon slightly */
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+
+.upload-info span { /* Text inside upload info */
+    font-size: 0.9rem;
+    color: #495057; /* Text color */
+    line-height: 1.5; /* Improve readability */
+}
+
+/* --- End of Profile Specific Styles --- */
+
+
+/* Alert Messages (Used in Login, Profile) */
+/* Used by div.alert in login.html and profile.html */
+.alert {
+    padding: 0.85rem 1.25rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.alert i { /* Icon inside alert */
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+/* Specific alert types based on template tags */
+.alert-error {
+    background-color: #fee2e2; color: #991b1b; border-color: #fecaca;
+}
+.alert-error i { color: #dc2626; }
+
+.alert-success {
+    background-color: #dcfce7; color: #166534; border-color: #bbf7d0;
+}
+.alert-success i { color: var(--success-color); } /* Use success color */
+
+.alert-warning {
+    background-color: #fef3c7; color: #92400e; border-color: #fde68a;
+}
+.alert-warning i { color: #d97706; }
+
+.alert-info {
+    background-color: #dbeafe; color: #1e40af; border-color: #bfdbfe;
+}
+.alert-info i { color: #2563eb; }
+
+/* Upload Progress Spinner (Used by profile.html JS) */
+/* This applies when the spinner is active inside .base-form */
+.base-form .upload-progress {
+    position: absolute;
+    inset: 0; /* Cover the parent form */
+    background: rgba(255, 255, 255, 0.92); /* Semi-transparent white overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100; /* Appear above form elements */
+    border-radius: inherit; /* Match parent form's radius */
+    transition: opacity 0.3s ease; /* Smooth fade if needed */
+}
+
+/* Class added by JS to hide spinner */
+.base-form .upload-progress.hidden {
+    display: none;
+}
+
+/* Used by div inside upload-progress */
+.base-form .progress-indicator {
+    text-align: center;
+    color: var(--primary-color);
+    display: flex; /* Use flexbox for centering content */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Take full height of parent */
+}
+
+/* Used by ion-icon.spinner inside progress-indicator */
+.base-form .progress-indicator ion-icon.spinner {
+    font-size: 3rem; /* Make spinner icon larger */
+    margin-bottom: 1rem; /* Space below spinner */
+    animation: spin 0.8s linear infinite; /* Apply spin animation */
+}
+
+/* Spinner animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    /* Tablet and smaller adjustments for Login/Profile */
+    .login-page { /* Affects both login and profile containers */
+       flex-direction: column;
+       max-height: none;
+       height: auto;
+       overflow-y: auto; /* Allow page scroll */
+       overflow-x: hidden;
+    }
+
+    .login-content { /* Left side image/logo */
+        order: 1; /* Show image first */
+        flex-basis: auto;
+        min-height: 30vh; /* Ensure some space */
+        padding: 2rem 1rem;
+    }
+
+     .login-content > .logo { /* Logo positioning */
+        position: static; /* Normal flow */
+        align-self: center; /* Center logo */
+        margin-bottom: 1rem;
+    }
+
+    .students-image { /* Images in Login/Profile */
+        max-width: 60%;
+        max-height: 35vh;
+        margin-top: 1rem;
+        transform: none; /* Reset transform */
+    }
+
+    .base-form { /* Login form container & Profile container */
+        order: 2; /* Show form second */
+        width: auto; /* Full width */
+        max-width: 500px; /* Max width centered */
+        margin: 2rem auto; /* Centered with margin */
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Keep shadow */
+    }
+     /* No separate .form-container or .profile-form-wrapper used */
+}
+
+@media (max-width: 768px) {
+    /* Mobile devices - Dashboard */
+    .dashboard {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%; padding: 1rem; height: auto; box-sizing: border-box;
+    }
+    .sidebar-menu { margin-top: 1rem; padding: 0.5rem; }
+    .sidebar-menu li { padding: 0.4rem 0.6rem; }
+
+    .content { padding: 1rem; }
+
+    .top-header { flex-direction: column; gap: 1rem; align-items: stretch; }
+    .search-bar { max-width: none; }
+    .profile-section { justify-content: flex-end; padding: 0 0.5rem; }
+
+    .header { min-height: auto; padding-bottom: 1.5rem; margin: 1.5rem 0 2rem 0; }
+    .header-image { display: none; }
+    .header-content { max-width: 100%; }
+    .header-top { flex-wrap: wrap; }
+    .header-text h2 { font-size: 1.8rem; }
+
+    .bursaries-grid { grid-template-columns: 1fr; }
+
+    /* Login/Profile Mobile */
+     .login-content { padding: 1rem 5%; min-height: 25vh; }
+     .login-content > .logo img{ width: 50px; height: 50px; }
+     .login-content > .logo h2{ font-size: 1rem; }
+     .students-image { max-width: 50%; max-height: 20vh; }
+
+    .base-form { /* Login/Profile form container on mobile */
+        width: auto; margin: 1rem; padding: 1.5rem;
+    }
+
+    .form-section { /* Profile form sections on mobile */
+        padding: 1rem 1.5rem; /* Adjust padding */
+    }
+
+    /* Profile File Upload Mobile */
+    .base-form .file-upload label {
+        padding: 0.75rem; /* Smaller padding */
+        gap: 0.5rem; /* Less gap */
+        flex-wrap: wrap; /* Allow wrapping */
+        font-size: 0.85rem; /* Slightly smaller font on mobile */
+    }
+    .base-form .file-hint {
+        font-size: 0.75rem; /* Smaller hint */
+        margin-left: 0; /* Remove auto margin */
+        flex-basis: 100%; /* Take full width below original text */
+        order: 3; /* Ensure hint comes after text/badge */
+        text-align: left;
+        margin-top: 0.25rem;
+        white-space: normal; /* Allow wrapping on mobile */
+        padding-left: 0; /* No specific padding needed */
+    }
+    .required-badge {
+        font-size: 0.6rem; /* Even smaller badge */
+        padding: 0.1rem 0.3rem;
+        order: 2; /* Place badge after main text */
+        margin-left: 0.5rem; /* Reset left margin if needed */
+    }
+    .base-form .file-upload .original-text {
+        order: 1; /* Ensure text is first */
+        flex-grow: 0; /* Don't let it grow excessively */
+    }
+    .base-form .file-upload .original-icon {
+        order: 0; /* Ensure icon is first */
+    }
+
+     /* Selected state on mobile */
+    .base-form .file-upload label.file-selected .selected-status {
+         padding: 0.75rem; /* Match label padding */
+         justify-content: flex-start; /* Align check/text left */
+    }
+
+
+    /* Modal Mobile */
+    .modal { width: 95%; padding: 1.5rem; }
+    .modal-header h2 { font-size: 1.3rem; }
+    .modal-actions { flex-direction: column; gap: 0.5rem; }
+     .modal-actions button { width: 100%; }
+}
+
+.logo-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.logo-vertical img {
+    width: 70px;
+    height: 70px;
+    margin-right: 0;
+    margin-bottom: 0.5rem; /* Add some space between image and text */
+}
+
+.logo-vertical h2 {
+    visibility: hidden;
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.logo-horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+}
+
+.logo-vertical h2 {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.2rem;
+}

@@ -1,0 +1,132 @@
+{% extends 'provider_app/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Bursary Home - Dashboard{% endblock %}
+
+{% block main_content %}
+        <section class="header">
+            <div class="header-content">
+                <div class="header-top">
+                    <span class="date">{{ current_date|date:"F j, Y" }}</span>
+                    {% if user_status == "Verified" %}
+                        <span class="status-label verified"><ion-icon name="checkmark-circle-outline"></ion-icon> Verified</span>
+                    {% elif user_status == "Pending" %}
+                        <span class="status-label pending"><ion-icon name="hourglass-outline"></ion-icon> Pending Verification</span>
+                    {% else %}
+                        <span class="status-label unverified"><ion-icon name="close-circle-outline"></ion-icon> Profile Incomplete</span>
+                    {% endif %}
+                </div>
+                <div class="header-text">
+                        <h2>Welcome back,<br>{{ user.username }}!</h2>
+                        {# This count should ideally come from the view context #}
+                        <p>You have 8 available bursaries matching your profile</p>
+                </div>
+            </div>
+            <div class="header-image">
+                 {# Make sure this image path is correct #}
+                <img src="{% static 'images/boy white.png' %}" alt="Student illustration">
+            </div>
+        </section>
+
+      <section class="bursaries">
+                <div class="bursaries-header">
+                    <h2>Available Bursaries</h2>
+                    <a href="#">See all</a>
+                </div>
+                {# Check if bursaries exist before looping #}
+                {% if bursaries %}
+                <div class="bursaries-grid">
+                    {% for bursary in bursaries %}
+                    {# Added example data attributes for modal - replace with actual data #}
+                    <div class="bursary-card"
+                         data-bursary-id="{{ bursary.id }}"
+                         data-title="{{ bursary.name }}"
+                         data-provider="Example Provider Inc." {# Replace with actual data #}
+                         data-field="{{ bursary.field_of_study }}"
+                         data-gpa="3.5+" {# Replace with actual data #}
+                         data-deadline="{{ bursary.deadline|date:"d M Y" }}">
+                        <h3>{{ bursary.name }}</h3>
+                        <p class="available">Provider: Example Provider Inc.</p> {# Example provider #}
+                        <p class="deadline">Deadline: {{ bursary.deadline|date:"d M Y" }}</p>
+                        <div class="progress-bar">
+                             {# Example static progress - make dynamic in view/JS #}
+                            <div class="progress-bar-fill" style="width: 95%;"></div>
+                        </div>
+                        <p class="match">Match: 95%</p> {# Example match % - make dynamic #}
+                        <span class="tag">{{ bursary.field_of_study }}</span>
+                        <button class="apply-btn">Apply Now</button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                    <p>No bursaries available at the moment.</p> {# Message when no bursaries #}
+                {% endif %}
+            </section>
+
+        {% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const { showModal, confirmBtn } = setupModal(
+            'details-modal',
+            'details-modal-overlay',
+            'details-modal-close-btn',
+            'details-modal-cancel-btn',
+            'details-modal-confirm-btn',
+            {
+                title: 'details-modal-title',
+                provider: 'details-modal-provider',
+                field_of_study: 'details-modal-field',
+                gpa_requirement: 'details-modal-gpa',
+                deadline: 'details-modal-deadline',
+                status: 'details-modal-status',
+                progress: 'details-modal-progress'
+            }
+        );
+
+        const { showSuccessDialog, hideSuccessDialog } = setupSuccessDialog(
+            '.success-dialog-overlay',
+            '.success-dialog-close'
+        );
+
+        const applyButtons = document.querySelectorAll('.apply-btn');
+
+        applyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.bursary-card');
+                if (!card) return;
+
+                const bursaryData = {
+                    title: card.dataset.title || card.querySelector('h3').textContent,
+                    provider: card.dataset.provider || 'N/A',
+                    field_of_study: card.dataset.field || card.querySelector('.tag').textContent,
+                    gpa_requirement: card.dataset.gpa || 'Varies',
+                    deadline: card.dataset.deadline || card.querySelector('.deadline').textContent.replace('Deadline: ',''),
+                    status: card.dataset.status || 'N/A',
+                    progress: card.dataset.progress || 'N/A'
+                };
+                showModal(bursaryData);
+            });
+        });
+
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', function() {
+                console.log('Application confirmed (simulation)');
+                // In a real app, you'd send an AJAX request here
+                // After successful AJAX, then show success dialog
+                showSuccessDialog();
+            });
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                // Check if any modal is active and hide it
+                if (document.querySelector('.modal-overlay.active')) {
+                    document.querySelector('.modal-overlay.active').classList.remove('active');
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
