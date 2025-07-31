@@ -9,7 +9,7 @@ enum ProfileStatus {
 
 class ProfileState extends Equatable {
   final ProfileStatus status;
-  final StudentProfile? profile;
+  final AppUser? profile;
   final String? errorMessage;
 
   const ProfileState({
@@ -24,7 +24,7 @@ class ProfileState extends Equatable {
 
   ProfileState copyWith({
     ProfileStatus? status,
-    StudentProfile? profile,
+    AppUser? profile,
     String? errorMessage,
   }) {
     return ProfileState(

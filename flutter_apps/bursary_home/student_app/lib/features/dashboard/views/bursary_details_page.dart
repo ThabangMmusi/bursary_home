@@ -1,34 +1,54 @@
-import 'package:bursary_home_ui/widgets/buttons/primary_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:bursary_home_ui/bursary_home_ui.dart';
-import 'package:student_app/data/models/bursary_model.dart';
+import 'package:data_layer/data_layer.dart';
 import 'package:intl/intl.dart';
 
-class BursaryDetailsPage extends StatelessWidget {
+class BursaryDetailsPage extends StatefulWidget {
   final Bursary bursary;
 
   const BursaryDetailsPage({super.key, required this.bursary});
 
   @override
+  State<BursaryDetailsPage> createState() => _BursaryDetailsPageState();
+}
+
+class _BursaryDetailsPageState extends State<BursaryDetailsPage> {
+  String _companyName = 'Loading...';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCompanyName();
+  }
+
+  Future<void> _fetchCompanyName() async {
+    final companyRepository = CompanyRepository();
+    final name = await companyRepository.getCompanyName(
+      widget.bursary.company_id,
+    );
+    setState(() {
+      _companyName = name ?? 'Unknown Provider';
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return CustomModal(
-      title: bursary.name,
+      title: widget.bursary.name,
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildDetailRow(context, 'Provider', bursary.provider),
+          _buildDetailRow(context, 'Provider', _companyName),
           _buildDetailRow(
             context,
             'Deadline',
-            DateFormat('d MMMM y').format(bursary.deadline),
+            DateFormat('d MMMM y').format(widget.bursary.deadline),
           ),
-          _buildDetailRow(context, 'Field of Study', bursary.fieldOfStudy),
-          _buildDetailRow(
-            context,
-            'GPA Requirement',
-            '${bursary.gpaRequirement}',
-          ),
+          _buildDetailRow(context, 'Field of Study', widget.bursary.field),
+          _buildDetailRow(context, 'GPA Requirement', '${widget.bursary.gpa}'),
+          // _buildDetailRow(context, 'Academic Level', bursary.academicLevel),
+          // _buildDetailRow(context, 'Amount', 'R${bursary.amount}'),
           // Add more details as needed
           const SizedBox(height: 16.0),
           Text(
@@ -38,10 +58,10 @@ class BursaryDetailsPage extends StatelessWidget {
             ).textTheme.titleMedium?.copyWith(color: AppColors.textDark),
           ),
           const SizedBox(height: 8.0),
-          Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+          // Text(
+          //   bursary.description,
+          //   style: Theme.of(context).textTheme.bodyMedium,
+          // ),
         ],
       ),
       actions: [
@@ -51,7 +71,7 @@ class BursaryDetailsPage extends StatelessWidget {
             // TODO: Implement actual application logic
             Navigator.of(context).pop(); // Close modal
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Applying for ${bursary.name}')),
+              SnackBar(content: Text('Applying for ${widget.bursary.name}')),
             );
           },
         ),
@@ -78,4 +98,23 @@ class BursaryDetailsPage extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildDetailRow(BuildContext context, String label, String value) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            color: AppColors.textDark,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Text(value, style: Theme.of(context).textTheme.bodyMedium),
+      ],
+    ),
+  );
 }

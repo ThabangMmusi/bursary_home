@@ -25,33 +25,23 @@ class TopHeaderBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 400), // max-width: 400px
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // 8px 16px
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(25.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 4.0,
-                    offset: const Offset(0, 2), // 0 2px 4px rgba(0, 0, 0, 0.05)
-                  ),
-                ],
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600.0), // 37.5rem
+            child: TextField(
+              onChanged: onSearchChanged,
+              decoration: InputDecoration(
+                hintText: 'Search bursaries, applications...',
+                hintStyle: const TextStyle(color: Color(0xFFAAAAAA)),
+                border: InputBorder.none,
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: const Color(0xFFAAAAAA),
+                  size: 16.0,
+                ), // 1rem
+                isDense: true,
+                contentPadding: EdgeInsets.zero,
               ),
-              child: TextField(
-                onChanged: onSearchChanged,
-                decoration: InputDecoration(
-                  hintText: 'Search bursaries, applications...',
-                  hintStyle: const TextStyle(color: Color(0xFFAAAAAA)),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.search, color: const Color(0xFFAAAAAA), size: 16.0), // 1rem
-                  isDense: true,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                style: TextStyles.bodyLarge,
-              ),
+              style: TextStyles.bodyLarge,
             ),
           ),
           const SizedBox(width: 16.0), // 1rem
@@ -79,11 +69,16 @@ class TopHeaderBar extends StatelessWidget {
                 children: [
                   Text(
                     userName,
-                    style: TextStyles.titleMedium.copyWith(fontWeight: FontWeight.bold),
+                    style: TextStyles.titleMedium.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
                     userRole,
-                    style: TextStyles.bodySmall.copyWith(color: const Color(0xFF666666), fontSize: 0.7 * 16.0), // 0.7rem
+                    style: TextStyles.bodySmall.copyWith(
+                      color: const Color(0xFF666666),
+                      fontSize: 0.7 * 16.0,
+                    ), // 0.7rem
                   ),
                 ],
               ),

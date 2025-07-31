@@ -8,12 +8,18 @@ abstract class DocumentUploadEvent extends Equatable {
 }
 
 class UploadDocument extends DocumentUploadEvent {
+  final dynamic file;
   final String userId;
-  final dynamic file; // Can be File or List<int> (for web)
   final String documentType;
+  final String fileExtension;
 
-  const UploadDocument({required this.userId, required this.file, required this.documentType});
+  const UploadDocument({
+    required this.file,
+    required this.userId,
+    required this.documentType,
+    required this.fileExtension,
+  });
 
   @override
-  List<Object> get props => [userId, file, documentType];
+  List<Object> get props => [file, userId, documentType, fileExtension];
 }

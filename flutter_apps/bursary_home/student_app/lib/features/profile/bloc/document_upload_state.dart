@@ -1,11 +1,6 @@
 part of 'document_upload_bloc.dart';
 
-enum DocumentUploadStatus {
-  initial,
-  uploading,
-  success,
-  failure,
-}
+enum DocumentUploadStatus { initial, uploading, success, failure }
 
 class DocumentUploadState extends Equatable {
   final DocumentUploadStatus status;

@@ -10,7 +10,7 @@ abstract class ProfileEvent extends Equatable {
 class LoadProfile extends ProfileEvent {}
 
 class UpdateProfile extends ProfileEvent {
-  final StudentProfile profile;
+  final AppUser profile;
 
   const UpdateProfile(this.profile);
 

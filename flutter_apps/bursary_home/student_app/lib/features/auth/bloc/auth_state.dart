@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
-import 'package:student_app/data/models/app_user.dart';
+import 'package:data_layer/data_layer.dart';
 
 enum AuthStatus {
   authenticated,
   unauthenticated,
   unknown,
+  loading,
 }
 
 class AuthState extends Equatable {
@@ -14,6 +15,8 @@ class AuthState extends Equatable {
   const AuthState._({required this.status, this.user = AppUser.empty});
 
   const AuthState.unknown() : this._(status: AuthStatus.unknown);
+
+  const AuthState.loading() : this._(status: AuthStatus.loading);
 
   const AuthState.authenticated(AppUser user)
       : this._(status: AuthStatus.authenticated, user: user);

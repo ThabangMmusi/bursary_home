@@ -3,26 +3,37 @@ import 'package:bursary_home_ui/theme/app_colors.dart';
 import 'package:bursary_home_ui/theme/styles.dart';
 import 'package:bursary_home_ui/widgets/status_label.dart';
 
-class DashboardHeaderSection extends StatelessWidget {
+class DashboardHeaderWidget extends StatelessWidget {
   final String userName;
   final String currentDate;
   final UserStatus userStatus;
-  final String bursariesAvailable;
+  final int bursariesAvailableCount;
+  final int bursariesDisplayedCount;
   final String headerImagePath;
 
-  const DashboardHeaderSection({
+  const DashboardHeaderWidget({
     super.key,
     required this.userName,
     required this.currentDate,
     required this.userStatus,
-    required this.bursariesAvailable,
+    required this.bursariesAvailableCount,
+    required this.bursariesDisplayedCount,
     required this.headerImagePath,
   });
 
   @override
   Widget build(BuildContext context) {
+    String bursariesText;
+    if (bursariesDisplayedCount < bursariesAvailableCount) {
+      bursariesText = 'Showing $bursariesDisplayedCount of $bursariesAvailableCount available bursaries matching your profile';
+    } else if (bursariesDisplayedCount == bursariesAvailableCount && bursariesAvailableCount > 0) {
+      bursariesText = 'You qualify for $bursariesAvailableCount available bursaries matching your profile';
+    } else {
+      bursariesText = 'No bursaries available matching your profile';
+    }
+
     return Container(
-      margin: const EdgeInsets.only(top: 16.0, bottom: 48.0), // 1rem 3rem
+      margin: EdgeInsets.only(bottom: 16.0),
       padding: const EdgeInsets.all(24.0), // 1.5rem
       decoration: BoxDecoration(
         color: AppColors.primaryColor,
@@ -37,7 +48,7 @@ class DashboardHeaderSection extends StatelessWidget {
             child: Image.asset(
               headerImagePath,
               fit: BoxFit.contain,
-              height: 200, // max-height: 200px
+              height: 350, // max-height: 200px
             ),
           ),
           Column(
@@ -83,7 +94,7 @@ class DashboardHeaderSection extends StatelessWidget {
                     ),
                     const SizedBox(height: 8.0), // 0.5rem
                     Text(
-                      'You have $bursariesAvailable available bursaries matching your profile',
+                      bursariesText,
                       style: TextStyles.bodyLarge.copyWith(
                         color: AppColors.white.withOpacity(0.9),
                         fontSize: 1.0 * 16.0, // 1rem

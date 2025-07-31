@@ -1,0 +1,28 @@
+
+[ +203 ms] DartError: Assertion failed:
+                    file:///C:/Users/Thabang%20Mmusi/AppData/Local/Pub/Cache/hosted/pub.dev/bloc-9.0.0/lib/src/emitter.dart:150:7       
+                    _disposables.isEmpty
+                    "\n\nAn event handler completed but left pending subscriptions behind.\nThis is most likely due to an unawaited     
+emit.forEach or
+                    emit.onEach. \nPlease make sure to await all asynchronous operations within event handlers.\n\n  **BAD**\n
+on<Event>((event, emit) {\n
+                    emit.forEach(...);\n  });  \n  \n  **GOOD**\n  on<Event>((event, emit) async {\n    await emit.forEach(...);\n      
+});\n\n  **GOOD**\n
+                    on<Event>((event, emit) {\n    return emit.forEach(...);\n  });\n\n  **GOOD**\n  on<Event>((event, emit) =>
+emit.forEach(...));\n\n"
+                    dart-sdk/lib/_internal/js_dev_runtime/private/ddc_runtime/errors.dart 307:3  throw_
+                    dart-sdk/lib/_internal/js_dev_runtime/private/profile.dart 117:39            assertFailed
+                    packages/bloc/src/emitter.dart 150:20                                        complete
+                    packages/bloc/src/bloc.dart 219:20                                           onDone
+                    packages/bloc/src/bloc.dart 231:13                                           <fn>
+                    dart-sdk/lib/_internal/js_dev_runtime/patch/async_patch.dart 622:19          <fn>
+                    dart-sdk/lib/_internal/js_dev_runtime/patch/async_patch.dart 647:23          <fn>
+                    dart-sdk/lib/_internal/js_dev_runtime/patch/async_patch.dart 593:31          <fn>
+                    dart-sdk/lib/async/zone.dart 1849:54                                         runUnary
+                    dart-sdk/lib/async/future_impl.dart 208:18                                   handleValue
+                    dart-sdk/lib/async/future_impl.dart 932:44                                   handleValueCallback
+                    dart-sdk/lib/async/future_impl.dart 961:13                                   _propagateToListeners
+                    dart-sdk/lib/async/future_impl.dart 535:9                                    callback
+                    dart-sdk/lib/async/schedule_microtask.dart 40:11                             _microtaskLoop
+                    dart-sdk/lib/async/schedule_microtask.dart 49:5                              _startMicrotaskLoop
+                    dart-sdk/lib/_internal/js_dev_runtime/patch/async_patch.dart 186:7           <fn>

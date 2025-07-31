@@ -7,11 +7,6 @@ abstract class BursaryEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadBursaries extends BursaryEvent {
-  final List<Bursary> bursaries;
+class LoadStudentDashboardBursaries extends BursaryEvent {}
 
-  const LoadBursaries(this.bursaries);
-
-  @override
-  List<Object> get props => [bursaries];
-}
+class LoadStudentBursaries extends BursaryEvent {}

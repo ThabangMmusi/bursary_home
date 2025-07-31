@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:student_app/data/repositories/auth_repository.dart';
+import 'package:data_layer/data_layer.dart';
 
 part 'sign_in_event.dart';
 part 'sign_in_state.dart';

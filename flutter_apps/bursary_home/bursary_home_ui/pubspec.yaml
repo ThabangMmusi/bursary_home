@@ -12,6 +12,9 @@ dependencies:
     sdk: flutter
   flutter_svg: ^2.0.10+1
 
+  data_layer:
+    path: C:\devs\django\bursary_home\flutter_apps\bursary_home\data_layer
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,18 +1,15 @@
+import 'package:bursary_home_ui/widgets/logo_component.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 
-import 'package:student_app/data/repositories/auth_repository.dart';
-import 'package:student_app/data/repositories/profile_repository.dart';
-import 'package:student_app/data/repositories/bursary_repository.dart';
-import 'package:student_app/data/repositories/application_repository.dart';
+import 'package:data_layer/data_layer.dart';
 import 'package:student_app/features/auth/bloc/auth_bloc.dart';
+import 'package:student_app/features/auth/bloc/auth_state.dart';
 import 'package:student_app/features/auth/bloc/sign_in_bloc.dart';
 import 'package:student_app/features/profile/bloc/profile_bloc.dart';
-import 'package:student_app/features/profile/bloc/document_upload_bloc.dart';
-import 'package:student_app/features/dashboard/bloc/bursary_bloc.dart';
 import 'package:student_app/features/applications/bloc/applications_bloc.dart';
 import 'package:student_app/core/routes/app_router.dart';
 import 'package:bursary_home_ui/theme/themes.dart';
@@ -55,17 +52,18 @@ void main() async {
   final ProfileRepository profileRepository = ProfileRepository();
   final BursaryRepository bursaryRepository = BursaryRepository();
   final ApplicationRepository applicationRepository = ApplicationRepository();
-  final AuthBloc authBloc = AuthBloc(authRepository: authRepository);
+  final AuthBloc authBloc = AuthBloc(
+    authRepository: authRepository,
+    profileRepository: profileRepository,
+  );
   final ProfileBloc profileBloc = ProfileBloc(
     profileRepository: profileRepository,
     firebaseAuth: fb_auth.FirebaseAuth.instance,
   );
-  final BursaryBloc bursaryBloc = BursaryBloc(
-    bursaryRepository: bursaryRepository,
-  );
   final ApplicationsBloc applicationsBloc = ApplicationsBloc(
     applicationRepository: applicationRepository,
     firebaseAuth: fb_auth.FirebaseAuth.instance,
+    bursaryRepository: bursaryRepository,
   );
 
   runApp(
@@ -83,12 +81,7 @@ void main() async {
             create: (context) => SignInBloc(authRepository: authRepository),
           ),
           BlocProvider<ProfileBloc>.value(value: profileBloc),
-          BlocProvider<DocumentUploadBloc>(
-            create:
-                (context) =>
-                    DocumentUploadBloc(profileRepository: profileRepository),
-          ),
-          BlocProvider<BursaryBloc>.value(value: bursaryBloc),
+
           BlocProvider<ApplicationsBloc>.value(value: applicationsBloc),
         ],
         child: MyApp(
@@ -133,11 +126,24 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Bursary Home',
-      theme: AppTheme.light,
-      routerConfig: _router,
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state.status == AuthStatus.unknown) {
+          return const MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: Scaffold(
+              backgroundColor: AppTheme.backgroundLight,
+              body: Center(child: LogoComponent()),
+            ),
+          );
+        }
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Bursary Home',
+          theme: AppTheme.light,
+          routerConfig: _router,
+        );
+      },
     );
   }
 }
