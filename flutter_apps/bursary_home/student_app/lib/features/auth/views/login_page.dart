@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bursary_home_ui/bursary_home_ui.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:student_app/features/auth/bloc/sign_in_bloc.dart';
-import 'package:student_app/features/auth/bloc/auth_bloc.dart';
-import 'package:student_app/features/auth/bloc/auth_state.dart';
+import 'package:student_app/features/auth/bloc/app_bloc.dart';
+import 'package:student_app/features/auth/bloc/app_state.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatelessWidget {
@@ -17,16 +17,16 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, authState) {
-          if (authState.status == AuthStatus.authenticated) {
+      body: BlocConsumer<AppBloc, AppState>(
+        listener: (context, appState) {
+          if (appState.status == AppStatus.authenticated) {
             context.go('/dashboard');
-          } else if (authState.status == AuthStatus.unauthenticated) {
+          } else if (appState.status == AppStatus.unauthenticated) {
             // Stay on login page, or show error if needed
           }
         },
-        builder: (context, authState) {
-          if (authState.status == AuthStatus.loading) {
+        builder: (context, appState) {
+          if (appState.status == AppStatus.loading) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -69,7 +69,7 @@ class LoginPage extends StatelessWidget {
                     BlocBuilder<SignInBloc, SignInState>(
                       builder: (context, signInState) {
                         final bool isLoading =
-                            authState.status == AuthStatus.loading;
+                            appState.status == AppStatus.loading;
                         return Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [

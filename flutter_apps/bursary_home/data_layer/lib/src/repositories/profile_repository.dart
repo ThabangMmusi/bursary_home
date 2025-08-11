@@ -106,4 +106,23 @@ class ProfileRepository {
       rethrow;
     }
   }
+
+  Future<Map<String, dynamic>?> getAcademicDetails(String userId) async {
+    try {
+      final doc = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('more_details')
+          .doc('academics')
+          .get();
+      if (doc.exists) {
+        return doc.data();
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error getting academic details: $e');
+      rethrow;
+    }
+  }
 }

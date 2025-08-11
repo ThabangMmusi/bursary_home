@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:student_app/features/auth/bloc/auth_bloc.dart';
+import 'package:student_app/features/auth/bloc/app_bloc.dart';
 import 'package:student_app/features/dashboard/bloc/bursary_bloc.dart';
 import 'package:student_app/features/dashboard/views/bursary_details_page.dart';
 
@@ -19,7 +19,7 @@ class DashboardPage extends StatelessWidget {
         print('Dashboard - totalEligibleBursariesCount: ${bursaryState.totalEligibleBursariesCount}');
         print('Dashboard - bursaries.length: ${bursaryState.bursaries.length}');
 
-        final userGpa = context.select((AuthBloc bloc) => bloc.state.user.gpa);
+        final userGpa = context.select((AppBloc bloc) => bloc.state.user.gpa);
 
         return CustomScrollView(
           slivers: [
@@ -30,13 +30,13 @@ class DashboardPage extends StatelessWidget {
                   children: [
                     DashboardHeaderWidget(
                       userName: context.select(
-                        (AuthBloc bloc) => bloc.state.user.name ?? 'User',
+                        (AppBloc bloc) => bloc.state.user.name ?? 'User',
                       ),
                       currentDate: DateFormat(
                         'EEEE, d MMMM y',
                       ).format(DateTime.now()),
                       userStatus: context.select(
-                        (AuthBloc bloc) =>
+                        (AppBloc bloc) =>
                             bloc.state.user.hasCompletedProfile
                                 ? UserStatus.verified
                                 : UserStatus.unverified,

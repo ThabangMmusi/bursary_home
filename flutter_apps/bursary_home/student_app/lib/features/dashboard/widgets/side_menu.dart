@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bursary_home_ui/widgets/sidebar_navigation_item.dart';
-import 'package:student_app/features/auth/bloc/auth_bloc.dart';
+import 'package:student_app/features/auth/bloc/app_bloc.dart';
 
 class SideMenu extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
@@ -67,7 +67,7 @@ class SideMenu extends StatelessWidget {
                   title: 'Logout',
                   icon: Icons.logout,
                   onPressed: () {
-                    context.read<AuthBloc>().add(AuthLogoutRequested());
+                    context.read<AppBloc>().add(AppLogoutRequested());
                   },
                 ),
               ],

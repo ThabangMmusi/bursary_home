@@ -3,29 +3,29 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:data_layer/data_layer.dart';
-import 'package:student_app/features/auth/bloc/auth_bloc.dart';
-import 'package:student_app/features/auth/bloc/auth_state.dart';
+import 'package:student_app/features/auth/bloc/app_bloc.dart';
+import 'package:student_app/features/auth/bloc/app_state.dart';
 
 part 'bursary_event.dart';
 part 'bursary_state.dart';
 
 class BursaryBloc extends Bloc<BursaryEvent, BursaryState> {
   final BursaryRepository _bursaryRepository;
-  final AuthBloc _authBloc;
+  final AppBloc _appBloc;
   StreamSubscription? _bursariesSubscription;
   StreamSubscription? _authSubscription;
 
   BursaryBloc({
     required BursaryRepository bursaryRepository,
-    required AuthBloc authBloc,
+    required AppBloc appBloc,
   }) : _bursaryRepository = bursaryRepository,
-       _authBloc = authBloc,
+       _appBloc = appBloc,
        super(BursaryState.initial()) {
     on<LoadStudentDashboardBursaries>(_onLoadStudentDashboardBursaries);
     on<LoadStudentBursaries>(_onLoadStudentBursaries);
 
-    _authSubscription = _authBloc.stream.listen((authState) {
-      if (authState.status == AuthStatus.authenticated) {
+    _authSubscription = _appBloc.stream.listen((authState) {
+      if (authState.status == AppStatus.authenticated) {
         // Only load dashboard bursaries if not already loaded or if user changes
         if (state.status == BursaryStatus.initial || state.status == BursaryStatus.error) {
           add(LoadStudentDashboardBursaries());
@@ -37,7 +37,7 @@ class BursaryBloc extends Bloc<BursaryEvent, BursaryState> {
     });
 
     // Initial load of bursaries if user is already authenticated and bloc is initial
-    if (_authBloc.state.status == AuthStatus.authenticated && state.status == BursaryStatus.initial) {
+    if (_appBloc.state.status == AppStatus.authenticated && state.status == BursaryStatus.initial) {
       add(LoadStudentDashboardBursaries());
     }
   }
@@ -48,7 +48,7 @@ class BursaryBloc extends Bloc<BursaryEvent, BursaryState> {
   ) async {
     _bursariesSubscription?.cancel(); // Cancel any previous subscription
 
-    final user = _authBloc.state.user;
+    final user = _appBloc.state.user;
     if (user.gpa == null) {
       emit(
         state.copyWith(
@@ -92,7 +92,7 @@ class BursaryBloc extends Bloc<BursaryEvent, BursaryState> {
   ) async {
     _bursariesSubscription?.cancel(); // Cancel any previous subscription
 
-    final user = _authBloc.state.user;
+    final user = _appBloc.state.user;
     if (user.gpa == null) {
       emit(
         state.copyWith(
@@ -126,6 +126,7 @@ class BursaryBloc extends Bloc<BursaryEvent, BursaryState> {
       },
     );
   }
+}
 
   @override
   Future<void> close() {

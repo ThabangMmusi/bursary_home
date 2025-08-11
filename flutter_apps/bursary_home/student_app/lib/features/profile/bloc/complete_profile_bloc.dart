@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:data_layer/data_layer.dart';
-import 'package:student_app/features/auth/bloc/auth_bloc.dart';
+import 'package:student_app/features/auth/bloc/app_bloc.dart';
 
 part 'complete_profile_event.dart';
 part 'complete_profile_state.dart';
@@ -9,13 +9,13 @@ part 'complete_profile_state.dart';
 class CompleteProfileBloc
     extends Bloc<CompleteProfileEvent, CompleteProfileState> {
   final ProfileRepository _profileRepository;
-  final AuthBloc _authBloc;
+  final AppBloc _appBloc;
 
   CompleteProfileBloc({
     required ProfileRepository profileRepository,
-    required AuthBloc authBloc,
+    required AppBloc appBloc,
   }) : _profileRepository = profileRepository,
-       _authBloc = authBloc,
+       _appBloc = appBloc,
        super(const CompleteProfileState()) {
     on<ManualEntrySelected>((event, emit) {
       emit(state.copyWith(entryMode: CompleteProfileEntryMode.manual));
@@ -91,7 +91,7 @@ class CompleteProfileBloc
         ),
       );
       try {
-        final userId = _authBloc.state.user.id;
+        final userId = _appBloc.state.user.id;
 
         final gpa = _calculateGpa(state.subjects);
 
@@ -107,7 +107,7 @@ class CompleteProfileBloc
           subjects: state.subjects,
         );
         emit(state.copyWith(isSubmitting: false, submissionSuccess: true));
-        _authBloc.add(AuthProfileCompleted());
+        _appBloc.add(AppProfileCompleted());
       } catch (e) {
         emit(state.copyWith(isSubmitting: false, submissionError: true));
       }

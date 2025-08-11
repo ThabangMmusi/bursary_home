@@ -61,11 +61,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             (userDocSnapshot) async {
               double? gpa;
               bool hasCompletedProfile = false;
+              Map<String, dynamic>? academicDetails;
 
               if (userDocSnapshot.exists) {
                 final userData = userDocSnapshot.data();
                 gpa = (userData?['gpa'] as num?)?.toDouble();
                 hasCompletedProfile = await _profileRepository.hasAcademicDetails(user.uid);
+                if (hasCompletedProfile) {
+                  academicDetails = await _profileRepository.getAcademicDetails(user.uid);
+                }
               }
 
               emit(
@@ -76,6 +80,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                     gpa: gpa,
                     hasCompletedProfile: hasCompletedProfile,
                   ),
+                  academicDetails: academicDetails,
                 ),
               );
             },

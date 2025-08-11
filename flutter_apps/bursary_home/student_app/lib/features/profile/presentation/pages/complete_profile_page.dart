@@ -5,7 +5,7 @@ import 'package:student_app/features/profile/bloc/complete_profile_bloc.dart';
 import 'package:student_app/features/profile/presentation/widgets/personal_details_card.dart';
 import 'package:student_app/features/profile/presentation/widgets/academic_details_form.dart';
 import 'package:data_layer/data_layer.dart';
-import 'package:student_app/features/auth/bloc/auth_bloc.dart';
+import 'package:student_app/features/auth/bloc/app_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class CompleteProfilePage extends StatefulWidget {
@@ -24,7 +24,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
             profileRepository: RepositoryProvider.of<ProfileRepository>(
               context,
             ),
-            authBloc: BlocProvider.of<AuthBloc>(context),
+            appBloc: BlocProvider.of<AppBloc>(context),
           ),
       child: BlocListener<CompleteProfileBloc, CompleteProfileState>(
         listener: (context, state) {

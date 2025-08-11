@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bursary_home_ui/bursary_home_ui.dart';
 import 'package:student_app/features/dashboard/bloc/bursary_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:student_app/features/auth/bloc/auth_bloc.dart';
+import 'package:student_app/features/auth/bloc/app_bloc.dart';
 
 class BursariesPage extends StatefulWidget {
   const BursariesPage({super.key});
@@ -42,7 +42,7 @@ class _BursariesPageState extends State<BursariesPage> {
                   return Center(child: Text('Error: ${state.errorMessage}'));
                 } else if (state.status == BursaryStatus.loaded &&
                     state.allBursaries.isNotEmpty) {
-                  final userGpa = context.watch<AuthBloc>().state.user.gpa ?? 0.0;
+                  final userGpa = context.watch<AppBloc>().state.user.gpa ?? 0.0;
                   return GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithMaxCrossAxisExtent(

@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:data_layer/data_layer.dart';
-import 'package:student_app/features/auth/bloc/auth_bloc.dart';
-import 'package:student_app/features/auth/bloc/auth_state.dart';
+import 'package:student_app/features/auth/bloc/app_bloc.dart';
+import 'package:student_app/features/auth/bloc/app_state.dart';
 import 'package:student_app/features/auth/views/login_page.dart';
 import 'package:student_app/features/profile/presentation/pages/complete_profile_page.dart';
 import 'package:student_app/features/profile/views/profile_page.dart';
@@ -18,12 +18,12 @@ import 'package:student_app/features/applications/views/applications_page.dart';
 import 'package:student_app/features/dashboard/bloc/bursary_bloc.dart';
 
 class AppRouter {
-  final AuthBloc authBloc;
+  final AppBloc appBloc;
   final ProfileBloc profileBloc;
   final ApplicationsBloc applicationsBloc;
 
   AppRouter({
-    required this.authBloc,
+    required this.appBloc,
     required this.profileBloc,
     required this.applicationsBloc,
   });
@@ -67,7 +67,7 @@ class AppRouter {
                             (context) => BursaryBloc(
                               bursaryRepository:
                                   context.read<BursaryRepository>(),
-                              authBloc: authBloc,
+                              appBloc: appBloc,
                             ),
                         child: const DashboardPage(),
                       ),
@@ -86,7 +86,7 @@ class AppRouter {
                             (context) => BursaryBloc(
                               bursaryRepository:
                                   context.read<BursaryRepository>(),
-                              authBloc: authBloc,
+                              appBloc: appBloc,
                             ),
                         child: const BursariesPage(),
                       ),
@@ -118,8 +118,8 @@ class AppRouter {
       ),
     ],
     redirect: (BuildContext context, GoRouterState state) {
-      final bool loggedIn = authBloc.state.status == AuthStatus.authenticated;
-      final bool profileComplete = authBloc.state.user.hasCompletedProfile;
+      final bool loggedIn = appBloc.state.status == AppStatus.authenticated;
+      final bool profileComplete = appBloc.state.user.hasCompletedProfile;
 
       final bool loggingIn = state.matchedLocation == '/login';
       final bool completingProfile =
@@ -133,7 +133,7 @@ class AppRouter {
       // If logged in:
       if (loggedIn) {
         // If profile is not complete and not already on complete-profile page, redirect to complete-profile
-        if (authBloc.state.user.isNotEmpty &&
+        if (appBloc.state.user.isNotEmpty &&
             !profileComplete &&
             !completingProfile) {
           return '/complete-profile'; // Redirect to a common path for profile completion
@@ -147,7 +147,7 @@ class AppRouter {
       // No redirect
       return null;
     },
-    refreshListenable: GoRouterRefreshStream(authBloc.stream),
+    refreshListenable: GoRouterRefreshStream(appBloc.stream),
   );
 }
 
