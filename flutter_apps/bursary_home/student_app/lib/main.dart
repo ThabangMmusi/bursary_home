@@ -6,15 +6,19 @@ import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 
 import 'package:data_layer/data_layer.dart';
-import 'package:student_app/features/auth/bloc/auth_bloc.dart';
-import 'package:student_app/features/auth/bloc/auth_state.dart';
+import 'package:student_app/core/theme/bloc/theme_bloc.dart';
+import 'package:student_app/core/theme/theme_preferences.dart';
+import 'package:student_app/features/auth/bloc/app_bloc.dart';
+import 'package:student_app/features/auth/bloc/app_state.dart';
 import 'package:student_app/features/auth/bloc/sign_in_bloc.dart';
 import 'package:student_app/features/profile/bloc/profile_bloc.dart';
 import 'package:student_app/features/applications/bloc/applications_bloc.dart';
 import 'package:student_app/core/routes/app_router.dart';
-import 'package:bursary_home_ui/theme/themes.dart';
+import 'package:bursary_home_ui/bursary_home_ui.dart';
 
 import 'firebase_options.dart';
+
+import 'package:student_app/core/theme/bloc/theme_state.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override
@@ -52,9 +56,13 @@ void main() async {
   final ProfileRepository profileRepository = ProfileRepository();
   final BursaryRepository bursaryRepository = BursaryRepository();
   final ApplicationRepository applicationRepository = ApplicationRepository();
-  final AuthBloc authBloc = AuthBloc(
+  final ThemePreferences themePreferences = ThemePreferences();
+
+  final ThemeBloc themeBloc = ThemeBloc(themePreferences: themePreferences);
+  final AppBloc appBloc = AppBloc(
     authRepository: authRepository,
     profileRepository: profileRepository,
+    themeBloc: themeBloc,
   );
   final ProfileBloc profileBloc = ProfileBloc(
     profileRepository: profileRepository,
@@ -76,7 +84,8 @@ void main() async {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<AuthBloc>.value(value: authBloc),
+          BlocProvider<ThemeBloc>.value(value: themeBloc),
+          BlocProvider<AppBloc>.value(value: appBloc),
           BlocProvider<SignInBloc>(
             create: (context) => SignInBloc(authRepository: authRepository),
           ),
@@ -85,7 +94,7 @@ void main() async {
           BlocProvider<ApplicationsBloc>.value(value: applicationsBloc),
         ],
         child: MyApp(
-          authBloc: authBloc,
+          appBloc: appBloc,
           profileBloc: profileBloc,
           applicationsBloc: applicationsBloc,
         ),
@@ -95,13 +104,13 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  final AuthBloc authBloc;
+  final AppBloc appBloc;
   final ProfileBloc profileBloc;
   final ApplicationsBloc applicationsBloc;
 
   const MyApp({
     super.key,
-    required this.authBloc,
+    required this.appBloc,
     required this.profileBloc,
     required this.applicationsBloc,
   });
@@ -118,7 +127,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _router =
         AppRouter(
-          authBloc: widget.authBloc,
+          appBloc: widget.appBloc,
           profileBloc: widget.profileBloc,
           applicationsBloc: widget.applicationsBloc,
         ).router;
@@ -126,9 +135,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
+    return BlocBuilder<AppBloc, AppState>(
       builder: (context, state) {
-        if (state.status == AuthStatus.unknown) {
+        if (state.status == AppStatus.unknown) {
           return const MaterialApp(
             debugShowCheckedModeBanner: false,
             home: Scaffold(
@@ -137,11 +146,15 @@ class _MyAppState extends State<MyApp> {
             ),
           );
         }
-        return MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          title: 'Bursary Home',
-          theme: AppTheme.light,
-          routerConfig: _router,
+        return BlocBuilder<ThemeBloc, ThemeState>(
+          builder: (context, themeState) {
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              title: 'Bursary Home',
+              theme: themeState.themeData,
+              routerConfig: _router,
+            );
+          },
         );
       },
     );
