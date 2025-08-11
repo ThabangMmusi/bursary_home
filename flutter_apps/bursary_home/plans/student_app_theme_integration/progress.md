@@ -1,0 +1,3 @@
+# Progress: Student App Theme Integration
+
+*   **2025-08-11:** Changelog reset as part of redoing plans.

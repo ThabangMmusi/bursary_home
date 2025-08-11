@@ -1,0 +1,3 @@
+# Progress: Provider Profile Refactor
+
+*   **2025-08-11:** Changelog reset as part of redoing plans.
