@@ -49,7 +49,7 @@ class StatusLabel extends StatelessWidget {
       case UserStatus.pending:
         return 'Pending Verification';
       case UserStatus.unverified:
-        return 'Profile Incomplete';
+        return 'Unverified';
     }
   }
 

@@ -79,4 +79,31 @@ class SurnameChanged extends CompleteProfileEvent {
   List<Object> get props => [surname];
 }
 
+class CompanyNameChanged extends CompleteProfileEvent {
+  const CompanyNameChanged(this.companyName);
+
+  final String companyName;
+
+  @override
+  List<Object> get props => [companyName];
+}
+
+class RegistrationNumberChanged extends CompleteProfileEvent {
+  const RegistrationNumberChanged(this.registrationNumber);
+
+  final String registrationNumber;
+
+  @override
+  List<Object> get props => [registrationNumber];
+}
+
+class TaxNumberChanged extends CompleteProfileEvent {
+  const TaxNumberChanged(this.taxNumber);
+
+  final String taxNumber;
+
+  @override
+  List<Object> get props => [taxNumber];
+}
+
 class FormSubmitted extends CompleteProfileEvent {}

@@ -46,20 +46,29 @@ class ProfileRepository {
     }
   }
 
-  Future<void> saveCompleteProfile({
-    required String id,
-    required double gpa,
-    String? name,
-    String? surname,
+  Future<void> saveCompanyProfile({
+    required String companyId,
+    required String taxNumber,
+    required String registrationNumber,
+    required String companyName,
   }) async {
     try {
-      await _firestore.collection('users').doc(id).set({
-        'gpa': gpa,
-        'name': name,
-        'surname': surname,
+      // Save basic company details
+      await _firestore.collection('companies').doc(companyId).set({
+        'name': companyName,
+      }, SetOptions(merge: true));
+      // Save additional company details
+      await _firestore
+          .collection('companies')
+          .doc(companyId)
+          .collection('more')
+          .doc('details')
+          .set({
+        'tax_no': taxNumber,
+        'reg_no': registrationNumber,
       }, SetOptions(merge: true));
     } catch (e) {
-      print('Error saving complete profile: $e');
+      print('Error saving provider profile: $e');
       rethrow;
     }
   }
@@ -80,7 +89,7 @@ class ProfileRepository {
       await _firestore
           .collection('users')
           .doc(id)
-          .collection('more_details')
+          .collection('more')
           .doc('academics')
           .set({
         'qualificationName': qualificationName,

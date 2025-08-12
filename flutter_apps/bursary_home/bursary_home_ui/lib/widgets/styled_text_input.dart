@@ -203,8 +203,8 @@ class _StyledTextInputState extends State<StyledTextInput> {
             text: widget.label!,
             style:
                 widget.labelStyle ??
-                textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
+                textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
                   color:
                       hasError
                           ? colorScheme.error

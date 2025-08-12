@@ -52,12 +52,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     if (event.user != null) {
       emit(AppState.loading(state.themeType));
       // Fetch StudentProfile to get GPA, name, and surname
-      final studentProfile = await _profileRepository.getProfile(
-        event.user!.uid,
-      );
-      gpa = studentProfile?.gpa;
-      firstName = studentProfile?.name;
-      lastName = studentProfile?.surname;
+      final userProfile = await _profileRepository.getProfile(event.user!.uid);
+      hasCompletedProfile = userProfile != null;
+      gpa = userProfile?.gpa;
+      firstName = userProfile?.name;
+      lastName = userProfile?.surname;
 
       // If name/surname not from profile, try to get from auth provider display name
       if (firstName == null &&
@@ -78,11 +77,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           }
         }
       }
-
-      // Check for academic details to determine profile completion
-      hasCompletedProfile = await _profileRepository.hasAcademicDetails(
-        event.user!.uid,
-      );
 
       emit(
         AppState.authenticated(

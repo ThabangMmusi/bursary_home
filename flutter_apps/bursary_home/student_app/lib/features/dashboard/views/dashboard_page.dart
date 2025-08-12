@@ -16,7 +16,9 @@ class DashboardPage extends StatelessWidget {
     return BlocBuilder<BursaryBloc, BursaryState>(
       builder: (context, bursaryState) {
         // Debugging prints
-        print('Dashboard - totalEligibleBursariesCount: ${bursaryState.totalEligibleBursariesCount}');
+        print(
+          'Dashboard - totalEligibleBursariesCount: ${bursaryState.totalEligibleBursariesCount}',
+        );
         print('Dashboard - bursaries.length: ${bursaryState.bursaries.length}');
 
         final userGpa = context.select((AppBloc bloc) => bloc.state.user.gpa);
@@ -35,12 +37,15 @@ class DashboardPage extends StatelessWidget {
                       currentDate: DateFormat(
                         'EEEE, d MMMM y',
                       ).format(DateTime.now()),
-                      userStatus: context.select(
-                        (AppBloc bloc) =>
-                            bloc.state.user.hasCompletedProfile
-                                ? UserStatus.verified
-                                : UserStatus.unverified,
-                      ),
+                      userStatus: context.select((AppBloc bloc) {
+                        if (bloc.state.isStudent) {
+                          return UserStatus.unverified;
+                        } else {
+                          return bloc.state.user.isVerified
+                              ? UserStatus.verified
+                              : UserStatus.pending;
+                        }
+                      }),
                       bursariesAvailableCount:
                           bursaryState.totalEligibleBursariesCount,
                       bursariesDisplayedCount: bursaryState.bursaries.length,

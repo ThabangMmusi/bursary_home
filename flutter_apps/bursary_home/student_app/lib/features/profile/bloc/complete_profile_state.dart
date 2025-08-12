@@ -9,6 +9,9 @@ class CompleteProfileState extends Equatable {
     this.qualificationName = '',
     this.name = '',
     this.surname = '',
+    this.companyName = '',
+    this.registrationNumber = '',
+    this.taxNumber = '',
     this.isSubmitting = false,
     this.submissionSuccess = false,
     this.submissionError = false,
@@ -19,6 +22,9 @@ class CompleteProfileState extends Equatable {
   final String qualificationName;
   final String name;
   final String surname;
+  final String companyName;
+  final String registrationNumber;
+  final String taxNumber;
   final bool isSubmitting;
   final bool submissionSuccess;
   final bool submissionError;
@@ -29,6 +35,9 @@ class CompleteProfileState extends Equatable {
     String? qualificationName,
     String? name,
     String? surname,
+    String? companyName,
+    String? registrationNumber,
+    String? taxNumber,
     bool? isSubmitting,
     bool? submissionSuccess,
     bool? submissionError,
@@ -39,6 +48,9 @@ class CompleteProfileState extends Equatable {
       qualificationName: qualificationName ?? this.qualificationName,
       name: name ?? this.name,
       surname: surname ?? this.surname,
+      companyName: companyName ?? this.companyName,
+      registrationNumber: registrationNumber ?? this.registrationNumber,
+      taxNumber: taxNumber ?? this.taxNumber,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       submissionSuccess: submissionSuccess ?? this.submissionSuccess,
       submissionError: submissionError ?? this.submissionError,
@@ -47,13 +59,16 @@ class CompleteProfileState extends Equatable {
 
   @override
   List<Object> get props => [
-        entryMode,
-        subjects,
-        qualificationName,
-        name,
-        surname,
-        isSubmitting,
-        submissionSuccess,
-        submissionError,
-      ];
+    entryMode,
+    subjects,
+    qualificationName,
+    name,
+    surname,
+    companyName,
+    registrationNumber,
+    taxNumber,
+    isSubmitting,
+    submissionSuccess,
+    submissionError,
+  ];
 }

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:data_layer/data_layer.dart';
 import 'package:student_app/features/auth/bloc/app_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 part 'complete_profile_event.dart';
 part 'complete_profile_state.dart';
@@ -82,6 +83,18 @@ class CompleteProfileBloc
       emit(state.copyWith(surname: event.surname));
     });
 
+    on<CompanyNameChanged>((event, emit) {
+      emit(state.copyWith(companyName: event.companyName));
+    });
+
+    on<RegistrationNumberChanged>((event, emit) {
+      emit(state.copyWith(registrationNumber: event.registrationNumber));
+    });
+
+    on<TaxNumberChanged>((event, emit) {
+      emit(state.copyWith(taxNumber: event.taxNumber));
+    });
+
     on<FormSubmitted>((event, emit) async {
       emit(
         state.copyWith(
@@ -93,19 +106,35 @@ class CompleteProfileBloc
       try {
         final userId = _appBloc.state.user.id;
 
-        final gpa = _calculateGpa(state.subjects);
-
-        await _profileRepository.saveCompleteProfile(
+        AppUser newUser = AppUser(
           id: userId,
-          gpa: gpa,
+          email: _appBloc.state.user.email,
           name: state.name,
           surname: state.surname,
+          photo: _appBloc.state.user.photo,
         );
-        await _profileRepository.saveAcademicDetails(
-          id: userId,
-          qualificationName: state.qualificationName,
-          subjects: state.subjects,
-        );
+        if (_appBloc.state.isStudent) {
+          final gpa = _calculateGpa(state.subjects);
+          final newStudent = newUser.copyWith(gpa: gpa);
+
+          await _profileRepository.createProfile(newStudent);
+          await _profileRepository.saveAcademicDetails(
+            id: userId,
+            qualificationName: state.qualificationName,
+            subjects: state.subjects,
+          );
+        } else {
+          final companyId = Uuid().v4();
+          final newProvider = newUser.copyWith(companyId: companyId);
+
+          await _profileRepository.createProfile(newProvider);
+          await _profileRepository.saveCompanyProfile(
+            companyId: companyId,
+            taxNumber: state.taxNumber,
+            registrationNumber: state.registrationNumber,
+            companyName: state.companyName,
+          );
+        }
         emit(state.copyWith(isSubmitting: false, submissionSuccess: true));
         _appBloc.add(AppProfileCompleted());
       } catch (e) {

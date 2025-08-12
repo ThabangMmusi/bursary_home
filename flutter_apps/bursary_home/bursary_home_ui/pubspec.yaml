@@ -1,3 +1,5 @@
+publish_to: 'none'
+
 name: bursary_home_ui
 description: "A new Flutter package project."
 version: 0.0.1
@@ -13,7 +15,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
 
   data_layer:
-    path: C:\devs\django\bursary_home\flutter_apps\bursary_home\data_layer
+    path: ../data_layer
 
 dev_dependencies:
   flutter_test:

@@ -43,10 +43,10 @@ class AuthLayout extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Container(
-                      color:
-                          Theme.of(context)
-                              .extension<ThemeColors>()!
-                              .backgroundColor, // Background color for left side
+                      // color:
+                      //     Theme.of(context)
+                      //         .extension<ThemeColors>()!
+                      //         .backgroundColor, // Background color for left side
                       child: Stack(
                         children: [
                           // Background waves (conceptual, might need custom painter or image)

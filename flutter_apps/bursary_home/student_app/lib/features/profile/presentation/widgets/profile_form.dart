@@ -16,16 +16,8 @@ class ProfileForm extends StatefulWidget {
 }
 
 class _ProfileFormState extends State<ProfileForm> {
-  final TextEditingController _companyNameController = TextEditingController();
-  final TextEditingController _registrationNumberController =
-      TextEditingController();
-  final TextEditingController _taxNumberController = TextEditingController();
-
   @override
   void dispose() {
-    _companyNameController.dispose();
-    _registrationNumberController.dispose();
-    _taxNumberController.dispose();
     super.dispose();
   }
 
@@ -75,11 +67,7 @@ class _ProfileFormState extends State<ProfileForm> {
                   if (state.entryMode != CompleteProfileEntryMode.none)
                     AcademicDetailsForm(),
                 ] else
-                  CompanyDetailsForm(
-                    companyNameController: _companyNameController,
-                    registrationNumberController: _registrationNumberController,
-                    taxNumberController: _taxNumberController,
-                  ),
+                  CompanyDetailsForm(),
                 const SizedBox(height: 32),
                 Row(
                   children: [

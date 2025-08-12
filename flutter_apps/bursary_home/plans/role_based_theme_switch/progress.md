@@ -2,7 +2,7 @@
 
 ## Phase 1: Theme Management & Persistence (Initial Focus)
 - [x] Step 1.1: Introduce Theme Persistence.
-- [x] Step 1.2: Create `ThemeBloc`.
+- [x] Step 1.2: Create `ThemeBloc` (Persistence issue addressed by dispatching `ThemeStarted` event).
 - [x] Step 1.3: Integrate `ThemeBloc` into `MyApp`.
 - [x] Step 1.4: Implement Pre-Login Theme Switch UI.
 

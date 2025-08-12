@@ -11,8 +11,8 @@ class DashboardAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppBloc, AppState>(
       builder: (context, appState) {
-        String userName = 'User';
-        String userRole = 'Student'; // Always student for this app
+        late String userName;
+        String userRole = appState.isStudent ? 'Student' : 'Bursary Provider';
         String userProfileImagePath =
             'assets/images/boy white.png'; // Placeholder
 
@@ -20,11 +20,10 @@ class DashboardAppBar extends StatelessWidget {
           userName =
               '${appState.user.name ?? ''} ${appState.user.surname ?? ''}'
                   .trim();
-          if (userName.isEmpty) {
-            userName = 'User';
-          }
         }
-
+        if (userName.isEmpty) {
+          userName = 'User';
+        }
         return Container(
           margin: const EdgeInsets.only(top: 16.0),
           padding: const EdgeInsets.all(16.0),

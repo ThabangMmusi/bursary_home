@@ -160,6 +160,63 @@ class AppTheme {
       // decorationColor: colorScheme.primary, // if you want links etc to use primary
     );
 
+    return baseTheme(colorScheme, textTheme);
+  }
+
+  // --- Provider Theme ---
+  static ThemeData get providerTheme {
+    final colorScheme = ColorScheme(
+      brightness: Brightness.light,
+      primary: const Color(0xFF5C3D30), // Provider primary
+      onPrimary: Colors.white, // Text/icons on primary
+      primaryContainer: _shiftColor(
+        const Color(0xFF5C3D30),
+        0.1,
+        true,
+      ), // Lighter for light theme
+      onPrimaryContainer: textPrimaryLight,
+      secondary: AppColors.backgroundColor2,
+      onSecondary: Colors.white,
+      secondaryContainer: _shiftColor(
+        AppColors.backgroundColor2,
+        0.1,
+        true,
+      ), // Lighter
+      onSecondaryContainer: textPrimaryLight,
+      tertiary: greyMedium,
+      onTertiary: textPrimaryLight,
+      tertiaryContainer: greyLight,
+      onTertiaryContainer: textSecondaryLight,
+      error: errorColor,
+      onError: onErrorColor,
+      errorContainer: _shiftColor(errorColor, 0.4, true),
+      onErrorContainer: textPrimaryLight,
+      surface: surfaceLight,
+      onSurface: textPrimaryLight,
+      surfaceContainerHighest: const Color(0xFFFFE9CE),
+      onSurfaceVariant: textSecondaryLight,
+      outline: greyMedium,
+      outlineVariant: greyLight,
+      shadow: Colors.black.withOpacity(
+        0.1,
+      ), // Shadows are less prominent in dark usually
+      scrim: Colors.black.withOpacity(0.3),
+      inverseSurface: surfaceLight,
+      onInverseSurface: textPrimaryLight,
+      inversePrimary: const Color(0xFF5C3D30).withOpacity(0.8),
+      background: const Color(0xFFFFE9CE),
+      onBackground: textPrimaryLight,
+    );
+
+    final textTheme = _baseTextTheme.apply(
+      bodyColor: colorScheme.onSurface,
+      displayColor: colorScheme.onSurface,
+    );
+
+    return baseTheme(colorScheme, textTheme);
+  }
+
+  static ThemeData baseTheme(ColorScheme colorScheme, TextTheme textTheme) {
     return ThemeData(
       brightness: Brightness.light,
       colorScheme: colorScheme,
@@ -235,54 +292,52 @@ class AppTheme {
         side: BorderSide.none, // Or BorderSide(color: colorScheme.outline)
       ),
       inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: colorScheme.surfaceContainerHighest.withOpacity(
-          0.5,
-        ), // Use surfaceContainerHighest
+        // Use surfaceContainerHighest
         hintStyle: textTheme.bodyMedium?.copyWith(
           color: colorScheme.onSurfaceVariant.withOpacity(0.7),
         ),
+        isDense: true,
         contentPadding: EdgeInsets.symmetric(
-          horizontal: Insets.lg,
+          horizontal: Insets.med,
           vertical: Insets.med,
         ),
         border: OutlineInputBorder(
-          borderRadius: Corners.medBorder,
+          borderRadius: Corners.smBorder,
           borderSide: BorderSide(
             color: colorScheme.outline,
             width: Strokes.thin,
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: Corners.medBorder,
+          borderRadius: Corners.smBorder,
           borderSide: BorderSide(
             color: colorScheme.outline,
             width: Strokes.thin,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: Corners.medBorder,
+          borderRadius: Corners.smBorder,
           borderSide: BorderSide(
             color: colorScheme.primary,
             width: Strokes.medium,
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: Corners.medBorder,
+          borderRadius: Corners.smBorder,
           borderSide: BorderSide(
             color: colorScheme.error,
             width: Strokes.medium,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: Corners.medBorder,
+          borderRadius: Corners.smBorder,
           borderSide: BorderSide(
             color: colorScheme.error,
             width: Strokes.medium,
           ),
         ),
         disabledBorder: OutlineInputBorder(
-          borderRadius: Corners.medBorder,
+          borderRadius: Corners.smBorder,
           borderSide: BorderSide(
             color: colorScheme.outline.withOpacity(0.5),
             width: Strokes.thin,
@@ -417,318 +472,6 @@ class AppTheme {
         },
       ),
       // Define other component themes as needed...
-    );
-  }
-
-  // --- Provider Theme ---
-  static ThemeData get providerTheme {
-    final colorScheme = ColorScheme(
-      brightness: Brightness.light,
-      primary: const Color(0xFF5C3D30), // Provider primary
-      onPrimary: Colors.white, // Text/icons on primary
-      primaryContainer: _shiftColor(
-        const Color(0xFF5C3D30),
-        0.1,
-        true,
-      ), // Lighter for light theme
-      onPrimaryContainer: textPrimaryLight,
-      secondary: AppColors.backgroundColor2,
-      onSecondary: Colors.white,
-      secondaryContainer: _shiftColor(
-        AppColors.backgroundColor2,
-        0.1,
-        true,
-      ), // Lighter
-      onSecondaryContainer: textPrimaryLight,
-      tertiary: greyMedium,
-      onTertiary: textPrimaryLight,
-      tertiaryContainer: greyLight,
-      onTertiaryContainer: textSecondaryLight,
-      error: errorColor,
-      onError: onErrorColor,
-      errorContainer: _shiftColor(errorColor, 0.4, true),
-      onErrorContainer: textPrimaryLight,
-      surface: surfaceLight,
-      onSurface: textPrimaryLight,
-      surfaceContainerHighest: const Color(0xFFFFE9CE),
-      onSurfaceVariant: textSecondaryLight,
-      outline: greyMedium,
-      outlineVariant: greyLight,
-      shadow: Colors.black.withOpacity(
-        0.1,
-      ), // Shadows are less prominent in dark usually
-      scrim: Colors.black.withOpacity(0.3),
-      inverseSurface: surfaceLight,
-      onInverseSurface: textPrimaryLight,
-      inversePrimary: const Color(0xFF5C3D30).withOpacity(0.8),
-      background: const Color(0xFFFFE9CE),
-      onBackground: textPrimaryLight,
-    );
-
-    final textTheme = _baseTextTheme.apply(
-      bodyColor: colorScheme.onSurface,
-      displayColor: colorScheme.onSurface,
-    );
-
-    return ThemeData(
-      brightness: Brightness.light,
-      colorScheme: colorScheme,
-      textTheme: textTheme,
-      primaryColor: colorScheme.primary,
-      scaffoldBackgroundColor: colorScheme.background,
-      extensions: const <ThemeExtension<ThemeColors>>[
-        ThemeColors(
-          primaryColor: Color(0xFF5C3D30),
-          backgroundColor: Color(0xFFFFE9CE),
-        ),
-      ],
-      // fontFamily: Fonts.poppins,
-      // fontFamily: Fonts.poppins, // Set globally if all text uses Poppins
-      appBarTheme: AppBarTheme(
-        color:
-            colorScheme
-                .surface, // Or colorScheme.primary if you want a colored AppBar
-        elevation: 0, // Common modern look, or small like 1.0 or 2.0
-        iconTheme: IconThemeData(color: colorScheme.onSurface),
-        titleTextStyle: textTheme.titleLarge?.copyWith(
-          color: colorScheme.onSurface,
-        ),
-      ),
-      snackBarTheme: SnackBarThemeData(
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: _shiftColor(
-          colorScheme.surface,
-          0.1,
-          false,
-        ), // Slightly darker surface
-        contentTextStyle: textTheme.bodyMedium?.copyWith(
-          color: colorScheme.onSurface,
-        ),
-        shape: RoundedRectangleBorder(borderRadius: Corners.medBorder),
-      ),
-      dividerTheme: DividerThemeData(
-        color: colorScheme.outlineVariant,
-        thickness: Strokes.thin,
-        space: Insets.med * 2,
-      ),
-      searchBarTheme: SearchBarThemeData(
-        elevation: MaterialStateProperty.all(0),
-        backgroundColor: MaterialStateProperty.all(
-          colorScheme.surfaceContainerHighest,
-        ),
-        hintStyle: MaterialStateProperty.all(
-          textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
-        ),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(borderRadius: Corners.lgBorder),
-        ),
-        // textStyle: ... if needed
-      ),
-      chipTheme: ChipThemeData(
-        backgroundColor: colorScheme.secondaryContainer,
-        disabledColor: colorScheme.outline.withOpacity(0.5),
-        selectedColor: colorScheme.primary,
-        secondarySelectedColor: colorScheme.secondary, // Or a different color
-        checkmarkColor: colorScheme.onPrimary,
-        labelStyle: textTheme.labelMedium?.copyWith(
-          color: colorScheme.onSecondaryContainer,
-        ),
-        secondaryLabelStyle: textTheme.labelMedium?.copyWith(
-          color: colorScheme.onSecondary,
-        ), // For selected
-        padding: EdgeInsets.symmetric(
-          horizontal: Insets.sm,
-          vertical: Insets.xs,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: Corners.xlBorder,
-        ), // More rounded for chips
-        side: BorderSide.none, // Or BorderSide(color: colorScheme.outline)
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: colorScheme.surfaceContainerHighest.withOpacity(
-          0.5,
-        ), // Use surfaceContainerHighest
-        hintStyle: textTheme.bodyMedium?.copyWith(
-          color: colorScheme.onSurfaceVariant.withOpacity(0.7),
-        ),
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: Insets.lg,
-          vertical: Insets.med,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: Corners.medBorder,
-          borderSide: BorderSide(
-            color: colorScheme.outline,
-            width: Strokes.thin,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: Corners.medBorder,
-          borderSide: BorderSide(
-            color: colorScheme.outline,
-            width: Strokes.thin,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: Corners.medBorder,
-          borderSide: BorderSide(
-            color: colorScheme.primary,
-            width: Strokes.medium,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: Corners.medBorder,
-          borderSide: BorderSide(
-            color: colorScheme.error,
-            width: Strokes.medium,
-          ),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: Corners.medBorder,
-          borderSide: BorderSide(
-            color: colorScheme.error,
-            width: Strokes.medium,
-          ),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: Corners.medBorder,
-          borderSide: BorderSide(
-            color: colorScheme.outline.withOpacity(0.5),
-            width: Strokes.thin,
-          ),
-        ),
-        prefixIconColor: colorScheme.onSurfaceVariant,
-        suffixIconColor: colorScheme.onSurfaceVariant,
-        labelStyle: textTheme.bodyMedium?.copyWith(
-          color: colorScheme.onSurfaceVariant,
-        ),
-        errorStyle: textTheme.bodySmall?.copyWith(color: colorScheme.error),
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: colorScheme.primary,
-          foregroundColor: colorScheme.onPrimary,
-          padding: Insets.button,
-          shape: RoundedRectangleBorder(borderRadius: Corners.medBorder),
-          textStyle: textTheme.labelLarge, // Uses global textTheme
-          elevation: 2,
-          shadowColor: colorScheme.shadow.withOpacity(0.3),
-        ),
-      ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: colorScheme.primary, // Or colorScheme.onSurface
-          side: BorderSide(color: colorScheme.outline, width: Strokes.thin),
-          padding: Insets.button,
-          shape: RoundedRectangleBorder(borderRadius: Corners.medBorder),
-          textStyle: textTheme.labelLarge,
-        ),
-      ),
-      textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          foregroundColor: colorScheme.primary,
-          padding: EdgeInsets.symmetric(
-            vertical: Insets.sm,
-            horizontal: Insets.med,
-          ),
-          shape: RoundedRectangleBorder(borderRadius: Corners.smBorder),
-          textStyle: textTheme.labelLarge?.copyWith(
-            fontWeight: FontWeight.w500,
-          ), // Slightly less bold
-        ),
-      ),
-      filledButtonTheme: FilledButtonThemeData(
-        // M3 style filled button
-        style: FilledButton.styleFrom(
-          backgroundColor: colorScheme.primary, // Or secondary, tertiary
-          foregroundColor: colorScheme.onPrimary,
-          padding: Insets.button,
-          shape: RoundedRectangleBorder(borderRadius: Corners.medBorder),
-          textStyle: textTheme.labelLarge,
-          elevation: 1,
-        ),
-      ),
-      cardTheme: CardTheme(
-        elevation: 1,
-        color: colorScheme.surface,
-        shadowColor: colorScheme.shadow,
-        shape: RoundedRectangleBorder(
-          borderRadius: Corners.lgBorder,
-          // side: BorderSide(color: colorScheme.outlineVariant, width: Strokes.thin), // Optional border
-        ),
-        margin: EdgeInsets.all(Insets.xs), // Default margin for cards
-      ),
-      dialogTheme: DialogTheme(
-        backgroundColor: colorScheme.surface,
-        elevation:
-            Shadows
-                .medium[0]
-                .blurRadius, // Using blurRadius as a proxy for elevation shadow
-        shape: RoundedRectangleBorder(borderRadius: Corners.lgBorder),
-        titleTextStyle: textTheme.titleLarge,
-        contentTextStyle: textTheme.bodyMedium,
-      ),
-      switchTheme: SwitchThemeData(
-        thumbColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected))
-            return colorScheme.primary;
-          return colorScheme.outline; // Thumb color when off
-        }),
-        trackColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected))
-            return colorScheme.primary.withOpacity(0.5);
-          return colorScheme.surfaceContainerHighest; // Track color when off
-        }),
-        trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
-        trackOutlineWidth: MaterialStateProperty.all(0),
-        splashRadius: 0,
-      ),
-      tabBarTheme: TabBarTheme(
-        indicatorSize: TabBarIndicatorSize.tab,
-        labelStyle: textTheme.titleSmall?.copyWith(
-          fontWeight: FontWeight.w600,
-        ), // From textTheme
-        unselectedLabelStyle: textTheme.titleSmall,
-        labelColor: colorScheme.primary,
-        unselectedLabelColor: colorScheme.onSurfaceVariant,
-        indicator: UnderlineTabIndicator(
-          borderSide: BorderSide(
-            color: colorScheme.primary,
-            width: Strokes.thick,
-          ),
-        ),
-      ),
-      tooltipTheme: TooltipThemeData(
-        preferBelow: false,
-        padding: EdgeInsets.symmetric(
-          horizontal: Insets.sm,
-          vertical: Insets.xs,
-        ),
-        margin: EdgeInsets.all(Insets.xs),
-        decoration: BoxDecoration(
-          color: _shiftColor(
-            colorScheme.surface,
-            0.2,
-            false,
-          ).withOpacity(0.95), // Darker surface
-          borderRadius: Corners.smBorder,
-        ),
-        textStyle: textTheme.bodySmall?.copyWith(color: colorScheme.onSurface),
-      ),
-      pageTransitionsTheme: const PageTransitionsTheme(
-        builders: {
-          TargetPlatform.android:
-              CupertinoPageTransitionsBuilder(), // Example: Use Cupertino transitions
-          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
-          TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
-        },
-      ),
-      // Define other component themes as needed...
-      // Define other component themes for dark mode as needed...
     );
   }
 }

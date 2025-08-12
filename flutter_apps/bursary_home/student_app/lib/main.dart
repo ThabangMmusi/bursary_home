@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:data_layer/data_layer.dart';
 import 'package:student_app/core/theme/bloc/theme_bloc.dart';
 import 'package:bursary_home_ui/enums.dart';
+import 'package:student_app/core/theme/bloc/theme_event.dart';
+import 'package:student_app/core/theme/bloc/theme_state.dart';
 import 'package:student_app/core/theme/theme_preferences.dart';
 import 'package:student_app/features/auth/bloc/app_bloc.dart';
 import 'package:student_app/features/auth/bloc/sign_in_bloc.dart';
@@ -15,8 +17,6 @@ import 'package:student_app/features/applications/bloc/applications_bloc.dart';
 import 'package:student_app/core/routes/app_router.dart';
 
 import 'firebase_options.dart';
-
-import 'package:student_app/core/theme/bloc/theme_state.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override
@@ -57,6 +57,7 @@ void main() async {
   final ThemePreferences themePreferences = ThemePreferences();
 
   final ThemeBloc themeBloc = ThemeBloc(themePreferences: themePreferences);
+  themeBloc.add(ThemeStarted());
   final AppBloc appBloc = AppBloc(
     authRepository: authRepository,
     profileRepository: profileRepository,

@@ -8,7 +8,9 @@ class AppUser extends Equatable {
   final String? surname;
   final String? photo;
   final double? gpa;
+  final bool isVerified;
   final bool hasCompletedProfile;
+  final String? companyId;
 
   const AppUser({
     required this.id,
@@ -17,7 +19,9 @@ class AppUser extends Equatable {
     this.surname,
     this.photo,
     this.gpa,
+    this.isVerified = false,
     this.hasCompletedProfile = false,
+    this.companyId,
   });
 
   static const empty = AppUser(id: '');
@@ -32,7 +36,9 @@ class AppUser extends Equatable {
     String? surname,
     String? photo,
     double? gpa,
+    bool? isVerified,
     bool? hasCompletedProfile,
+    String? companyId,
   }) {
     return AppUser(
       id: id ?? this.id,
@@ -41,7 +47,9 @@ class AppUser extends Equatable {
       surname: surname ?? this.surname,
       photo: photo ?? this.photo,
       gpa: gpa ?? this.gpa,
+      isVerified: isVerified ?? this.isVerified,
       hasCompletedProfile: hasCompletedProfile ?? this.hasCompletedProfile,
+      companyId: companyId ?? this.companyId,
     );
   }
 
@@ -54,6 +62,8 @@ class AppUser extends Equatable {
       surname: data['surname'] as String?,
       photo: data['photo'] as String?,
       gpa: (data['gpa'] as num?)?.toDouble(),
+      isVerified: (data['isVerified'] as bool?) ?? false,
+      companyId: data['company_id'] as String?,
     );
   }
 
@@ -64,9 +74,21 @@ class AppUser extends Equatable {
       if (surname != null) 'surname': surname,
       if (photo != null) 'photo': photo,
       if (gpa != null) 'gpa': gpa,
+      if (companyId != null) 'isVerified': isVerified,
+      if (companyId != null) 'company_id': companyId,
     };
   }
 
   @override
-  List<Object?> get props => [id, email, name, surname, photo, gpa, hasCompletedProfile];
+  List<Object?> get props => [
+        id,
+        email,
+        name,
+        surname,
+        photo,
+        gpa,
+        isVerified,
+        hasCompletedProfile,
+        companyId
+      ];
 }

@@ -45,139 +45,183 @@ class LoginPage extends StatelessWidget {
                 themeType: themeState.themeType, // Pass themeType here
                 formContent: Padding(
                   padding: EdgeInsets.only(top: Insets.xxl * 2),
-                  child: AuthFormContainer(
-                    width: 350.0, // auth-form width
-                    padding: EdgeInsets.symmetric(
-                      horizontal: Insets.xxl,
-                      vertical: Insets.xxl,
-                    ), // 1rem 2rem 1rem 2rem
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Removed LogoComponent here, it's handled by AuthLayout
-                        Text(
-                          'Get Started', // Updated text
-                          style: Theme.of(
-                            context,
-                          ).textTheme.headlineSmall?.copyWith(
-                            color: AppColors.textDark,
-                            fontWeight: FontWeight.w900,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        VSpace.xs,
-                        Text(
-                          'Sign in and start financing the future', // Updated text
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(color: const Color(0xFF666666)),
-                          textAlign: TextAlign.center,
-                        ),
-                        VSpace.xl,
-                        BlocBuilder<SignInBloc, SignInState>(
-                          builder: (context, signInState) {
-                            final bool isLoading =
-                                appState.status == AppStatus.loading;
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: SecondaryBtn(
-                                        label: 'Sign in with Google',
-                                        icon: Ionicons.logo_google,
-                                        onPressed:
-                                            isLoading
-                                                ? null
-                                                : () {
-                                                  context
-                                                      .read<SignInBloc>()
-                                                      .add(
-                                                        SignInGoogleRequested(),
-                                                      );
-                                                },
-                                      ),
-                                    ),
-                                  ],
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        height: 313,
+                        child: AuthFormContainer(
+                          width: 350.0, // auth-form width
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Insets.xxl,
+                            vertical: Insets.xxl,
+                          ), // 1rem 2rem 1rem 2rem
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Removed LogoComponent here, it's handled by AuthLayout
+                              Text(
+                                'Get Started', // Updated text
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.headlineSmall?.copyWith(
+                                  color: AppColors.textDark,
+                                  fontWeight: FontWeight.w900,
                                 ),
-
-                                VSpace.med,
-                                Row(
-                                  children: [
-                                    const Expanded(child: Divider()),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 10.0,
+                                textAlign: TextAlign.center,
+                              ),
+                              VSpace.xs,
+                              Text(
+                                'Sign in and start financing the future', // Updated text
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: const Color(0xFF666666)),
+                                textAlign: TextAlign.center,
+                              ),
+                              VSpace.xl,
+                              BlocBuilder<SignInBloc, SignInState>(
+                                builder: (context, signInState) {
+                                  final bool isLoading =
+                                      appState.status == AppStatus.loading;
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: SecondaryBtn(
+                                              label: 'Sign in with Google',
+                                              icon: Ionicons.logo_google,
+                                              onPressed:
+                                                  isLoading
+                                                      ? null
+                                                      : () {
+                                                        context
+                                                            .read<SignInBloc>()
+                                                            .add(
+                                                              SignInGoogleRequested(),
+                                                            );
+                                                      },
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      child: Text(
-                                        'Or',
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.bodySmall?.copyWith(
-                                          color: const Color(0xFF666666),
+
+                                      VSpace.med,
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: SecondaryBtn(
+                                              label: 'Sign in with Microsoft',
+                                              icon: Ionicons.logo_microsoft,
+                                              onPressed:
+                                                  isLoading
+                                                      ? null
+                                                      : () {
+                                                        context
+                                                            .read<SignInBloc>()
+                                                            .add(
+                                                              SignInMicrosoftRequested(),
+                                                            );
+                                                      },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      VSpace.xl,
+                                      SizedBox(
+                                        height: 17,
+                                        child: Row(
+                                          children: [
+                                            const Expanded(child: Divider()),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 10.0,
+                                                  ),
+                                              child: Text(
+                                                'Or',
+                                                style: Theme.of(
+                                                  context,
+                                                ).textTheme.bodySmall?.copyWith(
+                                                  color: const Color(
+                                                    0xFF666666,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const Expanded(child: Divider()),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                    const Expanded(child: Divider()),
-                                  ],
-                                ),
-                                VSpace.med,
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: SecondaryBtn(
-                                        label: 'Sign in with Microsoft',
-                                        icon: Ionicons.logo_microsoft,
-                                        onPressed:
-                                            isLoading
-                                                ? null
-                                                : () {
-                                                  context.read<SignInBloc>().add(
-                                                    SignInMicrosoftRequested(),
-                                                  );
-                                                },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                        // --- Theme Switch Button ---
-                        if (appState.status == AppStatus.unauthenticated)
-                          BlocBuilder<ThemeBloc, ThemeState>(
-                            builder: (context, themeState) {
-                              final isStudentTheme =
-                                  themeState.themeType == ThemeType.student;
-                              final buttonText =
-                                  isStudentTheme
-                                      ? 'Login as Provider'
-                                      : 'Login as Student';
-                              final targetTheme =
-                                  isStudentTheme
-                                      ? ThemeType.provider
-                                      : ThemeType.student;
+                                      if (appState.status ==
+                                          AppStatus.unauthenticated)
+                                        BlocBuilder<ThemeBloc, ThemeState>(
+                                          builder: (context, themeState) {
+                                            final isStudentTheme =
+                                                themeState.themeType ==
+                                                ThemeType.student;
+                                            final buttonText =
+                                                isStudentTheme
+                                                    ? 'Not a Student? Login as Provider'
+                                                    : 'Not Provider? Login as Student';
+                                            final targetTheme =
+                                                isStudentTheme
+                                                    ? ThemeType.provider
+                                                    : ThemeType.student;
 
-                              return Column(
-                                children: [
-                                  VSpace.xl,
-                                  TextButton(
-                                    onPressed: () {
-                                      // Placeholder for animation
-                                      print('Switching theme to: $targetTheme');
-                                      context.read<ThemeBloc>().add(
-                                        ThemeChanged(targetTheme),
-                                      );
-                                    },
-                                    child: Text(buttonText),
-                                  ),
-                                ],
-                              );
-                            },
+                                            return Column(
+                                              children: [
+                                                VSpace.med,
+                                                MouseRegion(
+                                                  cursor:
+                                                      SystemMouseCursors.click,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      // Placeholder for animation
+                                                      print(
+                                                        'Switching theme to: $targetTheme',
+                                                      );
+                                                      context
+                                                          .read<ThemeBloc>()
+                                                          .add(
+                                                            ThemeChanged(
+                                                              targetTheme,
+                                                            ),
+                                                          );
+                                                    },
+                                                    child: Text(
+                                                      buttonText,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyMedium
+                                                          ?.copyWith(
+                                                            color:
+                                                                Theme.of(
+                                                                      context,
+                                                                    )
+                                                                    .colorScheme
+                                                                    .primary,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .none,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ],
                           ),
-                      ],
-                    ),
+                        ),
+                      ),
+                      // --- Theme Switch Button ---
+                    ],
                   ),
                 ),
               );

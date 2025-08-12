@@ -9,3 +9,4 @@
 *   **2025-08-11:** Completed Phase 3, Step 3.1: Identified role-dependent UI elements.
 *   **2025-08-11:** Completed Phase 3, Step 3.2: Implemented conditional UI rendering for images and login text in `auth_layout.dart`.
 *   **2025-08-11:** Completed Phase 3, Step 3.3: Implemented animated transitions for images in `auth_layout.dart`.
+*   **2025-08-12:** Fixed theme persistence issue by dispatching `ThemeStarted` event in `main.dart` to ensure saved theme is loaded on app startup.
