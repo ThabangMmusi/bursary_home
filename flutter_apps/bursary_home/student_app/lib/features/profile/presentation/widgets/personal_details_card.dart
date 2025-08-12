@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:student_app/features/auth/bloc/auth_bloc.dart';
+import 'package:student_app/features/auth/bloc/app_bloc.dart';
 import 'package:bursary_home_ui/widgets/form_section_header.dart';
 import 'package:student_app/features/profile/bloc/complete_profile_bloc.dart';
 
@@ -18,13 +18,19 @@ class _PersonalDetailsCardState extends State<PersonalDetailsCard> {
   @override
   void initState() {
     super.initState();
-    final authState = context.read<AuthBloc>().state;
+    final authState = context.read<AppBloc>().state;
     _nameController = TextEditingController(text: authState.user.name ?? '');
-    _surnameController = TextEditingController(text: authState.user.surname ?? '');
+    _surnameController = TextEditingController(
+      text: authState.user.surname ?? '',
+    );
 
     // Initialize CompleteProfileBloc state with current user data
-    context.read<CompleteProfileBloc>().add(NameChanged(authState.user.name ?? ''));
-    context.read<CompleteProfileBloc>().add(SurnameChanged(authState.user.surname ?? ''));
+    context.read<CompleteProfileBloc>().add(
+      NameChanged(authState.user.name ?? ''),
+    );
+    context.read<CompleteProfileBloc>().add(
+      SurnameChanged(authState.user.surname ?? ''),
+    );
   }
 
   @override
@@ -50,7 +56,10 @@ class _PersonalDetailsCardState extends State<PersonalDetailsCard> {
               Expanded(
                 child: TextFormField(
                   controller: _nameController,
-                  onChanged: (value) => context.read<CompleteProfileBloc>().add(NameChanged(value)),
+                  onChanged:
+                      (value) => context.read<CompleteProfileBloc>().add(
+                        NameChanged(value),
+                      ),
                   decoration: const InputDecoration(
                     labelText: 'Name',
                     border: OutlineInputBorder(),
@@ -61,7 +70,10 @@ class _PersonalDetailsCardState extends State<PersonalDetailsCard> {
               Expanded(
                 child: TextFormField(
                   controller: _surnameController,
-                  onChanged: (value) => context.read<CompleteProfileBloc>().add(SurnameChanged(value)),
+                  onChanged:
+                      (value) => context.read<CompleteProfileBloc>().add(
+                        SurnameChanged(value),
+                      ),
                   decoration: const InputDecoration(
                     labelText: 'Surname',
                     border: OutlineInputBorder(),
@@ -71,7 +83,6 @@ class _PersonalDetailsCardState extends State<PersonalDetailsCard> {
             ],
           ),
           const SizedBox(height: 16),
-          
         ],
       ),
     );

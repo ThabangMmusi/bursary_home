@@ -9,7 +9,7 @@
             "cwd": "bursary_home_ui",
             "request": "launch",
             "type": "dart",
-            "args": ["--web-port=50426"]
+            "args": ["--web-port=20402"]
         },
         {
             "name": "bursary_home_ui (profile mode)",
@@ -17,7 +17,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "args": ["--web-port=50426"]
+            "args": ["--web-port=20402"]
         },
         {
             "name": "bursary_home_ui (release mode)",
@@ -25,7 +25,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "args": ["--web-port=50426"]
+            "args": ["--web-port=20402"]
         },
         {
             "name": "data_layer",
@@ -38,7 +38,7 @@
             "cwd": "student_app",
             "request": "launch",
             "type": "dart",
-            "args": ["--web-port=50426"]
+            "args": ["--web-port=20402"]
         },
         {
             "name": "student_app (profile mode)",
@@ -46,7 +46,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "args": ["--web-port=50426"]
+            "args": ["--web-port=20402"]
         },
         {
             "name": "student_app (release mode)",
@@ -54,7 +54,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "args": ["--web-port=50426"]
+            "args": ["--web-port=20402"]
         }
     ]
 }

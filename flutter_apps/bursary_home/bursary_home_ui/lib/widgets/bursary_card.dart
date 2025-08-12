@@ -1,8 +1,8 @@
 import 'package:bursary_home_ui/widgets/gpa_progress_bar.dart';
 import 'package:data_layer/data_layer.dart';
 import 'package:flutter/material.dart';
-import 'package:bursary_home_ui/theme/app_colors.dart';
 import 'package:bursary_home_ui/theme/styles.dart';
+import 'package:bursary_home_ui/theme/theme_colors.dart';
 
 enum BursaryCardType { available, application }
 
@@ -42,17 +42,18 @@ class _BursaryCardState extends State<BursaryCard> {
   bool _isHovering = false;
 
   Color _getStatusColor(ApplicationStatus? status) {
+    final colorScheme = Theme.of(context).colorScheme;
     switch (status) {
       case ApplicationStatus.pending:
-        return Colors.yellow.shade700;
+        return colorScheme.tertiary;
       case ApplicationStatus.processing:
-        return Colors.orange.shade700;
+        return colorScheme.tertiary;
       case ApplicationStatus.approved:
-        return Colors.green.shade700;
+        return colorScheme.secondary;
       case ApplicationStatus.rejected:
-        return Colors.red.shade700;
+        return colorScheme.error;
       case ApplicationStatus.cancelled:
-        return Colors.grey.shade700;
+        return colorScheme.outline;
       default:
         return Colors.transparent;
     }
@@ -89,7 +90,7 @@ class _BursaryCardState extends State<BursaryCard> {
           curve: Curves.easeOut,
           padding: EdgeInsets.all(_isHovering ? 18 : 16.0), // 1.5rem : 1rem
           decoration: BoxDecoration(
-            color: AppColors.white,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(16.0),
             boxShadow: [
               BoxShadow(
@@ -118,7 +119,10 @@ class _BursaryCardState extends State<BursaryCard> {
                   AnimatedDefaultTextStyle(
                     duration: const Duration(milliseconds: 300),
                     style: TextStyles.titleMedium.copyWith(
-                      color: AppColors.primaryColor,
+                      color:
+                          Theme.of(
+                            context,
+                          ).extension<ThemeColors>()!.primaryColor,
                       fontSize: _isHovering ? 19.2 : 17.6, // 1.2rem : 1.1rem
                       fontWeight: FontWeight.w600,
                     ),
@@ -128,7 +132,7 @@ class _BursaryCardState extends State<BursaryCard> {
                   Text(
                     'Deadline: ${widget.deadline}',
                     style: TextStyles.bodyMedium.copyWith(
-                      color: const Color(0xFF444444),
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: _isHovering ? 16.0 : 15.2, // 1rem : 0.95rem
                       fontWeight: FontWeight.w500,
                     ),
@@ -148,7 +152,7 @@ class _BursaryCardState extends State<BursaryCard> {
                       Text(
                         'GPA',
                         style: TextStyles.bodySmall.copyWith(
-                          color: AppColors.textLight,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -156,8 +160,8 @@ class _BursaryCardState extends State<BursaryCard> {
                       Container(
                         width: 8.0,
                         height: 8.0,
-                        decoration: const BoxDecoration(
-                          color: Colors.orange,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.tertiary,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -165,15 +169,15 @@ class _BursaryCardState extends State<BursaryCard> {
                       Text(
                         'Required: ${widget.requiredGpa}',
                         style: TextStyles.bodySmall.copyWith(
-                          color: AppColors.textLight,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                       const SizedBox(width: 8.0),
                       Container(
                         width: 8.0,
                         height: 8.0,
-                        decoration: const BoxDecoration(
-                          color: Colors.green,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.secondary,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -181,7 +185,7 @@ class _BursaryCardState extends State<BursaryCard> {
                       Text(
                         'Extra: ${(widget.userGpa - widget.requiredGpa).toStringAsFixed(1)}',
                         style: TextStyles.bodySmall.copyWith(
-                          color: AppColors.textLight,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -193,13 +197,18 @@ class _BursaryCardState extends State<BursaryCard> {
                       vertical: 4.0,
                     ), // 0.25rem 0.7rem
                     decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withOpacity(0.1),
+                      color: Theme.of(
+                        context,
+                      ).extension<ThemeColors>()!.primaryColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     child: Text(
                       widget.field,
                       style: TextStyles.bodySmall.copyWith(
-                        color: AppColors.primaryColor,
+                        color:
+                            Theme.of(
+                              context,
+                            ).extension<ThemeColors>()!.primaryColor,
                         fontSize: 12.8, // 0.8rem
                       ),
                     ),
@@ -212,8 +221,10 @@ class _BursaryCardState extends State<BursaryCard> {
                       child: ElevatedButton(
                         onPressed: widget.onApplyPressed,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF023a31),
-                          foregroundColor: AppColors.white,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           padding: const EdgeInsets.symmetric(
                             vertical: 9.6,
                           ), // 0.6rem
@@ -225,16 +236,16 @@ class _BursaryCardState extends State<BursaryCard> {
                           ), // 0.9rem
                         ).copyWith(
                           overlayColor:
-                              MaterialStateProperty.resolveWith<Color?>((
+                              MaterialStateProperty.resolveWith<Color?>(((
                                 Set<MaterialState> states,
                               ) {
                                 if (states.contains(MaterialState.hovered)) {
-                                  return const Color(
-                                    0xFF012a23,
-                                  ); // #012a23 on hover
+                                  return Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withOpacity(0.8);
                                 }
                                 return null;
-                              }),
+                              })),
                         ),
                         child: const Text('Apply Now'),
                       ),
@@ -246,8 +257,9 @@ class _BursaryCardState extends State<BursaryCard> {
                       child: ElevatedButton(
                         onPressed: widget.onCancelPressed,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red[700],
-                          foregroundColor: AppColors.white,
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onError,
                           padding: const EdgeInsets.symmetric(vertical: 9.6),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
@@ -261,7 +273,9 @@ class _BursaryCardState extends State<BursaryCard> {
                                 Set<MaterialState> states,
                               ) {
                                 if (states.contains(MaterialState.hovered)) {
-                                  return Colors.red[900];
+                                  return Theme.of(
+                                    context,
+                                  ).colorScheme.error.withOpacity(0.8);
                                 }
                                 return null;
                               }),

@@ -8,8 +8,8 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   final ThemePreferences _themePreferences;
 
   ThemeBloc({required ThemePreferences themePreferences})
-      : _themePreferences = themePreferences,
-        super(ThemeState.initial()) {
+    : _themePreferences = themePreferences,
+      super(ThemeState.initial()) {
     on<ThemeStarted>(_onThemeStarted);
     on<ThemeChanged>(_onThemeChanged);
   }
@@ -19,12 +19,15 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     Emitter<ThemeState> emit,
   ) async {
     final savedThemeType = await _themePreferences.getTheme();
-    emit(state.copyWith(
-      themeType: savedThemeType,
-      themeData: savedThemeType == ThemeType.student
-          ? AppTheme.studentTheme
-          : AppTheme.providerTheme,
-    ));
+    emit(
+      state.copyWith(
+        themeType: savedThemeType,
+        themeData:
+            savedThemeType == ThemeType.student
+                ? AppTheme.studentTheme
+                : AppTheme.providerTheme,
+      ),
+    );
   }
 
   Future<void> _onThemeChanged(
@@ -32,11 +35,14 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     Emitter<ThemeState> emit,
   ) async {
     await _themePreferences.saveTheme(event.themeType);
-    emit(state.copyWith(
-      themeType: event.themeType,
-      themeData: event.themeType == ThemeType.student
-          ? AppTheme.studentTheme
-          : AppTheme.providerTheme,
-    ));
+    emit(
+      state.copyWith(
+        themeType: event.themeType,
+        themeData:
+            event.themeType == ThemeType.student
+                ? AppTheme.studentTheme
+                : AppTheme.providerTheme,
+      ),
+    );
   }
 }

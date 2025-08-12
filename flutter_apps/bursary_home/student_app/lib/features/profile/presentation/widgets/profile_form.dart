@@ -94,17 +94,17 @@ class _ProfileFormState extends State<ProfileForm> {
                                       FormSubmitted(),
                                     );
                                   } else {
-                                    context.read<CompleteProfileBloc>().add(
-                                      ProviderProfileSubmitted(
-                                        name: state.name,
-                                        surname: state.surname,
-                                        companyName:
-                                            _companyNameController.text,
-                                        registrationNumber:
-                                            _registrationNumberController.text,
-                                        taxNumber: _taxNumberController.text,
-                                      ),
-                                    );
+                                    // context.read<CompleteProfileBloc>().add(
+                                    //   ProviderProfileSubmitted(
+                                    //     name: state.name,
+                                    //     surname: state.surname,
+                                    //     companyName:
+                                    //         _companyNameController.text,
+                                    //     registrationNumber:
+                                    //         _registrationNumberController.text,
+                                    //     taxNumber: _taxNumberController.text,
+                                    //   ),
+                                    // );
                                   }
                                 },
                         child:

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:bursary_home_ui/theme/app_colors.dart';
 
 enum AlertType {
   error,
@@ -19,41 +18,44 @@ class AlertMessage extends StatelessWidget {
   });
 
   Color _getBackgroundColor(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     switch (type) {
       case AlertType.error:
-        return const Color(0xFFfee2e2); // #fee2e2
+        return colorScheme.errorContainer;
       case AlertType.success:
-        return const Color(0xFFdcfce7); // #dcfce7
+        return colorScheme.secondaryContainer; // Using secondary for success
       case AlertType.warning:
-        return const Color(0xFFfef3c7); // #fef3c7
+        return colorScheme.tertiaryContainer; // Using tertiary for warning
       case AlertType.info:
-        return const Color(0xFFdbeafe); // #dbeafe
+        return colorScheme.primaryContainer; // Using primary for info
     }
   }
 
   Color _getTextColor(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     switch (type) {
       case AlertType.error:
-        return const Color(0xFF991b1b); // #991b1b
+        return colorScheme.onErrorContainer;
       case AlertType.success:
-        return const Color(0xFF166534); // #166534
+        return colorScheme.onSecondaryContainer;
       case AlertType.warning:
-        return const Color(0xFF92400e); // #92400e
+        return colorScheme.onTertiaryContainer;
       case AlertType.info:
-        return const Color(0xFF1e40af); // #1e40af
+        return colorScheme.onPrimaryContainer;
     }
   }
 
   Color _getIconColor(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     switch (type) {
       case AlertType.error:
-        return const Color(0xFFdc2626); // #dc2626
+        return colorScheme.error;
       case AlertType.success:
-        return AppColors.successColor;
+        return colorScheme.secondary;
       case AlertType.warning:
-        return const Color(0xFFd97706); // #d97706
+        return colorScheme.tertiary;
       case AlertType.info:
-        return const Color(0xFF2563eb); // #2563eb
+        return colorScheme.primary;
     }
   }
 

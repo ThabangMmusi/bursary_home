@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bursary_home_ui/theme/app_colors.dart';
 import 'package:bursary_home_ui/theme/styles.dart';
+import 'package:bursary_home_ui/theme/theme_colors.dart';
 
 class SidebarNavigationItem extends StatelessWidget {
   final String title;
@@ -25,21 +25,21 @@ class SidebarNavigationItem extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 12.8, vertical: 8.0), // 0.8rem 0.5rem
         decoration: BoxDecoration(
-          color: isActive ? AppColors.primaryColor : Colors.transparent,
+          color: isActive ? Theme.of(context).extension<ThemeColors>()!.primaryColor : Colors.transparent,
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Row(
           children: [
             Icon(
               icon,
-              color: isActive ? AppColors.white : AppColors.primaryColor,
+              color: isActive ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).extension<ThemeColors>()!.primaryColor,
               size: 24.0,
             ),
             const SizedBox(width: 10.0),
             Text(
               title,
               style: TextStyles.bodyLarge.copyWith(
-                color: isActive ? AppColors.white : AppColors.textDark,
+                color: isActive ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ],

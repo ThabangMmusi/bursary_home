@@ -1,9 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-
-enum ThemeType {
-  student,
-  provider,
-}
+import 'package:bursary_home_ui/enums.dart'; // Add this import
 
 class ThemePreferences {
   static const _themeKey = 'theme_type';

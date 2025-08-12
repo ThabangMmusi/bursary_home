@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:bursary_home_ui/theme/app_colors.dart';
 import 'package:bursary_home_ui/theme/styles.dart';
 import 'package:bursary_home_ui/widgets/status_label.dart';
+import 'package:bursary_home_ui/theme/theme_colors.dart';
 
 class DashboardHeaderWidget extends StatelessWidget {
   final String userName;
@@ -36,7 +36,7 @@ class DashboardHeaderWidget extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 16.0),
       padding: const EdgeInsets.all(24.0), // 1.5rem
       decoration: BoxDecoration(
-        color: AppColors.primaryColor,
+        color: Theme.of(context).extension<ThemeColors>()!.primaryColor,
         borderRadius: BorderRadius.circular(16.0),
       ),
       child: Stack(
@@ -62,13 +62,13 @@ class DashboardHeaderWidget extends StatelessWidget {
                       vertical: 6.4,
                     ), // 0.4rem 0.8rem
                     decoration: BoxDecoration(
-                      color: AppColors.white,
+                      color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     child: Text(
                       currentDate,
                       style: TextStyles.bodySmall.copyWith(
-                        color: AppColors.primaryColor,
+                        color: Theme.of(context).extension<ThemeColors>()!.primaryColor,
                         fontSize: 0.85 * 16.0, // 0.85rem
                       ),
                     ),
@@ -87,7 +87,7 @@ class DashboardHeaderWidget extends StatelessWidget {
                     Text(
                       'Welcome back,\n$userName!',
                       style: TextStyles.headlineLarge.copyWith(
-                        color: AppColors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         fontSize: 2.2 * 16.0, // 2.2rem
                         height: 1.2,
                       ),
@@ -96,7 +96,7 @@ class DashboardHeaderWidget extends StatelessWidget {
                     Text(
                       bursariesText,
                       style: TextStyles.bodyLarge.copyWith(
-                        color: AppColors.white.withOpacity(0.9),
+                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                         fontSize: 1.0 * 16.0, // 1rem
                       ),
                     ),

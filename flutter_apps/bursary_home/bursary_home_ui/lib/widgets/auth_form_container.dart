@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:bursary_home_ui/theme/app_colors.dart';
 
 class AuthFormContainer extends StatelessWidget {
   final Widget child;
@@ -19,7 +18,7 @@ class AuthFormContainer extends StatelessWidget {
       width: width,
       padding: padding,
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12.0),
         boxShadow: [
           BoxShadow(

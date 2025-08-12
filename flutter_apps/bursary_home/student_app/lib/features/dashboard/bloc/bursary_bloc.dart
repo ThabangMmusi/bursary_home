@@ -27,7 +27,8 @@ class BursaryBloc extends Bloc<BursaryEvent, BursaryState> {
     _authSubscription = _appBloc.stream.listen((authState) {
       if (authState.status == AppStatus.authenticated) {
         // Only load dashboard bursaries if not already loaded or if user changes
-        if (state.status == BursaryStatus.initial || state.status == BursaryStatus.error) {
+        if (state.status == BursaryStatus.initial ||
+            state.status == BursaryStatus.error) {
           add(LoadStudentDashboardBursaries());
         }
       } else {
@@ -37,7 +38,8 @@ class BursaryBloc extends Bloc<BursaryEvent, BursaryState> {
     });
 
     // Initial load of bursaries if user is already authenticated and bloc is initial
-    if (_appBloc.state.status == AppStatus.authenticated && state.status == BursaryStatus.initial) {
+    if (_appBloc.state.status == AppStatus.authenticated &&
+        state.status == BursaryStatus.initial) {
       add(LoadStudentDashboardBursaries());
     }
   }
@@ -67,9 +69,16 @@ class BursaryBloc extends Bloc<BursaryEvent, BursaryState> {
     await emit.onEach(
       _bursaryRepository.loadStudentDashboardBursaries(user.id, user.gpa!),
       onData: (bursaries) async {
-        final totalCount = await _bursaryRepository.getEligibleBursariesCount(user.id, user.gpa!); // Fetch total count
+        final totalCount = await _bursaryRepository.getEligibleBursariesCount(
+          user.id,
+          user.gpa!,
+        ); // Fetch total count
         emit(
-          state.copyWith(status: BursaryStatus.loaded, bursaries: bursaries, totalEligibleBursariesCount: totalCount),
+          state.copyWith(
+            status: BursaryStatus.loaded,
+            bursaries: bursaries,
+            totalEligibleBursariesCount: totalCount,
+          ),
         );
         print('Dashboard Bursaries Length: ${bursaries.length}');
         print('Total Eligible Bursaries Count: ${totalCount}');
@@ -125,13 +134,5 @@ class BursaryBloc extends Bloc<BursaryEvent, BursaryState> {
         print('BursaryBloc Error: $error\n$stackTrace');
       },
     );
-  }
-}
-
-  @override
-  Future<void> close() {
-    _bursariesSubscription?.cancel();
-    _authSubscription?.cancel();
-    return super.close();
   }
 }

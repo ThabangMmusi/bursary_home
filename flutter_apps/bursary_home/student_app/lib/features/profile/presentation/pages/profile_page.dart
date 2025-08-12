@@ -38,7 +38,9 @@ class ProfilePage extends StatelessWidget {
                   children: [
                     Text(
                       'My Profile',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      style: Theme.of(
+                        context,
+                      ).textTheme.headlineMedium?.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
@@ -50,10 +52,15 @@ class ProfilePage extends StatelessWidget {
                           builder: (BuildContext dialogContext) {
                             return Dialog(
                               child: BlocProvider(
-                                create: (context) => CompleteProfileBloc(
-                                  profileRepository: RepositoryProvider.of<ProfileRepository>(context),
-                                  appBloc: BlocProvider.of<AppBloc>(context),
-                                ),
+                                create:
+                                    (context) => CompleteProfileBloc(
+                                      profileRepository: RepositoryProvider.of<
+                                        ProfileRepository
+                                      >(context),
+                                      appBloc: BlocProvider.of<AppBloc>(
+                                        context,
+                                      ),
+                                    ),
                                 child: const CompleteProfilePage(),
                               ),
                             );
@@ -81,15 +88,20 @@ class ProfilePage extends StatelessWidget {
                   icon: Icons.school,
                 ),
                 if (academicDetails != null) ...[
-                  Text('Qualification: ${academicDetails['qualificationName'] ?? 'N/A'}'),
+                  Text(
+                    'Qualification: ${academicDetails['qualificationName'] ?? 'N/A'}',
+                  ),
                   Text('Subjects:'),
                   if (academicDetails['subjects'] is List) ...[
-                    for (var subject in (academicDetails['subjects'] as List)) ...[
+                    for (var subject
+                        in (academicDetails['subjects'] as List)) ...[
                       if (subject is Map) ...[
-                        Text('- ${subject['name'] ?? 'N/A'} (${subject['marks'] ?? 'N/A'})'),
-                      ]
-                    ]
-                  ]
+                        Text(
+                          '- ${subject['name'] ?? 'N/A'} (${subject['marks'] ?? 'N/A'})',
+                        ),
+                      ],
+                    ],
+                  ],
                 ] else ...[
                   const Text('No academic details found.'),
                 ],

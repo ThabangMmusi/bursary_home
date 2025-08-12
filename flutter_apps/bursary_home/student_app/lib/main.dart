@@ -1,4 +1,3 @@
-import 'package:bursary_home_ui/widgets/logo_component.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,14 +6,13 @@ import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 
 import 'package:data_layer/data_layer.dart';
 import 'package:student_app/core/theme/bloc/theme_bloc.dart';
+import 'package:bursary_home_ui/enums.dart';
 import 'package:student_app/core/theme/theme_preferences.dart';
 import 'package:student_app/features/auth/bloc/app_bloc.dart';
-import 'package:student_app/features/auth/bloc/app_state.dart';
 import 'package:student_app/features/auth/bloc/sign_in_bloc.dart';
 import 'package:student_app/features/profile/bloc/profile_bloc.dart';
 import 'package:student_app/features/applications/bloc/applications_bloc.dart';
 import 'package:student_app/core/routes/app_router.dart';
-import 'package:bursary_home_ui/bursary_home_ui.dart';
 
 import 'firebase_options.dart';
 
@@ -135,26 +133,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppBloc, AppState>(
-      builder: (context, state) {
-        if (state.status == AppStatus.unknown) {
-          return const MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: Scaffold(
-              backgroundColor: AppTheme.backgroundLight,
-              body: Center(child: LogoComponent()),
-            ),
-          );
-        }
-        return BlocBuilder<ThemeBloc, ThemeState>(
-          builder: (context, themeState) {
-            return MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              title: 'Bursary Home',
-              theme: themeState.themeData,
-              routerConfig: _router,
-            );
-          },
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, themeState) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Bursary Home',
+          theme: themeState.themeData,
+          routerConfig: _router,
         );
       },
     );

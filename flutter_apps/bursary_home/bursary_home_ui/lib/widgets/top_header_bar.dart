@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bursary_home_ui/theme/app_colors.dart';
 import 'package:bursary_home_ui/theme/styles.dart';
+import 'package:bursary_home_ui/theme/theme_colors.dart';
 
 class TopHeaderBar extends StatelessWidget {
   final String userName;
@@ -31,11 +31,13 @@ class TopHeaderBar extends StatelessWidget {
               onChanged: onSearchChanged,
               decoration: InputDecoration(
                 hintText: 'Search bursaries, applications...',
-                hintStyle: const TextStyle(color: Color(0xFFAAAAAA)),
+                hintStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.search,
-                  color: const Color(0xFFAAAAAA),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   size: 16.0,
                 ), // 1rem
                 isDense: true,
@@ -53,12 +55,15 @@ class TopHeaderBar extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
+                    color:
+                        Theme.of(
+                          context,
+                        ).extension<ThemeColors>()!.primaryColor,
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.notifications_none,
-                    color: AppColors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     size: 24.0,
                   ),
                 ),
@@ -76,7 +81,7 @@ class TopHeaderBar extends StatelessWidget {
                   Text(
                     userRole,
                     style: TextStyles.bodySmall.copyWith(
-                      color: const Color(0xFF666666),
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 0.7 * 16.0,
                     ), // 0.7rem
                   ),

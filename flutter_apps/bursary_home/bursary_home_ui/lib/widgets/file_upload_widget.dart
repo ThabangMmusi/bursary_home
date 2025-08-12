@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bursary_home_ui/theme/app_colors.dart';
+import 'package:bursary_home_ui/theme/theme_colors.dart';
 
 class FileUploadWidget extends StatelessWidget {
   final String label;
@@ -31,13 +31,26 @@ class FileUploadWidget extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(12.0), // 0.75rem
           decoration: BoxDecoration(
-            color: isFileSelected
-                ? AppColors.successColor.withOpacity(0.05)
-                : (isRequired ? AppColors.primaryColor.withOpacity(0.05) : AppColors.white),
+            color:
+                isFileSelected
+                    ? Theme.of(context).colorScheme.secondary.withOpacity(0.05)
+                    : (isRequired
+                        ? Theme.of(context)
+                            .extension<ThemeColors>()!
+                            .primaryColor
+                            .withOpacity(0.05)
+                        : Theme.of(context).colorScheme.surface),
             border: Border.all(
-              color: isFileSelected
-                  ? AppColors.successColor
-                  : (isRequired ? AppColors.primaryColor : const Color(0xFFddd).withOpacity(0.2)),
+              color:
+                  isFileSelected
+                      ? Theme.of(context).colorScheme.secondary
+                      : (isRequired
+                          ? Theme.of(
+                            context,
+                          ).extension<ThemeColors>()!.primaryColor
+                          : Theme.of(
+                            context,
+                          ).colorScheme.outline.withOpacity(0.2)),
               style: BorderStyle.solid,
               width: 2.0,
             ),
@@ -50,7 +63,12 @@ class FileUploadWidget extends StatelessWidget {
                 children: [
                   Icon(
                     icon,
-                    color: isFileSelected ? AppColors.successColor : AppColors.primaryColor,
+                    color:
+                        isFileSelected
+                            ? Theme.of(context).colorScheme.secondary
+                            : Theme.of(
+                              context,
+                            ).extension<ThemeColors>()!.primaryColor,
                     size: 24.0,
                   ),
                   const SizedBox(width: 8.0), // 0.5rem
@@ -58,23 +76,34 @@ class FileUploadWidget extends StatelessWidget {
                     child: Text(
                       selectedFileName ?? label,
                       style: TextStyle(
-                        color: isFileSelected ? AppColors.successColor : AppColors.textDark,
+                        color:
+                            isFileSelected
+                                ? Theme.of(context).colorScheme.secondary
+                                : Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
                         fontSize: 14.4, // 0.9rem
-                        fontWeight: isFileSelected ? FontWeight.bold : FontWeight.normal,
+                        fontWeight:
+                            isFileSelected
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                       ),
                     ),
                   ),
                   if (isRequired && !isFileSelected)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.6), // 0.1rem 0.4rem
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0,
+                        vertical: 1.6,
+                      ), // 0.1rem 0.4rem
                       decoration: BoxDecoration(
-                        color: AppColors.errorColor,
+                        color: Theme.of(context).colorScheme.error,
                         borderRadius: BorderRadius.circular(4.0),
                       ),
-                      child: const Text(
+                      child: Text(
                         'REQUIRED',
                         style: TextStyle(
-                          color: AppColors.white,
+                          color: Theme.of(context).colorScheme.onError,
                           fontSize: 10.4, // 0.65rem
                           fontWeight: FontWeight.bold,
                           height: 1,
@@ -82,20 +111,23 @@ class FileUploadWidget extends StatelessWidget {
                       ),
                     ),
                   if (isFileSelected)
-                    const Icon(
+                    Icon(
                       Icons.check_circle,
-                      color: AppColors.successColor,
+                      color: Theme.of(context).colorScheme.secondary,
                       size: 20.0,
                     ),
                 ],
               ),
               if (!isFileSelected)
                 Padding(
-                  padding: const EdgeInsets.only(left: 32.0, top: 4.0), // Align with text
+                  padding: const EdgeInsets.only(
+                    left: 32.0,
+                    top: 4.0,
+                  ), // Align with text
                   child: Text(
                     hint,
-                    style: const TextStyle(
-                      color: Color(0xFF666666),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 12.8, // 0.8rem
                     ),
                   ),

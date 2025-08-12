@@ -1,6 +1,6 @@
+import 'package:bursary_home_ui/enums.dart';
 import 'package:equatable/equatable.dart';
 import 'package:data_layer/data_layer.dart';
-import 'package:student_app/core/theme/theme_preferences.dart';
 
 enum AppStatus { authenticated, unauthenticated, unknown, loading }
 

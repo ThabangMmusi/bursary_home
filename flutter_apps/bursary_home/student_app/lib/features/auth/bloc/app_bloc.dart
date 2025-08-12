@@ -1,18 +1,10 @@
 import 'dart:async';
+import 'package:bursary_home_ui/enums.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 
 import 'package:data_layer/data_layer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:student_app/core/theme/theme_preferences.dart';
-import 'package:student_app/features/auth/bloc/app_state.dart';
-import 'dart:async';
-import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
-
-import 'package:data_layer/data_layer.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:student_app/core/theme/theme_preferences.dart';
 import 'package:student_app/features/auth/bloc/app_state.dart';
 import 'package:student_app/core/theme/bloc/theme_bloc.dart';
 import 'package:student_app/core/theme/bloc/theme_state.dart';
@@ -142,6 +134,3 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     return super.close();
   }
 }
-
-
-

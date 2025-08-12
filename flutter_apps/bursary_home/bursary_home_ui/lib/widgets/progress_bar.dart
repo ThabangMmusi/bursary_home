@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bursary_home_ui/theme/app_colors.dart';
+import 'package:bursary_home_ui/theme/theme_colors.dart';
 
 class ProgressBar extends StatelessWidget {
   final double progress;
@@ -17,7 +17,7 @@ class ProgressBar extends StatelessWidget {
           width: constraints.maxWidth,
           height: 4.0, // 4px
           decoration: BoxDecoration(
-            color: const Color(0xFFE0E0E0),
+            color: Theme.of(context).colorScheme.outlineVariant,
             borderRadius: BorderRadius.circular(2.0),
           ),
           child: Align(
@@ -27,7 +27,7 @@ class ProgressBar extends StatelessWidget {
               child: Container(
                 height: 4.0,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
+                  color: Theme.of(context).extension<ThemeColors>()!.primaryColor,
                   borderRadius: BorderRadius.circular(2.0),
                 ),
               ),

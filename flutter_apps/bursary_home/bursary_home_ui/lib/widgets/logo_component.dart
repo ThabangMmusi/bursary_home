@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:bursary_home_ui/theme/app_colors.dart';
 import 'package:bursary_home_ui/theme/styles.dart';
+import 'package:bursary_home_ui/theme/theme_colors.dart';
 
 enum LogoDirection {
   horizontal,
@@ -33,7 +33,7 @@ class LogoComponent extends StatelessWidget {
     Widget logoText = Text(
       'Bursary Home',
       style: TextStyles.titleLarge.copyWith(
-        color: AppColors.primaryColor,
+        color: Theme.of(context).extension<ThemeColors>()!.primaryColor,
         fontSize: fontSize * 16.0, // Convert rem to pixels
       ),
     );

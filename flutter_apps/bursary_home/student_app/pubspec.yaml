@@ -44,6 +44,7 @@ dependencies:
   url_launcher: ^6.3.0
   image_picker: ^1.1.2
   file_picker: ^10.2.0
+  shared_preferences: ^2.2.0 # Added for theme persistence
   
   intl: ^0.20.2
   bursary_home_ui:

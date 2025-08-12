@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:bursary_home_ui/theme/app_colors.dart';
 import 'package:bursary_home_ui/theme/styles.dart';
 
 class CustomModal extends StatelessWidget {
@@ -26,7 +25,7 @@ class CustomModal extends StatelessWidget {
       child: Container(
         constraints: BoxConstraints(maxWidth: maxWidth),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(16.0),
           boxShadow: [
             BoxShadow(
@@ -47,14 +46,14 @@ class CustomModal extends StatelessWidget {
                   Text(
                     title,
                     style: TextStyles.headlineSmall.copyWith(
-                      color: AppColors.textDark,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontSize: 24.0, // 1.5rem
                     ),
                   ),
                   if (onClose != null)
                     IconButton(
                       icon: const Icon(Icons.close),
-                      color: const Color(0xFF666666),
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       iconSize: 24.0, // 1.5rem
                       onPressed: onClose,
                     ),

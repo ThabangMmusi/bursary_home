@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:bursary_home_ui/bursary_home_ui.dart';
-import 'package:student_app/core/theme/theme_preferences.dart';
+import 'package:bursary_home_ui/enums.dart';
 
 abstract class ThemeEvent extends Equatable {
   const ThemeEvent();

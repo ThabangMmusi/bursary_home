@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:bursary_home_ui/bursary_home_ui.dart';
-import 'package:student_app/core/theme/theme_preferences.dart';
+import 'package:bursary_home_ui/enums.dart';
 
 class ThemeState extends Equatable {
   final ThemeData themeData;
